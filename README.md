@@ -3,3 +3,4 @@
 ## Group Members
 
 - Eskil Gjerde Sviggum
+- Octavian Covalciuc
