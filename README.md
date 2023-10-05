@@ -4,3 +4,4 @@
 
 - Eskil Gjerde Sviggum
 - Octavian Covalciuc
+- Alexander Kadri
