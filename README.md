@@ -5,3 +5,6 @@
 - Eskil Gjerde Sviggum
 - Octavian Covalciuc
 - Alexander Kadri
+- Andrei Visoiu
+- Jack Bikar 
+
