@@ -3,41 +3,36 @@
  * @version 2022.0
  */
 
-import java.util.Random;
+import java.util.Arrays;
 
 /**
  * This class includes the methods to support the search of a solution.
  */
-public class Search
-{
+public class Search {
 	public static final int horizontalGridSize = 5;
-	public static int count = 0;
 	public static final int verticalGridSize = 6;
-
 	public static final char[] input = {'W', 'Y', 'I', 'T', 'Z', 'L'};
+	public static int count = 0;
 
 	//	{'X', 'I', 'Z', 'T', 'U', 'V', 'W', 'Y', 'L', 'P', 'N', 'F'}
-
 	//Static UI class to display the board
 	public static UI ui = new UI(horizontalGridSize, verticalGridSize, 50);
 
 	/**
 	 * Helper function which starts a basic search algorithm
 	 */
-	public static void search()
-	{
+	public static void search() {
 		// Initialize an empty board
-		int[][] field = new int[horizontalGridSize][verticalGridSize];
+		final int[][] field = new int[horizontalGridSize][verticalGridSize];
 
-		for(int i = 0; i < field.length; i++)
-		{
-			for(int j = 0; j < field[i].length; j++)
-			{
-				// -1 in the state matrix corresponds to empty square
-				// Any positive number identifies the ID of the pentomino
-				field[i][j] = -1;
-			}
-		}
+		//for (int i = 0; i < field.length; i++) {
+		//for (int j = 0; j < field[i].length; j++) {
+		// -1 in the state matrix corresponds to empty square
+		// Any positive number identifies the ID of the pentomino
+		//field[i][j] = -1;
+		for (final int[] ints : field)
+			Arrays.fill(ints, -1);
+
 		//Start the basic search
 		if (basicSearch(field, 0)) {
 			System.out.println("Solution Found");
@@ -49,10 +44,11 @@ public class Search
 
 	/**
 	 * Get as input the character representation of a pentomino and translate it into its corresponding numerical value (ID)
+	 *
 	 * @param character a character representating a pentomino
-	 * @return	the corresponding ID (numerical value)
+	 * @return the corresponding ID (numerical value)
 	 */
-	private static int characterToID(char character) {
+	private static int characterToID(final char character) {
 		int pentID = -1;
 		if (character == 'X') {
 			pentID = 0;
@@ -87,18 +83,19 @@ public class Search
 	 * but randomly takes possible combinations and positions to find a possible solution.
 	 * The solution is not necessarily the most efficient one
 	 * This algorithm can be very time-consuming
+	 *
 	 * @param field a matrix representing the board to be fulfilled with pentominoes
 	 */
-	private static boolean basicSearch(int[][] field, int index){
+	private static boolean basicSearch(final int[][] field, final int index) {
 		count++;
 		if (index == input.length) {
 			return true;
 		}
-		int id = characterToID(input[index]);
+		final int id = characterToID(input[index]);
 		for (int i = 0; i < field.length; i++) {
 			for (int j = 0; j < field[0].length; j++) {
 				for (int k = 0; k < PentominoDatabase.data[id].length; k++) {
-					int[][] piece = PentominoDatabase.data[id][k];
+					final int[][] piece = PentominoDatabase.data[id][k];
 
 					if (canPlace(piece, i, j, field)) {
 						addPiece(field, piece, id, i, j);
@@ -124,12 +121,12 @@ public class Search
 		return false;
 	}
 
-	public static boolean canPlace(int[][] piece, int row, int col, int[][] field) {
+	public static boolean canPlace(final int[][] piece, final int row, final int col, final int[][] field) {
 		for (int i = 0; i < piece.length; i++) {
 			for (int j = 0; j < piece[0].length; j++) {
 				if (piece[i][j] != 0) {
-					int newRow = row + i;
-					int newCol = col + j;
+					final int newRow = row + i;
+					final int newCol = col + j;
 					if (newRow < 0 || newRow >= field.length || newCol < 0 || newCol >= field[0].length || field[newRow][newCol] != -1) {
 						return false;
 					}
@@ -157,7 +154,7 @@ public class Search
 //		return true;
 	}
 
-	public static void removePiece(int[][] field, int[][] piece, int row, int col) {
+	public static void removePiece(final int[][] field, final int[][] piece, final int row, final int col) {
 		for (int i = 0; i < piece.length; i++) {
 			for (int j = 0; j < piece[0].length; j++) {
 				if (piece[i][j] != 0) {
@@ -170,20 +167,19 @@ public class Search
 
 	/**
 	 * Adds a pentomino to the position on the field (overriding current board at that position)
-	 * @param field a matrix representing the board to be fulfilled with pentominoes
-	 * @param piece a matrix representing the pentomino to be placed in the board
+	 *
+	 * @param field   a matrix representing the board to be fulfilled with pentominoes
+	 * @param piece   a matrix representing the pentomino to be placed in the board
 	 * @param pieceID ID of the relevant pentomino
-	 * @param x x position of the pentomino
-	 * @param y y position of the pentomino
+	 * @param x       x position of the pentomino
+	 * @param y       y position of the pentomino
 	 */
-	public static void addPiece(int[][] field, int[][] piece, int pieceID, int x, int y)
-	{
-		for(int i = 0; i < piece.length; i++) // loop over x position of pentomino
+	public static void addPiece(final int[][] field, final int[][] piece, final int pieceID, final int x, final int y) {
+		for (int i = 0; i < piece.length; i++) // loop over x position of pentomino
 		{
 			for (int j = 0; j < piece[i].length; j++) // loop over y position of pentomino
 			{
-				if (piece[i][j] == 1)
-				{
+				if (piece[i][j] == 1) {
 					// Add the ID of the pentomino to the board if the pentomino occupies this square
 					field[x + i][y + j] = pieceID;
 				}
@@ -194,8 +190,7 @@ public class Search
 	/**
 	 * Main function. Needs to be executed to start the basic search algorithm
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(final String[] args) {
 		PentominoBuilder.makeDatabase();
 		search();
 		System.out.print("Number of iterations: " + count);
