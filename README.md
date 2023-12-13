@@ -9,3 +9,5 @@
 - Jack Bikar 
 - Vasileios Rallis
 - Patrick Van Maele
+
+Phase 2 can be found in the "Phase2" branch
