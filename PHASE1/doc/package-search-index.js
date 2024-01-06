@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"algorithms"},{"l":"All Packages","u":"allpackages-index.html"},{"l":"model"}];updateSearchResults();
