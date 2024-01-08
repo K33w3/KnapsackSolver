@@ -1,7 +1,9 @@
 package com.bcs2023;
 
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello world!");
-    }
+
+  public static void main(String[] args) {
+    System.out.println("Hello world!");
+    System.out.println("Genetic Algorithm test");
+  }
 }
