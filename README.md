@@ -2,12 +2,12 @@
 
 ## Group Members
 
-- Eskil Gjerde Sviggum
 - Octavian Covalciuc
 - Alexander Kadri
 - Andrei Visoiu
 - Jack Bikar 
 - Vasileios Rallis
 - Patrick Van Maele
+- (Eskil Gjerde Sviggum)
 
-Phase 2 can be found in the "Phase2" branch
+Phase 2 was archived ( zip file ) and can be found in the main branch.
