@@ -10,4 +10,4 @@
 - Patrick Van Maele
 - (Eskil Gjerde Sviggum)
 
-Phase 2 was archived ( zip file ) and can be found in the main branch.
+Phase 2 was archived ( zip file ) and can be found in the past_phases branch.
