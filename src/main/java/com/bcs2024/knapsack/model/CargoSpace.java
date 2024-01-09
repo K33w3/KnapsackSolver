@@ -92,4 +92,14 @@ public class CargoSpace {
             }
         }
     }
+
+    public void printOccupiedSpacePositions() {
+        for (int i = 0; i < occupied.length; i++) {
+            for (int j = 0; j < occupied[i].length; j++) {
+                for (int k = 0; k < occupied[i][j].length; k++) {
+                    System.out.println("Position (" + i + ", " + j + ", " + k + "): " + (occupied[i][j][k] ? "Occupied" : "Free"));
+                }
+            }
+        }
+    }
 }
