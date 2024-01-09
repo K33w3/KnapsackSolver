@@ -6,9 +6,9 @@ package com.bcs2024.knapsack.model;
  */
 public class Parcel {
 
-    Parcel parcelA = new Parcel("A", 1.0, 1.0, 2.0, 1);
-    Parcel parcelB = new Parcel("B", 1.0, 1.5, 2.0, 2);
-    Parcel parcelC = new Parcel("C", 1.5, 1.5, 1.5, 3);
+//    Parcel parcelA = new Parcel("A", 1.0, 1.0, 2.0, 1);
+//    Parcel parcelB = new Parcel("B", 1.0, 1.5, 2.0, 2);
+//    Parcel parcelC = new Parcel("C", 1.5, 1.5, 1.5, 3);
 
     private double length, width, height, value;
     private String type;
