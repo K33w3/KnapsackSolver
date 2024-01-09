@@ -1,14 +1,17 @@
 package com.bcs2024.knapsack.model;
 
+/**
+ * Represents the cargo space with dimensions and tracking for occupied space.
+ */
 public class CargoSpace {
     private double length, width, height;
-    private final boolean[][][] occupied;
+    private boolean[][][] occupied;
 
     public double getLength() {
         return length;
     }
 
-    public void setLength(final double length) {
+    public void setLength(double length) {
         this.length = length;
     }
 
@@ -16,7 +19,7 @@ public class CargoSpace {
         return width;
     }
 
-    public void setWidth(final double width) {
+    public void setWidth(double width) {
         this.width = width;
     }
 
@@ -24,34 +27,42 @@ public class CargoSpace {
         return height;
     }
 
-    public void setHeight(final double height) {
+    public void setHeight(double height) {
         this.height = height;
     }
 
-    public CargoSpace(final double length, final double width, final double height) {
+    /**
+     * Constructs a new CargoSpace with specified dimensions.
+     *
+     * @param length The length of the cargo space.
+     * @param width  The width of the cargo space.
+     * @param height The height of the cargo space.
+     */
+    public CargoSpace(double length, double width, double height) {
         this.length = length;
         this.width = width;
         this.height = height;
-
-        // Initialize the occupied array
-        // Assuming each unit in the array represents a 1x1x1 volume
-        occupied = new boolean[(int) length][(int) width][(int) height];
-        for (int i = 0; i < length; i++) {
-            for (int j = 0; j < width; j++) {
-                for (int k = 0; k < height; k++) {
-                    occupied[i][j][k] = false;
-                }
-            }
-        }
+        this.occupied = new boolean[(int) length][(int) width][(int) height];
     }
 
-    // Manage space occupancy
-    // Checks if a space is available
-    public boolean isSpaceAvailable(final int startL, final int startW, final int startH, final int parcelLength, final int parcelWidth, final int parcelHeight) {
-        for (int i = startL; i < startL + parcelLength; i++) {
-            for (int j = startW; j < startW + parcelWidth; j++) {
-                for (int k = startH; k < startH + parcelHeight; k++) {
-                    if (occupied[i][j][k]) {
+    /**
+     * Checks if a specific area of the cargo space is available to occupy.
+     *
+     * @param parcel The parcel to check space for.
+     * @param x The x-coordinate in the cargo space.
+     * @param y The y-coordinate in the cargo space.
+     * @param z The z-coordinate in the cargo space.
+     * @return true if the space is available, false otherwise.
+     */
+    public boolean isSpaceAvailable(Parcel parcel, int x, int y, int z) {
+        int parcelLength = (int) parcel.getLength();
+        int parcelWidth = (int) parcel.getWidth();
+        int parcelHeight = (int) parcel.getHeight();
+
+        for (int i = x; i < x + parcelLength; i++) {
+            for (int j = y; j < y + parcelWidth; j++) {
+                for (int k = z; k < z + parcelHeight; k++) {
+                    if (i >= length || j >= width || k >= height || occupied[i][j][k]) {
                         return false;
                     }
                 }
@@ -60,21 +71,25 @@ public class CargoSpace {
         return true;
     }
 
-    // Set a space as occupied
-    public void setOccupied(final int startL, final int startW, final int startH, final int parcelLength, final int parcelWidth, final int parcelHeight) {
-        if (!isValidPlacement(startL, startW, startH, parcelLength, parcelWidth, parcelHeight)) {
-            for (int i = startL; i < startL + parcelLength; i++) {
-                for (int j = startW; j < startW + parcelWidth; j++) {
-                    for (int k = startH; k < startH + parcelHeight; k++) {
-                        occupied[i][j][k] = true;
-                    }
+    /**
+     * Marks a specific area of the cargo space as occupied by a parcel.
+     *
+     * @param parcel The parcel occupying the space.
+     * @param x The x-coordinate where the parcel starts.
+     * @param y The y-coordinate where the parcel starts.
+     * @param z The z-coordinate where the parcel starts.
+     */
+    public void occupySpace(Parcel parcel, int x, int y, int z) {
+        int parcelLength = (int) parcel.getLength();
+        int parcelWidth = (int) parcel.getWidth();
+        int parcelHeight = (int) parcel.getHeight();
+
+        for (int i = x; i < x + parcelLength; i++) {
+            for (int j = y; j < y + parcelWidth; j++) {
+                for (int k = z; k < z + parcelHeight; k++) {
+                    occupied[i][j][k] = true;
                 }
             }
         }
-    }
-
-    private boolean isValidPlacement(final int startL, final int startW, final int startH, final int length, final int width, final int height) {
-        // Check if the placement is within the bounds of the cargo space
-        return startL + length <= this.length && startW + width <= this.width && startH + height <= this.height;
     }
 }
