@@ -1,5 +1,7 @@
 package com.bcs2024.knapsack.model;
 
+import java.util.Arrays;
+
 /**
  * Represents the cargo space with dimensions and tracking for occupied space.
  */
@@ -55,21 +57,23 @@ public class CargoSpace {
         Parcel parcel = placement.getParcel();
         int orientation = placement.getOrientation();
 
-        // Adjust parcel dimensions based on orientation
-        int[] adjustedDimensions = getAdjustedDimensions(parcel, orientation);
-        int parcelLength = adjustedDimensions[0];
-        int parcelWidth = adjustedDimensions[1];
-        int parcelHeight = adjustedDimensions[2];
+        // Get the shape of the parcel based on its orientation
+        boolean[][][] parcelShape = getParcelShape(parcel, orientation);
 
         int startX = placement.getX();
         int startY = placement.getY();
         int startZ = placement.getZ();
 
-        for (int x = startX; x < startX + parcelLength; x++) {
-            for (int y = startY; y < startY + parcelWidth; y++) {
-                for (int z = startZ; z < startZ + parcelHeight; z++) {
-                    if (x >= this.length || y >= this.width || z >= this.height || occupied[x][y][z]) {
-                        return false;
+        for (int i = 0; i < parcelShape.length; i++) {
+            for (int j = 0; j < parcelShape[i].length; j++) {
+                for (int k = 0; k < parcelShape[i][j].length; k++) {
+                    if (parcelShape[i][j][k]) {
+                        int x = startX + i;
+                        int y = startY + j;
+                        int z = startZ + k;
+                        if (x >= this.length || y >= this.width || z >= this.height || occupied[x][y][z]) {
+                            return false;
+                        }
                     }
                 }
             }
@@ -77,7 +81,27 @@ public class CargoSpace {
         return true;
     }
 
-    public int[] getAdjustedDimensions(Parcel parcel, int orientation) {
+
+    private boolean[][][] getParcelShape(Parcel parcel, int orientation) {
+        if (parcel.getShape() != null) {
+            // If parcel has a complex shape
+            boolean[][][][] rotations = ShapesAndRotations.getRotations(parcel.getType());
+            return rotations[orientation % rotations.length];
+        } else {
+            // If parcel is a regular shape, create a filled 3D array based on its dimensions
+            boolean[][][] shape = new boolean[(int)parcel.getLength()][(int)parcel.getWidth()][(int)parcel.getHeight()];
+
+            for (int i = 0; i < shape.length; i++) {
+                for (int j = 0; j < shape[i].length; j++) {
+                    Arrays.fill(shape[i][j], true);
+                }
+            }
+            return shape;
+        }
+    }
+
+
+    /*public int[] getAdjustedDimensions(Parcel parcel, int orientation) {
         boolean[][][][] rotations = switch (parcel.getType()) {
             case "L" -> ShapesAndRotations.getL();
             case "P" -> ShapesAndRotations.getP();
@@ -99,7 +123,7 @@ public class CargoSpace {
         int height = selectedRotation[0][0].length;
 
         return new int[]{length, width, height};
-    }
+    }*/
 
     /**
      * Marks a specific area of the cargo space as occupied based on the given parcel placement.
@@ -109,28 +133,29 @@ public class CargoSpace {
      * @param placement The ParcelPlacement object representing the parcel's placement in the cargo space.
      */
     public void occupySpace(ParcelPlacement placement) {
-        int x = placement.getX();
-        int y = placement.getY();
-        int z = placement.getZ();
         Parcel parcel = placement.getParcel();
         int orientation = placement.getOrientation();
 
-        // Adjust parcel dimensions based on orientation
-        int[] adjustedDimensions = getAdjustedDimensions(parcel, orientation);
-        int parcelLength = adjustedDimensions[0];
-        int parcelWidth = adjustedDimensions[1];
-        int parcelHeight = adjustedDimensions[2];
+        // Get the shape of the parcel based on its orientation
+        boolean[][][] parcelShape = getParcelShape(parcel, orientation);
 
-        for (int i = x; i < x + parcelLength; i++) {
-            for (int j = y; j < y + parcelWidth; j++) {
-                for (int k = z; k < z + parcelHeight; k++) {
-                    occupied[i][j][k] = true;
+        int startX = placement.getX();
+        int startY = placement.getY();
+        int startZ = placement.getZ();
+
+        for (int i = 0; i < parcelShape.length; i++) {
+            for (int j = 0; j < parcelShape[i].length; j++) {
+                for (int k = 0; k < parcelShape[i][j].length; k++) {
+                    if (parcelShape[i][j][k]) {
+                        int x = startX + i;
+                        int y = startY + j;
+                        int z = startZ + k;
+                        occupied[x][y][z] = true;
+                    }
                 }
             }
         }
     }
-
-
 
     public void printOccupiedSpacePositions() {
         for (int i = 0; i < occupied.length; i++) {
