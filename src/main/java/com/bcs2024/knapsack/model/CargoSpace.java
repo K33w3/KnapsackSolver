@@ -5,7 +5,7 @@ package com.bcs2024.knapsack.model;
  */
 public class CargoSpace {
     private double length, width, height;
-    private boolean[][][] occupied;
+    private final boolean[][][] occupied;
 
     public double getLength() {
         return length;
@@ -46,23 +46,29 @@ public class CargoSpace {
     }
 
     /**
-     * Checks if a specific area of the cargo space is available to occupy.
+     * Checks if a specific area of the cargo space is available to occupy based on the given parcel placement.
      *
-     * @param parcel The parcel to check space for.
-     * @param x The x-coordinate in the cargo space.
-     * @param y The y-coordinate in the cargo space.
-     * @param z The z-coordinate in the cargo space.
+     * @param placement The ParcelPlacement object representing the parcel's placement in the cargo space.
      * @return true if the space is available, false otherwise.
      */
-    public boolean isSpaceAvailable(Parcel parcel, int x, int y, int z) {
-        int parcelLength = (int) parcel.getLength();
-        int parcelWidth = (int) parcel.getWidth();
-        int parcelHeight = (int) parcel.getHeight();
+    public boolean isSpaceAvailable(ParcelPlacement placement) {
+        Parcel parcel = placement.getParcel();
+        int orientation = placement.getOrientation();
 
-        for (int i = x; i < x + parcelLength; i++) {
-            for (int j = y; j < y + parcelWidth; j++) {
-                for (int k = z; k < z + parcelHeight; k++) {
-                    if (i >= length || j >= width || k >= height || occupied[i][j][k]) {
+        // Adjust parcel dimensions based on orientation
+        int[] adjustedDimensions = getAdjustedDimensions(parcel, orientation);
+        int parcelLength = adjustedDimensions[0];
+        int parcelWidth = adjustedDimensions[1];
+        int parcelHeight = adjustedDimensions[2];
+
+        int startX = placement.getX();
+        int startY = placement.getY();
+        int startZ = placement.getZ();
+
+        for (int x = startX; x < startX + parcelLength; x++) {
+            for (int y = startY; y < startY + parcelWidth; y++) {
+                for (int z = startZ; z < startZ + parcelHeight; z++) {
+                    if (x >= this.length || y >= this.width || z >= this.height || occupied[x][y][z]) {
                         return false;
                     }
                 }
@@ -71,18 +77,49 @@ public class CargoSpace {
         return true;
     }
 
+    public int[] getAdjustedDimensions(Parcel parcel, int orientation) {
+        boolean[][][][] rotations = switch (parcel.getType()) {
+            case "L" -> ShapesAndRotations.getL();
+            case "P" -> ShapesAndRotations.getP();
+            case "T" -> ShapesAndRotations.getT();
+            case "A" -> ShapesAndRotations.getA();
+            case "B" -> ShapesAndRotations.getB();
+            case "C" -> ShapesAndRotations.getC();
+            default -> throw new IllegalArgumentException("Invalid parcel type");
+        };
+
+        // Select the correct shape and its rotations based on the parcel type
+
+        // Use the orientation to select the correct rotation
+        boolean[][][] selectedRotation = rotations[orientation % rotations.length];
+
+        // Calculate dimensions based on the selected rotation
+        int length = selectedRotation.length;
+        int width = selectedRotation[0].length;
+        int height = selectedRotation[0][0].length;
+
+        return new int[]{length, width, height};
+    }
+
     /**
-     * Marks a specific area of the cargo space as occupied by a parcel.
+     * Marks a specific area of the cargo space as occupied based on the given parcel placement.
+     * This method uses the coordinates and dimensions from the ParcelPlacement object to determine
+     * the space that the parcel will occupy. It updates the occupied array accordingly.
      *
-     * @param parcel The parcel occupying the space.
-     * @param x The x-coordinate where the parcel starts.
-     * @param y The y-coordinate where the parcel starts.
-     * @param z The z-coordinate where the parcel starts.
+     * @param placement The ParcelPlacement object representing the parcel's placement in the cargo space.
      */
-    public void occupySpace(Parcel parcel, int x, int y, int z) {
-        int parcelLength = (int) parcel.getLength();
-        int parcelWidth = (int) parcel.getWidth();
-        int parcelHeight = (int) parcel.getHeight();
+    public void occupySpace(ParcelPlacement placement) {
+        int x = placement.getX();
+        int y = placement.getY();
+        int z = placement.getZ();
+        Parcel parcel = placement.getParcel();
+        int orientation = placement.getOrientation();
+
+        // Adjust parcel dimensions based on orientation
+        int[] adjustedDimensions = getAdjustedDimensions(parcel, orientation);
+        int parcelLength = adjustedDimensions[0];
+        int parcelWidth = adjustedDimensions[1];
+        int parcelHeight = adjustedDimensions[2];
 
         for (int i = x; i < x + parcelLength; i++) {
             for (int j = y; j < y + parcelWidth; j++) {
@@ -92,6 +129,8 @@ public class CargoSpace {
             }
         }
     }
+
+
 
     public void printOccupiedSpacePositions() {
         for (int i = 0; i < occupied.length; i++) {
