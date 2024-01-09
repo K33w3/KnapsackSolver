@@ -58,19 +58,6 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
         return false;
     }
 
-
-    /**
-     * Returns the number of different orientations a parcel can have.
-     * This could depend on the parcel type and its dimensions.
-     *
-     * @param parcel The parcel to check.
-     * @return The number of orientations.
-     */
-    private int getNumberOfOrientations(Parcel parcel) {
-        // This is a placeholder. Implement the actual logic based on parcel's characteristics.
-        return 6; // For a cuboid, there can be 6 orientations. Adjust as needed.
-    }
-
     /**
      * Calculates the value density of a parcel.
      *
