@@ -8,10 +8,10 @@ public class Parcel {
     private double length, width, height, value;
     private String type;
 
-    private boolean[][][] shape; // 3D array to represent complex shapes
+    private boolean[][][][] shape; // 4D array to represent 3D shapes with orientation
 
     // Constructor for parcels (A, B, C, L, P, T)
-    public Parcel(final String type, boolean[][][] shape) {
+    public Parcel(final String type, boolean[][][][] shape) {
         this.type = type;
         this.shape = shape;
         initializeParcel();
@@ -54,20 +54,20 @@ public class Parcel {
     }
 
     /**
-     * Returns the shape of the parcel.
+     * Returns the shape of the parcel with its orientation.
      *
      * @return The shape of the parcel.
      */
-    public boolean[][][] getShape() {
+    public boolean[][][][] getShape() {
         return shape;
     }
 
     /**
-     * Sets the shape of the parcel.
+     * Sets the shape of the parcel with its orientation.
      *
      * @param shape The new shape of the parcel.
      */
-    public void setShape(boolean[][][] shape) {
+    public void setShape(boolean[][][][] shape) {
         this.shape = shape;
     }
 
