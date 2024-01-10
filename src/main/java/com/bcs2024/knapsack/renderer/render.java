@@ -1,60 +1,54 @@
 package com.bcs2024.knapsack.renderer;
 
 import javafx.application.Application;
+import javafx.scene.Camera;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Box;
-import javafx.scene.shape.DrawMode;
-import javafx.scene.transform.Rotate;
+import javafx.scene.shape.Sphere;
 import javafx.stage.Stage;
 
 public class Render extends Application {
-
-    private static final double SPACE_SIZE = 400;
-
     @Override
-    public void start(Stage primaryStage) {
-        // Create a 3D box
-        Box box = new Box(SPACE_SIZE, SPACE_SIZE, SPACE_SIZE);
-        box.setDrawMode(DrawMode.LINE);
-        box.setTranslateX(SPACE_SIZE / 2);
-        box.setTranslateY(SPACE_SIZE / 2);
-        box.setTranslateZ(SPACE_SIZE / 2);
-
-        // Create a group and add the box to it
-        Group root = new Group(box);
-
-        // Create a scene with the group as the root and set the background color
-        Scene scene = new Scene(root, SPACE_SIZE, SPACE_SIZE, Color.WHITE);
-
-        // Create a perspective camera and add it to the scene
-        PerspectiveCamera camera = new PerspectiveCamera(true);
-        camera.setTranslateX(SPACE_SIZE / 2);
-        camera.setTranslateY(SPACE_SIZE / 2);
-        camera.setTranslateZ(-SPACE_SIZE * 2);
-        scene.setCamera(camera);
-
-        // Rotate the box continuously
-        Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
-        Rotate rotateY = new Rotate(0, Rotate.Y_AXIS);
-        box.getTransforms().addAll(rotateX, rotateY);
-
-        // Add event handlers to rotate the box when the mouse is dragged
-        scene.setOnMouseDragged(event -> {
-            rotateX.setAngle(rotateX.getAngle() - event.getSceneY());
-            rotateY.setAngle(rotateY.getAngle() + event.getSceneX());
+    public void start(Stage outputStageObject) {
+        // setting the title to the application
+        outputStageObject.setTitle("Sphere Demo");
+        // creating sphere object
+        Sphere sphereObject = new Sphere(50);
+        // creating group object
+        Group groupObject = new Group();
+        groupObject.getChildren().add(sphereObject);
+        // creating camera object
+        Camera perspectiveCamera = new PerspectiveCamera();
+        // creating scene object for adding group object
+        Scene sceneObject = new Scene(groupObject, 500, 500);
+        sceneObject.setFill(Color.GREEN);
+        sceneObject.setCamera(perspectiveCamera);
+        // setting translate property for sphere object
+        sphereObject.translateXProperty().set(500 / 2);
+        sphereObject.translateYProperty().set(500 / 2);
+        // Key pressed event handler
+        outputStageObject.addEventHandler(KeyEvent.KEY_PRESSED, eventHandler -> {
+            switch (eventHandler.getCode()) {
+                // increase the sphere size if we press A
+                case A:
+                    sphereObject.translateZProperty().set(sphereObject.getTranslateZ() + 300);
+                    break;
+                // decrease the sphere size if we press B
+                case B:
+                    sphereObject.translateZProperty().set(sphereObject.getTranslateZ() - 300);
+                    break;
+            }
         });
-
-        // Set the title and show the stage
-        primaryStage.setTitle("3D Box Environment");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        outputStageObject.setScene(sceneObject);
+        // displaying output
+        outputStageObject.show();
     }
 
     public static void main(String[] args) {
+        // JVM calls start method automatically
         launch(args);
     }
 }
-
