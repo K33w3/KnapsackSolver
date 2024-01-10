@@ -1,9 +1,12 @@
 package com.bcs2024.knapsack.model;
 
+/**
+ * Represents a parcel with specific dimensions and value.
+ * Each parcel has a type, length, width, height, and an associated value.
+ */
 public class ParcelPlacement {
     private Parcel parcel;
     private int x, y, z; // Position in the cargo space
-    // private int orientation; // Representing orientation, can be an integer or a more complex type
 
     /**
      * Constructs a new ParcelPlacement with specified parcel, position and orientation.
@@ -18,7 +21,6 @@ public class ParcelPlacement {
         this.x = x;
         this.y = y;
         this.z = z;
-        //this.orientation = orientation;
     }
 
     public Parcel getParcel() {
@@ -51,16 +53,5 @@ public class ParcelPlacement {
 
     public void setZ(int z) {
         this.z = z;
-    }
-
-    /**
-     * Checks if the parcel placement, including its orientation, is valid for the cargo space.
-     *
-     * @param cargoSpace The cargo space to check for.
-     * @return true if the parcel placement is valid, false otherwise.
-     */
-    public boolean isValidForCargoSpace(CargoSpace cargoSpace) {
-        // Directly use the 'isSpaceAvailable' method from CargoSpace class
-        return cargoSpace.canPlace(this);
     }
 }

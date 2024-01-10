@@ -26,6 +26,7 @@ public class Parcel {
         initializeParcel();
     }
 
+    // TODO find a way to change the length, width, height, and value of the parcel based on its rotation
     private void initializeParcel() {
         switch (type) {
             case "A" -> {
@@ -46,20 +47,30 @@ public class Parcel {
                 this.height = 1.5;
                 this.value = 3;
             }
-            case "L", "P", "T" -> {
+            case "L" -> {
                 this.length = 0.5;
                 this.width = 0.5;
                 this.height = 0.5;
-                // Set value based on type or other criteria
-                this.value = determineValueForComplexParcel();
+                this.value = 3;
+            }
+            case "P" -> {
+                this.length = 0.5;
+                this.width = 0.5;
+                this.height = 0.5;
+                this.value = 4;
+            }
+            case "T" -> {
+                this.length = 0.5;
+                this.width = 0.5;
+                this.height = 0.5;
+                this.value = 5;
             }
             default -> System.out.println("Invalid type");
         }
-    }
 
-    // TODO create logic for determining value of complex parcels
-    private double determineValueForComplexParcel() {
-        return 0;
+        this.length *= 2;
+        this.width *= 2;
+        this.height *= 2;
     }
 
     /**

@@ -1,19 +1,17 @@
 package com.bcs2024.knapsack.model;
 
-import java.util.Arrays;
-
 /**
  * Represents the cargo space with dimensions and tracking for occupied space.
  */
 public class CargoSpace {
-    private double length, width, height;
+    private int length, width, height;
     private final boolean[][][] occupied;
 
     public double getLength() {
         return length;
     }
 
-    public void setLength(double length) {
+    public void setLength(int length) {
         this.length = length;
     }
 
@@ -21,7 +19,7 @@ public class CargoSpace {
         return width;
     }
 
-    public void setWidth(double width) {
+    public void setWidth(int width) {
         this.width = width;
     }
 
@@ -29,7 +27,7 @@ public class CargoSpace {
         return height;
     }
 
-    public void setHeight(double height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 
@@ -40,11 +38,11 @@ public class CargoSpace {
      * @param width  The width of the cargo space.
      * @param height The height of the cargo space.
      */
-    public CargoSpace(double length, double width, double height) {
+    public CargoSpace(int length, int width, int height) {
         this.length = length;
         this.width = width;
         this.height = height;
-        this.occupied = new boolean[(int) length][(int) width][(int) height];
+        this.occupied = new boolean[ length][ width][ height];
     }
 
     /**
@@ -60,7 +58,7 @@ public class CargoSpace {
      * @param placement The ParcelPlacement object representing the parcel's placement in the cargo space.
      * @return true if the space is available, false otherwise.
      */
-    public boolean isSpaceAvailable(ParcelPlacement placement) {
+    public boolean canPlace(ParcelPlacement placement) {
         Parcel parcel = placement.getParcel();
         boolean[][][][] parcelShapes = parcel.getShape(); // 4D shape array
 =======
