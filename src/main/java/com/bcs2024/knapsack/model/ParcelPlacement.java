@@ -2,8 +2,7 @@ package com.bcs2024.knapsack.model;
 
 public class ParcelPlacement {
     private Parcel parcel;
-    private int x, y, z; // Position in the cargo space
-    // private int orientation; // Representing orientation, can be an integer or a more complex type
+    private int x, y, z, orientation;
 
     /**
      * Constructs a new ParcelPlacement with specified parcel, position and orientation.
@@ -18,7 +17,11 @@ public class ParcelPlacement {
         this.x = x;
         this.y = y;
         this.z = z;
-        //this.orientation = orientation;
+        this.orientation = orientation;
+    }
+
+    public int getOrientation() {
+        return this.orientation;
     }
 
     public Parcel getParcel() {

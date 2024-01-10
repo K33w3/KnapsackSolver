@@ -7,19 +7,11 @@ package com.bcs2024.knapsack.model;
 public class Parcel {
     private double length, width, height, value;
     private String type;
-
-<<<<<<< Updated upstream
-    private boolean[][][][] shape; // 4D array to represent 3D shapes with orientation
-
-    // Constructor for parcels (A, B, C, L, P, T)
-    public Parcel(final String type, boolean[][][][] shape) {
-=======
     private int[][][] shape;
     private int rotation;
 
     // Constructor for parcels (A, B, C, L, P, T)
     public Parcel(String type, int rotation) {
->>>>>>> Stashed changes
         this.type = type;
         this.rotation = rotation;
         this.shape = ShapesAndRotations.getShape(type, rotation);
@@ -61,17 +53,7 @@ public class Parcel {
     private double determineValueForComplexParcel() {
         return 0;
     }
-
-    /**
-     * Returns the shape of the parcel with its orientation.
-     *
-     * @return The shape of the parcel.
-     */
-<<<<<<< Updated upstream
-    public boolean[][][][] getShape() {
-=======
     public int[][][] getShape() {
->>>>>>> Stashed changes
         return shape;
     }
 
@@ -81,13 +63,11 @@ public class Parcel {
      *
      * @param shape The new shape of the parcel.
      */
-    public void setShape(boolean[][][][] shape) {
+    public void setShape(int[][][] shape) {
         this.shape = shape;
     }
 
     /**
-=======
->>>>>>> Stashed changes
      * Returns the length of the parcel.
      *
      * @return The length of the parcel.
