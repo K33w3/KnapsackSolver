@@ -72,7 +72,7 @@
             <artifactId>javafx-maven-plugin</artifactId>
             <version>0.0.8</version>
             <configuration>
-                <mainClass>com.bcs2024.knapsack.render</mainClass>
+                <mainClass>com.bcs2024.knapsack.renderer.Render</mainClass>
             </configuration>
         </plugin>
     </plugins>

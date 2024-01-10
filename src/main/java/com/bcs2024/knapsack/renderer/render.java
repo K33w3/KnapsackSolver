@@ -10,7 +10,7 @@ import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
-public class render extends Application {
+public class Render extends Application {
 
     private static final double SPACE_SIZE = 400;
 
