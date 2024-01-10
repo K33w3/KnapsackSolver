@@ -40,11 +40,11 @@ public class CargoSpace {
      * @param width  The width of the cargo space.
      * @param height The height of the cargo space.
      */
-    public CargoSpace(double length, double width, double height) {
+    public CargoSpace(int length, int width, int height) {
         this.length = length;
         this.width = width;
         this.height = height;
-        this.occupied = new boolean[(int) length][(int) width][(int) height];
+        this.occupied = new boolean[ length][ width][ height];
     }
 
     /**

@@ -11,7 +11,7 @@ import java.util.List;
 public class KnapsackSolverApp {
     public static void main(String[] args) {
         // Initialize the cargo space
-        CargoSpace cargoSpace = new CargoSpace(16.5, 2.5, 4.0);
+        CargoSpace cargoSpace = new CargoSpace(33, 5, 8); // multiply by 2 instead
 
         // Initialize parcels
         List<Parcel> parcels = new ArrayList<>();
@@ -33,7 +33,7 @@ public class KnapsackSolverApp {
         //--------------------------------------------------------------------------------------------------------------
 
         // Reset cargoSpace for next algorithm
-        cargoSpace = new CargoSpace(16.5, 2.5, 4.0);
+        cargoSpace = new CargoSpace(33, 5, 8);
 
         System.out.println("Solving using Genetic Algorithm");
         solver = new GeneticKnapsackSolver();
