@@ -8,12 +8,21 @@ public class Parcel {
     private double length, width, height, value;
     private String type;
 
+<<<<<<< Updated upstream
     private boolean[][][][] shape; // 4D array to represent 3D shapes with orientation
 
     // Constructor for parcels (A, B, C, L, P, T)
     public Parcel(final String type, boolean[][][][] shape) {
+=======
+    private int[][][] shape;
+    private int rotation;
+
+    // Constructor for parcels (A, B, C, L, P, T)
+    public Parcel(String type, int rotation) {
+>>>>>>> Stashed changes
         this.type = type;
-        this.shape = shape;
+        this.rotation = rotation;
+        this.shape = ShapesAndRotations.getShape(type, rotation);
         initializeParcel();
     }
 
@@ -69,11 +78,16 @@ public class Parcel {
      *
      * @return The shape of the parcel.
      */
+<<<<<<< Updated upstream
     public boolean[][][][] getShape() {
+=======
+    public int[][][] getShape() {
+>>>>>>> Stashed changes
         return shape;
     }
 
     /**
+<<<<<<< Updated upstream
      * Sets the shape of the parcel with its orientation.
      *
      * @param shape The new shape of the parcel.
@@ -83,6 +97,8 @@ public class Parcel {
     }
 
     /**
+=======
+>>>>>>> Stashed changes
      * Returns the length of the parcel.
      *
      * @return The length of the parcel.
@@ -146,15 +162,6 @@ public class Parcel {
     }
 
     /**
-     * Sets the value of the parcel.
-     *
-     * @param value The new value of the parcel.
-     */
-    public void setValue(final double value) {
-        this.value = value;
-    }
-
-    /**
      * Returns the type of the parcel.
      *
      * @return The type of the parcel.
@@ -162,14 +169,4 @@ public class Parcel {
     public String getType() {
         return type;
     }
-
-    /**
-     * Sets the type of the parcel.
-     *
-     * @param type The new type of the parcel.
-     */
-    public void setType(final String type) {
-        this.type = type;
-    }
 }
-

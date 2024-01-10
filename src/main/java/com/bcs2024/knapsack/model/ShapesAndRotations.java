@@ -41,7 +41,7 @@ public class ShapesAndRotations {
                         {{{1}, {1}}, {{0}, {1}}, {{0}, {1}}, {{0}, {1}}},
                         {{{1, 1}}, {{0, 1}}, {{0, 1}}, {{0, 1}}}};
 
-        return shapeL;
+        return shapeL[rotation];
     }
 
     /**
@@ -77,7 +77,7 @@ public class ShapesAndRotations {
                         {{{1}, {1}}, {{1}, {1}}, {{1}, {0}}},
                         {{{1, 1}}, {{1, 1}}, {{1, 0}}}};
 
-        return shapeP;
+        return shapeP[rotation];
     }
 
     /**
@@ -103,7 +103,7 @@ public class ShapesAndRotations {
                         {{{1, 1}, {0, 1}, {0, 1}}, {{1, 1}, {1, 0}, {1, 0}}}};
 
 
-        return shapeT;
+        return shapeT[rotation];
     }
 
     /**
@@ -118,7 +118,7 @@ public class ShapesAndRotations {
                         {{{1, 1}, {1, 1}, {1, 1}, {1, 1}}, {{1, 1}, {1, 1}, {1, 1}, {1, 1}}},
                         {{{1, 1}, {1, 1}}, {{1, 1}, {1, 1}}, {{1, 1}, {1, 1}}, {{1, 1}, {1, 1}}}};
 
-        return shapeA;
+        return shapeA[rotation];
     }
 
     /**
@@ -136,7 +136,7 @@ public class ShapesAndRotations {
                         {{{1, 1, 1}, {1, 1, 1}}, {{1, 1, 1}, {1, 1, 1}}, {{1, 1, 1}, {1, 1, 1}}, {{1, 1, 1}, {1, 1, 1}}},
                         {{{1, 1}, {1, 1}, {1, 1}, {1, 1}}, {{1, 1}, {1, 1}, {1, 1}, {1, 1}}, {{1, 1}, {1, 1}, {1, 1}, {1, 1}}}};
 
-        return shapeB;
+        return shapeB[rotation];
     }
 
     /**
@@ -156,17 +156,17 @@ public class ShapesAndRotations {
      * Retrieves the rotations for a given parcel type.
      *
      * @param parcelType The type of the parcel for which rotations are required.
-     * @return An array of 3D boolean arrays representing all rotations of the specified parcel type.
+     * @return An array of 3D int arrays representing all rotations of the specified parcel type.
      * @throws IllegalArgumentException If the parcel type is invalid.
      */
     public static int[][][][] getRotations(String parcelType) {
         return switch (parcelType) {
-            case "L" -> getL();
-            case "P" -> getP();
-            case "T" -> getT();
-            case "A" -> getA();
-            case "B" -> getB();
-            case "C" -> getC();
+            case "L" -> getL(rotation);
+            case "P" -> getP(rotation);
+            case "T" -> getT(rotation);
+            case "A" -> getA(rotation);
+            case "B" -> getB(rotation);
+            case "C" -> getC(rotation);
 
             default -> throw new IllegalArgumentException("Invalid parcel type");
         };

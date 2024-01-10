@@ -13,26 +13,13 @@ import java.util.List;
  */
 public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
 
-    /**
-     * Solves the knapsack problem for the given cargo space and list of parcels.
-     * It places the parcels with the highest value density first.
-     *
-     * @param cargoSpace The cargo space where parcels are to be placed.
-     * @param parcels The list of parcels to be placed.
-     */
     @Override
     public void solve(CargoSpace cargoSpace, List<Parcel> parcels) {
-        // Sort parcels by value density in descending order
-        parcels.sort(Comparator.comparingDouble(this::calculateValueDensity).reversed());
 
-        for (Parcel parcel : parcels) {
-            if (tryPlaceParcel(cargoSpace, parcel)) {
-                System.out.println("Successfully placed parcel " + parcel.getType() + " with value " + parcel.getValue());
-            }
-        }
     }
 
     /**
+<<<<<<< Updated upstream
      * Tries to place a parcel in the cargo space.
      *
      * @param cargoSpace The cargo space to place the parcel in.
@@ -62,6 +49,8 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
 
 
     /**
+=======
+>>>>>>> Stashed changes
      * Calculates the value density of a parcel.
      *
      * @param parcel The parcel to calculate the value density for.

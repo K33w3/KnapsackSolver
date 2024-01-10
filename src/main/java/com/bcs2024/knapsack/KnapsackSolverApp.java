@@ -15,9 +15,15 @@ public class KnapsackSolverApp {
 
         // Initialize parcels
         List<Parcel> parcels = new ArrayList<>();
+<<<<<<< Updated upstream
         //parcels.add(new Parcel("A", 1.0, 1.0, 2.0, 1));
         //parcels.add(new Parcel("B", 1.0, 1.5, 2.0, 2));
         //parcels.add(new Parcel("C", 1.5, 1.5, 1.5, 3));
+=======
+        parcels.add(new Parcel("A", 0));
+        parcels.add(new Parcel("B", 0));
+        parcels.add(new Parcel("C", 0));
+>>>>>>> Stashed changes
 
         // Choose and apply the solving strategy
         KnapsackSolverStrategy solver;
