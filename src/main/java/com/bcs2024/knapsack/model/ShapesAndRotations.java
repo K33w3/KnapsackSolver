@@ -15,7 +15,7 @@ public class ShapesAndRotations {
      * @return An array of 3D int arrays representing all rotations of 'L' parcel.
      */
     public static int[][][][] getL(){
-        int[][][][] shapeL =
+        int[][][][] parcelL =
                 {{{{1}, {1}, {1}, {1}}, {{1}, {0}, {0}, {0}}},
                         {{{1, 1, 1, 1}}, {{1, 0, 0, 0}}},
                         {{{1}, {1}, {1}, {1}}, {{0}, {0}, {0}, {1}}},
@@ -41,7 +41,7 @@ public class ShapesAndRotations {
                         {{{1}, {1}}, {{0}, {1}}, {{0}, {1}}, {{0}, {1}}},
                         {{{1, 1}}, {{0, 1}}, {{0, 1}}, {{0, 1}}}};
 
-        return shapeL[rotation];
+        return parcelL;
     }
 
     /**
@@ -51,7 +51,7 @@ public class ShapesAndRotations {
      * @return An array of 3D int arrays representing all rotations of 'P' parcel.
      */
     public static int[][][][] getP(){
-        int[][][][] shapeP =
+        int[][][][] parcelP =
                 {{{{1, 1}, {1, 1}, {1, 0}}},
                         {{{1, 1, 0}, {1, 1, 1}}},
                         {{{0, 1}, {1, 1}, {1, 1}}},
@@ -77,7 +77,7 @@ public class ShapesAndRotations {
                         {{{1}, {1}}, {{1}, {1}}, {{1}, {0}}},
                         {{{1, 1}}, {{1, 1}}, {{1, 0}}}};
 
-        return shapeP[rotation];
+        return parcelP;
     }
 
     /**
@@ -87,7 +87,7 @@ public class ShapesAndRotations {
      * @return An array of 3D int arrays representing all rotations of 'T' parcel.
      */
     public static int[][][][] getT(){
-        int[][][][] shapeT =
+        int[][][][] parcelT =
                 {{{{1, 1, 1}, {0, 1, 0}, {0, 1, 0}}},
                         {{{1, 0, 0}, {1, 1, 1}, {1, 0, 0}}},
                         {{{0, 1, 0}, {0, 1, 0}, {1, 1, 1}}},
@@ -103,7 +103,7 @@ public class ShapesAndRotations {
                         {{{1, 1}, {0, 1}, {0, 1}}, {{1, 1}, {1, 0}, {1, 0}}}};
 
 
-        return shapeT[rotation];
+        return parcelT;
     }
 
     /**
@@ -113,12 +113,12 @@ public class ShapesAndRotations {
      * @return An array of 3D int arrays representing all rotations of 'A' parcel.
      */
     public static int[][][][] getA(){
-        int[][][][] shapeA =
+        int[][][][] parcelA =
                 {{{{1, 1, 1, 1}, {1, 1, 1, 1}}, {{1, 1, 1, 1}, {1, 1, 1, 1}}},
                         {{{1, 1}, {1, 1}, {1, 1}, {1, 1}}, {{1, 1}, {1, 1}, {1, 1}, {1, 1}}},
                         {{{1, 1}, {1, 1}}, {{1, 1}, {1, 1}}, {{1, 1}, {1, 1}}, {{1, 1}, {1, 1}}}};
 
-        return shapeA[rotation];
+        return parcelA;
     }
 
     /**
@@ -128,7 +128,7 @@ public class ShapesAndRotations {
      * @return An array of 3D int arrays representing all rotations of 'B' parcel.
      */
     public static int[][][][] getB(){
-        int[][][][] shapeB =
+        int[][][][] parcelB =
                 {{{{1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}}, {{1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}}},
                         {{{1, 1, 1}, {1, 1, 1}, {1, 1, 1}, {1, 1, 1}}, {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}, {1, 1, 1}}},
                         {{{1, 1}, {1, 1}, {1, 1}}, {{1, 1}, {1, 1}, {1, 1}}, {{1, 1}, {1, 1}, {1, 1}}, {{1, 1}, {1, 1}, {1, 1}}},
@@ -136,7 +136,7 @@ public class ShapesAndRotations {
                         {{{1, 1, 1}, {1, 1, 1}}, {{1, 1, 1}, {1, 1, 1}}, {{1, 1, 1}, {1, 1, 1}}, {{1, 1, 1}, {1, 1, 1}}},
                         {{{1, 1}, {1, 1}, {1, 1}, {1, 1}}, {{1, 1}, {1, 1}, {1, 1}, {1, 1}}, {{1, 1}, {1, 1}, {1, 1}, {1, 1}}}};
 
-        return shapeB[rotation];
+        return parcelB;
     }
 
     /**
@@ -146,10 +146,10 @@ public class ShapesAndRotations {
      * @return An array of 3D int arrays representing all rotations of 'C' parcel.
      */
     public static int[][][][] getC(){
-        int[][][][] shapeC =
+        int[][][][] parcelC =
                 {{{{1, 1, 1}, {1, 1, 1}, {1, 1, 1}}, {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}}, {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}}}};
 
-        return shapeC;
+        return parcelC;
     }
 
     /**
@@ -161,12 +161,12 @@ public class ShapesAndRotations {
      */
     public static int[][][][] getRotations(String parcelType) {
         return switch (parcelType) {
-            case "L" -> getL(rotation);
-            case "P" -> getP(rotation);
-            case "T" -> getT(rotation);
-            case "A" -> getA(rotation);
-            case "B" -> getB(rotation);
-            case "C" -> getC(rotation);
+            case "L" -> getL();
+            case "P" -> getP();
+            case "T" -> getT();
+            case "A" -> getA();
+            case "B" -> getB();
+            case "C" -> getC();
 
             default -> throw new IllegalArgumentException("Invalid parcel type");
         };

@@ -51,7 +51,6 @@ public class CargoSpace {
      * @param placement The ParcelPlacement object representing the parcel's placement in the cargo space.
      * @return true if the space is available, false otherwise.
      */
-<<<<<<< Updated upstream
     /**
      * Checks if a specific area of the cargo space is available to occupy based on the given parcel placement.
      *
@@ -61,18 +60,11 @@ public class CargoSpace {
     public boolean canPlace(ParcelPlacement placement) {
         Parcel parcel = placement.getParcel();
         boolean[][][][] parcelShapes = parcel.getShape(); // 4D shape array
-=======
-    public boolean canPlace(ParcelPlacement placement) {
-        Parcel parcel = placement.getParcel();
-        int rotation = placement.getOrientation();
-        int[][][] parcelShape = ShapesAndRotations.getShape(parcel.getType(), rotation);
->>>>>>> Stashed changes
 
         int startX = placement.getX();
         int startY = placement.getY();
         int startZ = placement.getZ();
 
-<<<<<<< Updated upstream
         for (boolean[][][] shape : parcelShapes) { // Iterate over each orientation
             for (int i = 0; i < shape.length; i++) {
                 for (int j = 0; j < shape[i].length; j++) {
@@ -84,17 +76,6 @@ public class CargoSpace {
                             if (x >= this.length || y >= this.width || z >= this.height || occupied[x][y][z]) {
                                 return false;
                             }
-=======
-        for (int i = 0; i < parcelShape.length; i++) {
-            for (int j = 0; j < parcelShape[i].length; j++) {
-                for (int k = 0; k < parcelShape[i][j].length; k++) {
-                    if (parcelShape[i][j][k] == 1) {
-                        int x = startX + i;
-                        int y = startY + j;
-                        int z = startZ + k;
-                        if (x >= this.length || y >= this.width || z >= this.height || occupied[x][y][z]) {
-                            return false;
->>>>>>> Stashed changes
                         }
                     }
                 }
@@ -110,19 +91,12 @@ public class CargoSpace {
      */
     public void placeParcel(ParcelPlacement placement) {
         Parcel parcel = placement.getParcel();
-<<<<<<< Updated upstream
         boolean[][][][] parcelShapes = parcel.getShape(); // 4D shape array
-=======
-        int rotation = placement.getOrientation();
-
-        int[][][] parcelShape = ShapesAndRotations.getShape(parcel.getType(), rotation);
->>>>>>> Stashed changes
 
         int startX = placement.getX();
         int startY = placement.getY();
         int startZ = placement.getZ();
 
-<<<<<<< Updated upstream
         for (boolean[][][] shape : parcelShapes) { // Iterate over each orientation
             for (int i = 0; i < shape.length; i++) {
                 for (int j = 0; j < shape[i].length; j++) {
@@ -133,16 +107,6 @@ public class CargoSpace {
                             int z = startZ + k;
                             occupied[x][y][z] = true;
                         }
-=======
-        for (int i = 0; i < parcelShape.length; i++) {
-            for (int j = 0; j < parcelShape[i].length; j++) {
-                for (int k = 0; k < parcelShape[i][j].length; k++) {
-                    if (parcelShape[i][j][k] == 1) {
-                        int x = startX + i;
-                        int y = startY + j;
-                        int z = startZ + k;
-                        occupied[x][y][z] = true;
->>>>>>> Stashed changes
                     }
                 }
             }
