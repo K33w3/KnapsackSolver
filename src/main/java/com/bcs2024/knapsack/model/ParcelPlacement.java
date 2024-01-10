@@ -61,6 +61,6 @@ public class ParcelPlacement {
      */
     public boolean isValidForCargoSpace(CargoSpace cargoSpace) {
         // Directly use the 'isSpaceAvailable' method from CargoSpace class
-        return cargoSpace.isSpaceAvailable(this);
+        return cargoSpace.canPlace(this);
     }
 }
