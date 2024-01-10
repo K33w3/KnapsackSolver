@@ -3,6 +3,7 @@ package com.bcs2024.knapsack.algorithm;
 import com.bcs2024.knapsack.model.CargoSpace;
 import com.bcs2024.knapsack.model.Parcel;
 import com.bcs2024.knapsack.model.ParcelPlacement;
+import com.bcs2024.knapsack.model.ShapesAndRotations;
 
 import java.util.Comparator;
 import java.util.List;
@@ -12,7 +13,6 @@ import java.util.List;
  */
 public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
 
-    private static final int MAX_ORIENTATIONS = 24;
     /**
      * Solves the knapsack problem for the given cargo space and list of parcels.
      * It places the parcels with the highest value density first.
@@ -40,8 +40,10 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
      * @return true if the parcel was successfully placed, false otherwise.
      */
     private boolean tryPlaceParcel(CargoSpace cargoSpace, Parcel parcel) {
+        int maxOrientations = ShapesAndRotations.getRotations(parcel.getType()).length;
+
         // Iterate through possible orientations
-        for (int orientation = 0; orientation < MAX_ORIENTATIONS; orientation++) {
+        for (int orientation = 0; orientation < maxOrientations; orientation++) {
             // Iterate through positions in cargo space
             for (int x = 0; x < cargoSpace.getLength(); x++) {
                 for (int y = 0; y < cargoSpace.getWidth(); y++) {
@@ -57,6 +59,7 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
         }
         return false;
     }
+
 
     /**
      * Calculates the value density of a parcel.

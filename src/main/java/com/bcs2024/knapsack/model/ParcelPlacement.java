@@ -68,12 +68,6 @@ public class ParcelPlacement {
      * @param cargoSpace The cargo space to check for.
      * @return true if the parcel placement is valid, false otherwise.
      */
-    /**
-     * Checks if the parcel placement, including its orientation, is valid for the cargo space.
-     *
-     * @param cargoSpace The cargo space to check for.
-     * @return true if the parcel placement is valid, false otherwise.
-     */
     public boolean isValidForCargoSpace(CargoSpace cargoSpace) {
         // Directly use the 'isSpaceAvailable' method from CargoSpace class
         return cargoSpace.isSpaceAvailable(this);

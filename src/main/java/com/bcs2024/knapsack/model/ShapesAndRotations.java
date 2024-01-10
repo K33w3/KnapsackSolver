@@ -15,7 +15,7 @@ public class ShapesAndRotations {
      * @return An array of 3D boolean arrays representing all rotations of 'L' parcel.
      */
     public static boolean[][][][] getL(){
-        boolean[][][][] LInt =
+        boolean[][][][] shapeL =
                 {{{{true}, {true}, {true}, {true}}, {{true}, {false}, {false}, {false}}},
                 {{{true, true, true, true}}, {{true, false, false, false}}},
                 {{{true}, {true}, {true}, {true}}, {{false}, {false}, {false}, {true}}},
@@ -41,7 +41,7 @@ public class ShapesAndRotations {
                 {{{true}, {true}}, {{false}, {true}}, {{false}, {true}}, {{false}, {true}}},
                 {{{true, true}}, {{false, true}}, {{false, true}}, {{false, true}}}};
 
-        return LInt;
+        return shapeL;
     }
 
     /**
@@ -51,7 +51,7 @@ public class ShapesAndRotations {
      * @return An array of 3D boolean arrays representing all rotations of 'P' parcel.
      */
     public static boolean[][][][] getP(){
-        boolean[][][][] PInt =
+        boolean[][][][] shapeP =
                 {{{{true, true}, {true, true}, {true, false}}},
                 {{{true, true, false}, {true, true, true}}},
                 {{{false, true}, {true, true}, {true, true}}},
@@ -77,7 +77,7 @@ public class ShapesAndRotations {
                 {{{true}, {true}}, {{true}, {true}}, {{true}, {false}}},
                 {{{true, true}}, {{true, true}}, {{true, false}}}};
 
-        return PInt;
+        return shapeP;
     }
 
     /**
@@ -87,7 +87,7 @@ public class ShapesAndRotations {
      * @return An array of 3D boolean arrays representing all rotations of 'T' parcel.
      */
     public static boolean[][][][] getT(){
-        boolean[][][][] TInt =
+        boolean[][][][] shapeT =
             {{{{true, true, true}, {false, true, false}, {false, true, false}}},
             {{{true, false, false}, {true, true, true}, {true, false, false}}},
             {{{false, true, false}, {false, true, false}, {true, true, true}}},
@@ -101,7 +101,7 @@ public class ShapesAndRotations {
             {{{true}, {true}, {true}}, {{false}, {true}, {false}}, {{false}, {true}, {false}}},
             {{{true, true, true}}, {{false, true, false}}, {{false, true, false}}}};
 
-        return TInt;
+        return shapeT;
     }
 
     /**
@@ -111,12 +111,12 @@ public class ShapesAndRotations {
      * @return An array of 3D boolean arrays representing all rotations of 'A' parcel.
      */
     public static boolean[][][][] getA(){
-        boolean[][][][] AInt =
+        boolean[][][][] shapeA =
                 {{{{true,true,true,true},{true,true,true,true}},{{true,true,true,true},{true,true,true,true}}},
                 {{{true,true},{true,true},{true,true},{true,true}},{{true,true},{true,true},{true,true},{true,true}}},
                 {{{true,true},{true,true}},{{true,true},{true,true}},{{true,true},{true,true}},{{true,true},{true,true}}}};
 
-        return AInt;
+        return shapeA;
     }
 
     /**
@@ -126,7 +126,7 @@ public class ShapesAndRotations {
      * @return An array of 3D boolean arrays representing all rotations of 'B' parcel.
      */
     public static boolean[][][][] getB(){
-        boolean[][][][] BInt =
+        boolean[][][][] shapeB =
                 {{{{true,true,true,true},{true,true,true,true},{true,true,true,true}},{{true,true,true,true},{true,true,true,true},{true,true,true,true}}},
                 {{{true,true,true},{true,true,true},{true,true,true},{true,true,true}},{{true,true,true},{true,true,true},{true,true,true},{true,true,true}}},
                 {{{true,true},{true,true},{true,true}},{{true,true},{true,true},{true,true}},{{true,true},{true,true},{true,true}},{{true,true},{true,true},{true,true}}},
@@ -134,7 +134,7 @@ public class ShapesAndRotations {
                 {{{true,true,true},{true,true,true}},{{true,true,true},{true,true,true}},{{true,true,true},{true,true,true}},{{true,true,true},{true,true,true}}},
                 {{{true,true},{true,true},{true,true},{true,true}},{{true,true},{true,true},{true,true},{true,true}},{{true,true},{true,true},{true,true},{true,true}}}};
 
-        return BInt;
+        return shapeB;
     }
 
     /**
@@ -144,9 +144,9 @@ public class ShapesAndRotations {
      * @return An array of 3D boolean arrays representing all rotations of 'C' parcel.
      */
     public static boolean[][][][] getC(){
-        boolean[][][][] CInt =
+        boolean[][][][] shapeC =
                 {{{{true,true,true},{true,true,true},{true,true,true}},{{true,true,true},{true,true,true},{true,true,true}},{{true,true,true},{true,true,true},{true,true,true}}}};
-        return CInt;
+        return shapeC;
     }
 
     /**
@@ -161,6 +161,9 @@ public class ShapesAndRotations {
             case "L" -> getL();
             case "P" -> getP();
             case "T" -> getT();
+            case "A" -> getA();
+            case "B" -> getB();
+            case "C" -> getC();
 
             default -> throw new IllegalArgumentException("Invalid parcel type");
         };
