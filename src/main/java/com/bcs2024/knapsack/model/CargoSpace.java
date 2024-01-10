@@ -55,7 +55,7 @@ public class CargoSpace {
      */
     public boolean canPlace(ParcelPlacement placement) {
         Parcel parcel = placement.getParcel();
-        int rotation = placement.getOrientation();
+        int rotation = placement.getRotation();
         int[][][] parcelShape = ShapesAndRotations.getShape(parcel.getType(), rotation);
 
         int startX = placement.getX();
@@ -86,7 +86,7 @@ public class CargoSpace {
      */
     public void placeParcel(ParcelPlacement placement) {
         Parcel parcel = placement.getParcel();
-        int rotation = placement.getOrientation();
+        int rotation = placement.getRotation();
 
         int[][][] parcelShape = ShapesAndRotations.getShape(parcel.getType(), rotation);
 

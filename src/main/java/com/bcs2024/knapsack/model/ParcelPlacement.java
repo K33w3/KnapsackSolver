@@ -2,7 +2,7 @@ package com.bcs2024.knapsack.model;
 
 public class ParcelPlacement {
     private Parcel parcel;
-    private int x, y, z, orientation;
+    private int x, y, z, rotation;
 
     /**
      * Constructs a new ParcelPlacement with specified parcel, position and orientation.
@@ -12,16 +12,16 @@ public class ParcelPlacement {
      * @param y The y-coordinate in the cargo space.
      * @param z The z-coordinate in the cargo space.
      */
-    public ParcelPlacement(Parcel parcel, int x, int y, int z) {
+    public ParcelPlacement(Parcel parcel, int x, int y, int z, int rotation) {
         this.parcel = parcel;
         this.x = x;
         this.y = y;
         this.z = z;
-        this.orientation = orientation;
+        this.rotation = rotation;
     }
 
-    public int getOrientation() {
-        return this.orientation;
+    public int getRotation() {
+        return this.rotation;
     }
 
     public Parcel getParcel() {
@@ -63,7 +63,6 @@ public class ParcelPlacement {
      * @return true if the parcel placement is valid, false otherwise.
      */
     public boolean isValidForCargoSpace(CargoSpace cargoSpace) {
-        // Directly use the 'isSpaceAvailable' method from CargoSpace class
         return cargoSpace.canPlace(this);
     }
 }
