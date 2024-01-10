@@ -5,29 +5,70 @@ package com.bcs2024.knapsack.model;
  * Each parcel has a type, length, width, height, and an associated value.
  */
 public class Parcel {
-
-    Parcel parcelA = new Parcel("A", 1.0, 1.0, 2.0, 1);
-    Parcel parcelB = new Parcel("B", 1.0, 1.5, 2.0, 2);
-    Parcel parcelC = new Parcel("C", 1.5, 1.5, 1.5, 3);
-
     private double length, width, height, value;
     private String type;
 
-    /**
-     * Constructs a new com.bcs2024.knapsack.model.Parcel with specified dimensions and value.
-     *
-     * @param type   The type of the parcel (e.g., "A", "B", "C").
-     * @param length The length of the parcel.
-     * @param width  The width of the parcel.
-     * @param height The height of the parcel.
-     * @param value  The value of the parcel.
-     */
-    public Parcel(final String type, final double length, final double width, final double height, final double value) {
+    private boolean[][][] shape; // 3D array to represent complex shapes
+
+    // Constructor for parcels (A, B, C, L, P, T)
+    public Parcel(final String type, boolean[][][] shape) {
         this.type = type;
-        this.length = length;
-        this.width = width;
-        this.height = height;
-        this.value = value;
+        this.shape = shape;
+        initializeParcel();
+    }
+
+    private void initializeParcel() {
+        switch (type) {
+            case "A" -> {
+                this.length = 1.0;
+                this.width = 1.0;
+                this.height = 2.0;
+                this.value = 1;
+            }
+            case "B" -> {
+                this.length = 1.0;
+                this.width = 1.5;
+                this.height = 2.0;
+                this.value = 2;
+            }
+            case "C" -> {
+                this.length = 1.5;
+                this.width = 1.5;
+                this.height = 1.5;
+                this.value = 3;
+            }
+            case "L", "P", "T" -> {
+                this.length = 0.5;
+                this.width = 0.5;
+                this.height = 0.5;
+                // Set value based on type or other criteria
+                this.value = determineValueForComplexParcel();
+            }
+            default -> System.out.println("Invalid type");
+        }
+    }
+
+    // TODO create logic for determining value of complex parcels
+    private double determineValueForComplexParcel() {
+        return 0;
+    }
+
+    /**
+     * Returns the shape of the parcel.
+     *
+     * @return The shape of the parcel.
+     */
+    public boolean[][][] getShape() {
+        return shape;
+    }
+
+    /**
+     * Sets the shape of the parcel.
+     *
+     * @param shape The new shape of the parcel.
+     */
+    public void setShape(boolean[][][] shape) {
+        this.shape = shape;
     }
 
     /**
