@@ -1,7 +1,5 @@
 package com.bcs2024.knapsack.model;
 
-import java.util.Arrays;
-
 /**
  * Represents the cargo space with dimensions and tracking for occupied space.
  */
@@ -59,7 +57,7 @@ public class CargoSpace {
      * @param placement The ParcelPlacement object representing the parcel's placement in the cargo space.
      * @return true if the space is available, false otherwise.
      */
-    public boolean isSpaceAvailable(ParcelPlacement placement) {
+    public boolean canPlace(ParcelPlacement placement) {
         Parcel parcel = placement.getParcel();
         boolean[][][][] parcelShapes = parcel.getShape(); // 4D shape array
 
@@ -91,7 +89,7 @@ public class CargoSpace {
      *
      * @param placement The ParcelPlacement object representing the parcel's placement in the cargo space.
      */
-    public void occupySpace(ParcelPlacement placement) {
+    public void placeParcel(ParcelPlacement placement) {
         Parcel parcel = placement.getParcel();
         boolean[][][][] parcelShapes = parcel.getShape(); // 4D shape array
 

@@ -49,8 +49,8 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
                 for (int y = 0; y < cargoSpace.getWidth(); y++) {
                     for (int z = 0; z < cargoSpace.getHeight(); z++) {
                         ParcelPlacement placement = new ParcelPlacement(parcel, x, y, z);
-                        if (cargoSpace.isSpaceAvailable(placement)) {
-                            cargoSpace.occupySpace(placement);
+                        if (cargoSpace.canPlace(placement)) {
+                            cargoSpace.placeParcel(placement);
                             return true;
                         }
                     }
