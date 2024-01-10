@@ -53,26 +53,31 @@ public class CargoSpace {
      * @param placement The ParcelPlacement object representing the parcel's placement in the cargo space.
      * @return true if the space is available, false otherwise.
      */
+    /**
+     * Checks if a specific area of the cargo space is available to occupy based on the given parcel placement.
+     *
+     * @param placement The ParcelPlacement object representing the parcel's placement in the cargo space.
+     * @return true if the space is available, false otherwise.
+     */
     public boolean isSpaceAvailable(ParcelPlacement placement) {
         Parcel parcel = placement.getParcel();
-        int orientation = placement.getOrientation();
-
-        // Get the shape of the parcel based on its orientation
-        boolean[][][] parcelShape = getParcelShape(parcel, orientation);
+        boolean[][][][] parcelShapes = parcel.getShape(); // 4D shape array
 
         int startX = placement.getX();
         int startY = placement.getY();
         int startZ = placement.getZ();
 
-        for (int i = 0; i < parcelShape.length; i++) {
-            for (int j = 0; j < parcelShape[i].length; j++) {
-                for (int k = 0; k < parcelShape[i][j].length; k++) {
-                    if (parcelShape[i][j][k]) {
-                        int x = startX + i;
-                        int y = startY + j;
-                        int z = startZ + k;
-                        if (x >= this.length || y >= this.width || z >= this.height || occupied[x][y][z]) {
-                            return false;
+        for (boolean[][][] shape : parcelShapes) { // Iterate over each orientation
+            for (int i = 0; i < shape.length; i++) {
+                for (int j = 0; j < shape[i].length; j++) {
+                    for (int k = 0; k < shape[i][j].length; k++) {
+                        if (shape[i][j][k]) {
+                            int x = startX + i;
+                            int y = startY + j;
+                            int z = startZ + k;
+                            if (x >= this.length || y >= this.width || z >= this.height || occupied[x][y][z]) {
+                                return false;
+                            }
                         }
                     }
                 }
@@ -81,61 +86,29 @@ public class CargoSpace {
         return true;
     }
 
-    private boolean[][][] getParcelShape(Parcel parcel, int orientation) {
-            boolean[][][][] rotations = ShapesAndRotations.getRotations(parcel.getType());
-            return rotations[orientation % rotations.length];
-    }
-
-    /*public int[] getAdjustedDimensions(Parcel parcel, int orientation) {
-        boolean[][][][] rotations = switch (parcel.getType()) {
-            case "L" -> ShapesAndRotations.getL();
-            case "P" -> ShapesAndRotations.getP();
-            case "T" -> ShapesAndRotations.getT();
-            case "A" -> ShapesAndRotations.getA();
-            case "B" -> ShapesAndRotations.getB();
-            case "C" -> ShapesAndRotations.getC();
-            default -> throw new IllegalArgumentException("Invalid parcel type");
-        };
-
-        // Select the correct shape and its rotations based on the parcel type
-
-        // Use the orientation to select the correct rotation
-        boolean[][][] selectedRotation = rotations[orientation % rotations.length];
-
-        // Calculate dimensions based on the selected rotation
-        int length = selectedRotation.length;
-        int width = selectedRotation[0].length;
-        int height = selectedRotation[0][0].length;
-
-        return new int[]{length, width, height};
-    }*/
-
     /**
      * Marks a specific area of the cargo space as occupied based on the given parcel placement.
-     * This method uses the coordinates and dimensions from the ParcelPlacement object to determine
-     * the space that the parcel will occupy. It updates the occupied array accordingly.
      *
      * @param placement The ParcelPlacement object representing the parcel's placement in the cargo space.
      */
     public void occupySpace(ParcelPlacement placement) {
         Parcel parcel = placement.getParcel();
-        int orientation = placement.getOrientation();
-
-        // Get the shape of the parcel based on its orientation
-        boolean[][][] parcelShape = getParcelShape(parcel, orientation);
+        boolean[][][][] parcelShapes = parcel.getShape(); // 4D shape array
 
         int startX = placement.getX();
         int startY = placement.getY();
         int startZ = placement.getZ();
 
-        for (int i = 0; i < parcelShape.length; i++) {
-            for (int j = 0; j < parcelShape[i].length; j++) {
-                for (int k = 0; k < parcelShape[i][j].length; k++) {
-                    if (parcelShape[i][j][k]) {
-                        int x = startX + i;
-                        int y = startY + j;
-                        int z = startZ + k;
-                        occupied[x][y][z] = true;
+        for (boolean[][][] shape : parcelShapes) { // Iterate over each orientation
+            for (int i = 0; i < shape.length; i++) {
+                for (int j = 0; j < shape[i].length; j++) {
+                    for (int k = 0; k < shape[i][j].length; k++) {
+                        if (shape[i][j][k]) {
+                            int x = startX + i;
+                            int y = startY + j;
+                            int z = startZ + k;
+                            occupied[x][y][z] = true;
+                        }
                     }
                 }
             }
