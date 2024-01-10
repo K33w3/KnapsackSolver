@@ -6,14 +6,14 @@ import java.util.Arrays;
  * Represents the cargo space with dimensions and tracking for occupied space.
  */
 public class CargoSpace {
-    private double length, width, height;
+    private int length, width, height;
     private final boolean[][][] occupied;
 
     public double getLength() {
         return length;
     }
 
-    public void setLength(double length) {
+    public void setLength(int length) {
         this.length = length;
     }
 
@@ -21,7 +21,7 @@ public class CargoSpace {
         return width;
     }
 
-    public void setWidth(double width) {
+    public void setWidth(int width) {
         this.width = width;
     }
 
@@ -29,7 +29,7 @@ public class CargoSpace {
         return height;
     }
 
-    public void setHeight(double height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 
