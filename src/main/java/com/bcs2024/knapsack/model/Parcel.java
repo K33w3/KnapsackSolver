@@ -10,25 +10,14 @@ public class Parcel {
 
     private boolean[][][] shape; // 3D array to represent complex shapes
 
-    /**
-     * Constructs a new Parcel with specified type.
-     *
-     * @param type The type of the parcel.
-     */
-    // Constructor for regular parcels (A, B, C)
-    public Parcel(final String type) {
-        this.type = type;
-        initializeRegularParcel();
-    }
-
-    // Constructor for complex shaped parcels (L, P, T)
+    // Constructor for parcels (A, B, C, L, P, T)
     public Parcel(final String type, boolean[][][] shape) {
         this.type = type;
         this.shape = shape;
-        initializeComplexParcel();
+        initializeParcel();
     }
 
-    private void initializeRegularParcel() {
+    private void initializeParcel() {
         switch (type) {
             case "A" -> {
                 this.length = 1.0;
@@ -48,16 +37,15 @@ public class Parcel {
                 this.height = 1.5;
                 this.value = 3;
             }
+            case "L", "P", "T" -> {
+                this.length = 0.5;
+                this.width = 0.5;
+                this.height = 0.5;
+                // Set value based on type or other criteria
+                this.value = determineValueForComplexParcel();
+            }
             default -> System.out.println("Invalid type");
         }
-    }
-
-    private void initializeComplexParcel() {
-        this.length = 1.5;
-        this.width = 1.5;
-        this.height = 1.5;
-        // Set value based on type or other criteria
-        this.value = determineValueForComplexParcel();
     }
 
     // TODO create logic for determining value of complex parcels

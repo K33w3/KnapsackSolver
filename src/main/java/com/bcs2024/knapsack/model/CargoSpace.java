@@ -81,25 +81,10 @@ public class CargoSpace {
         return true;
     }
 
-
     private boolean[][][] getParcelShape(Parcel parcel, int orientation) {
-        if (parcel.getShape() != null) {
-            // If parcel has a complex shape
             boolean[][][][] rotations = ShapesAndRotations.getRotations(parcel.getType());
             return rotations[orientation % rotations.length];
-        } else {
-            // If parcel is a regular shape, create a filled 3D array based on its dimensions
-            boolean[][][] shape = new boolean[(int)parcel.getLength()][(int)parcel.getWidth()][(int)parcel.getHeight()];
-
-            for (int i = 0; i < shape.length; i++) {
-                for (int j = 0; j < shape[i].length; j++) {
-                    Arrays.fill(shape[i][j], true);
-                }
-            }
-            return shape;
-        }
     }
-
 
     /*public int[] getAdjustedDimensions(Parcel parcel, int orientation) {
         boolean[][][][] rotations = switch (parcel.getType()) {
