@@ -23,7 +23,7 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
    * @param parcels The list of parcels to be placed.
    */
 
-  private CargoSpace duplicatCargo;
+  private CargoSpace duplicateCargo;
   private ArrayList<Double> sortedParcelsValueRatio;
 
   public void createDuplicateMatrix(CargoSpace cargoSpace) {
@@ -32,7 +32,36 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
 
   //PARAMETERS : perimeter, ratio volume, volume , untouched , count the gaps
 
-  public void GreedySolver(CargoSpace cargoSpace, List<Parcel> parcels) {}
+  public void GreedySolver(CargoSpace cargoSpace, List<Parcel> parcels) {
+    for (int i = 0; i < cargoSpace.getHeight(); i++) {
+      for (int j = 0; j < cargoSpace.getWidth(); j++) {
+        for (int k = cargoSpace.getLength(); k >= 0; k--) {
+          if (canPlace) {
+            for (Parcels parcel : parcels) {
+              double perimeter = cacluatePerimeter();
+              double ratioVolume = calculateValueDensity(parcel);
+              int volume = calculateVolume(parcel);
+              double weight =
+                0.9 * perimeter + 0.8 * ratioVolume + 0.5 * volume;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  private boolean canPlace() {
+    return true;
+  }
+
+  public double calculatePerimeter(Parcel parcel) {
+    double perimeter = parcel.getHeight();
+    return perimeter;
+  }
+
+  public int calculateVolume(Parcel parcel) {
+    return parcel.getHeight() * parcel.getLength() * parcel.getWidth();
+  }
 
   @Override
   public void solve(CargoSpace cargoSpace, List<Parcel> parcels) {
@@ -92,7 +121,7 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
    * @param parcel The parcel to calculate the value density for.
    * @return The value density of the parcel.
    */
-  private double calculateValueDensity(Parcel parcel) {
+  public double calculateValueDensity(Parcel parcel) {
     double volume = parcel.getLength() * parcel.getWidth() * parcel.getHeight();
     return parcel.getValue() / volume;
   }
