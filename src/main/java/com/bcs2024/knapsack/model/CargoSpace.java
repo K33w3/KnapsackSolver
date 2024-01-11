@@ -1,7 +1,5 @@
 package com.bcs2024.knapsack.model;
 
-import java.util.Arrays;
-
 /**
  * Represents the cargo space with dimensions and tracking for occupied space.
  */

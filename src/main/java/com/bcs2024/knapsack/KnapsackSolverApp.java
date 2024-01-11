@@ -30,8 +30,6 @@ public class KnapsackSolverApp {
     // Display the result or analysis of the solution
     cargoSpace.printOccupiedSpacePositions();
 
-    //--------------------------------------------------------------------------------------------------------------
-
     // Reset cargoSpace for next algorithm
     cargoSpace = new CargoSpace(16.5, 2.5, 4.0);
 

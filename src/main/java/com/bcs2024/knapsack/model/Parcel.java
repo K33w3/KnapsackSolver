@@ -91,10 +91,15 @@ public class Parcel {
   }
 
   /**
-   * Returns the width of the parcel.
-   *
-   * @return The width of the parcel.
-   */
+
+     * Sets the shape of the parcel with its orientation.
+     *
+     * @param shape The new shape of the parcel.
+     */
+  public void setShape(boolean[][][][] shape) {
+    this.shape = shape;
+  }
+
   public double getWidth() {
     return width;
   }

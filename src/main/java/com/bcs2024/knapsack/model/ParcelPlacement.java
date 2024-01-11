@@ -1,5 +1,9 @@
 package com.bcs2024.knapsack.model;
 
+/**
+ * Represents a parcel with specific dimensions and value.
+ * Each parcel has a type, length, width, height, and an associated value.
+ */
 public class ParcelPlacement {
 
   private Parcel parcel;
