@@ -31,13 +31,19 @@ public class Render extends Application {
         boxObject.getTransforms().addAll(rotateX, rotateY);
 
         // creating outline box object
-        Box outlineBox = new Box(52, 102, 52); 
-        outlineBox.setMaterial(new PhongMaterial(Color.BLACK)); 
+        Box outlineBox = new Box(52, 102, 52);
+        outlineBox.setMaterial(new PhongMaterial(Color.BLACK));
         outlineBox.getTransforms().addAll(rotateX, rotateY);
+
+        Box transparentBox = new Box(250, 250, 250);
+        PhongMaterial material = new PhongMaterial();
+        material.setDiffuseColor(Color.rgb(127, 127, 127, 0.3));
+        transparentBox.setMaterial(material);
+        transparentBox.getTransforms().addAll(rotateX, rotateY);
 
         // creating group for both outline object and block object
         Group groupObject = new Group();
-        groupObject.getChildren().addAll(outlineBox, boxObject); 
+        groupObject.getChildren().addAll(outlineBox, boxObject, transparentBox);
 
         // creating camera object
         Camera perspectiveCamera = new PerspectiveCamera();
@@ -53,6 +59,9 @@ public class Render extends Application {
 
         outlineBox.translateXProperty().set(SCENE_SIZE / 2);
         outlineBox.translateYProperty().set(SCENE_SIZE / 2);
+
+        transparentBox.translateXProperty().set(SCENE_SIZE / 2);
+        transparentBox.translateYProperty().set(SCENE_SIZE / 2);
 
         // mouse pressed event handler
         sceneObject.setOnMousePressed(event -> {
