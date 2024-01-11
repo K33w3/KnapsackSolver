@@ -5,62 +5,40 @@ package com.bcs2024.knapsack.model;
  * Each parcel has a type, length, width, height, and an associated value.
  */
 public class Parcel {
-    private double length, width, height, value;
-    private String type;
-    private boolean[][][][] shape; // 4D array to represent 3D shapes with orientation
+    private int value;
+    private final String type;
+    private int[][][][] shapeOrientations; // 4D array to represent 3D shapes with orientations
 
     // Constructor for parcels (A, B, C, L, P, T)
-    public Parcel(final String type, boolean[][][][] shape) {
+    public Parcel(final String type) {
         this.type = type;
-        this.shape = shape;
+        this.shapeOrientations = ShapesAndRotations.getRotations(this.type);
         initializeParcel();
     }
 
-    // TODO find a way to change the length, width, height, and value of the parcel based on its rotation
     private void initializeParcel() {
         switch (type) {
-            case "A" -> {
-                this.length = 1.0;
-                this.width = 1.0;
-                this.height = 2.0;
-                this.value = 1;
-            }
-            case "B" -> {
-                this.length = 1.0;
-                this.width = 1.5;
-                this.height = 2.0;
-                this.value = 2;
-            }
-            case "C" -> {
-                this.length = 1.5;
-                this.width = 1.5;
-                this.height = 1.5;
-                this.value = 3;
-            }
-            case "L" -> {
-                this.length = 0.5;
-                this.width = 0.5;
-                this.height = 0.5;
-                this.value = 3;
-            }
-            case "P" -> {
-                this.length = 0.5;
-                this.width = 0.5;
-                this.height = 0.5;
-                this.value = 4;
-            }
-            case "T" -> {
-                this.length = 0.5;
-                this.width = 0.5;
-                this.height = 0.5;
-                this.value = 5;
-            }
+            case "A" -> this.value = 1;
+            case "B" -> this.value = 2;
+            case "C", "L" -> this.value = 3;
+            case "P" -> this.value = 4;
+            case "T" -> this.value = 5;
             default -> System.out.println("Invalid type");
         }
+    }
 
-        this.length *= 2;
-        this.width *= 2;
-        this.height *= 2;
+    /**
+     * Retrieves a specific orientation of the parcel's shape.
+     *
+     * @param orientationIndex The index of the desired orientation.
+     * @return The 3D boolean array representing the specified orientation of the shape.
+     * @throws IllegalArgumentException if the orientation index is out of bounds.
+     */
+    public int[][][] getShape(int orientationIndex) {
+        if (orientationIndex < 0 || orientationIndex >= shapeOrientations.length) {
+            throw new IllegalArgumentException("Invalid orientation index");
+        }
+        return shapeOrientations[orientationIndex];
     }
 
     /**
@@ -68,74 +46,17 @@ public class Parcel {
      *
      * @return The shape of the parcel.
      */
-    public boolean[][][][] getShape() {
-        return shape;
+    public int[][][][] getShapeOrientations() {
+        return shapeOrientations;
     }
 
     /**
-<<<<<<< Updated upstream
      * Sets the shape of the parcel with its orientation.
      *
-     * @param shape The new shape of the parcel.
+     * @param shapeOrientations The new shape of the parcel.
      */
-    public void setShape(boolean[][][][] shape) {
-        this.shape = shape;
-    }
-
-    /**
-=======
->>>>>>> Stashed changes
-     * Returns the length of the parcel.
-     *
-     * @return The length of the parcel.
-     */
-    public double getLength() {
-        return length;
-    }
-
-    /**
-     * Sets the length of the parcel.
-     *
-     * @param length The new length of the parcel.
-     */
-    public void setLength(final double length) {
-        this.length = length;
-    }
-
-    /**
-     * Returns the width of the parcel.
-     *
-     * @return The width of the parcel.
-     */
-    public double getWidth() {
-        return width;
-    }
-
-    /**
-     * Sets the width of the parcel.
-     *
-     * @param width The new width of the parcel.
-     */
-    public void setWidth(final double width) {
-        this.width = width;
-    }
-
-    /**
-     * Returns the height of the parcel.
-     *
-     * @return The height of the parcel.
-     */
-    public double getHeight() {
-        return height;
-    }
-
-    /**
-     * Sets the height of the parcel.
-     *
-     * @param height The new height of the parcel.
-     */
-    public void setHeight(final double height) {
-        this.height = height;
+    public void setShapeOrientations(int[][][][] shapeOrientations) {
+        this.shapeOrientations = shapeOrientations;
     }
 
     /**
@@ -156,3 +77,4 @@ public class Parcel {
         return type;
     }
 }
+
