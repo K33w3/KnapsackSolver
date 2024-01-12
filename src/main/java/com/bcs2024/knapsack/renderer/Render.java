@@ -13,10 +13,10 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 public class Render extends Application {
-    private static final double SCENE_HEIGHT = 1000;
+    private static final double SCENE_HEIGHT = 900;
     private static final double SCENE_WIDTH = 1600;
 
-    private static final int sizeMultiplier = 25;
+    private static final int sizeMultiplier = 35;
     private double anchorX, anchorY;
     private double anchorAngleX = 0;
     private double anchorAngleY = 0;
