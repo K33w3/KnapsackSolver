@@ -6,7 +6,6 @@ import javafx.scene.Camera;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -14,7 +13,10 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 public class Render extends Application {
-    private static final double SCENE_SIZE = 1000;
+    private static final double SCENE_HEIGHT = 1000;
+    private static final double SCENE_WIDTH = 1600;
+
+    private static final int sizeMultiplier = 25;
     private double anchorX, anchorY;
     private double anchorAngleX = 0;
     private double anchorAngleY = 0;
@@ -36,7 +38,7 @@ public class Render extends Application {
         outlineBox.setMaterial(new PhongMaterial(Color.BLACK));
         outlineBox.getTransforms().addAll(rotateX, rotateY);
 
-        CargoSpace cargoSpace = new CargoSpace(33 *25, 5*25, 8*25); // multiply by 2 instead
+        CargoSpace cargoSpace = new CargoSpace(33 *sizeMultiplier, 5*sizeMultiplier, 8*sizeMultiplier); // multiply by 2 instead
 
         Box transparentBox = new Box(cargoSpace.getLength(), cargoSpace.getWidth(), cargoSpace.getHeight());
         PhongMaterial material = new PhongMaterial();
@@ -52,19 +54,19 @@ public class Render extends Application {
         Camera perspectiveCamera = new PerspectiveCamera();
 
         // creating scene object to add group object
-        Scene sceneObject = new Scene(groupObject, SCENE_SIZE, SCENE_SIZE);
+        Scene sceneObject = new Scene(groupObject, SCENE_WIDTH, SCENE_HEIGHT);
         sceneObject.setFill(Color.LIGHTBLUE);
         sceneObject.setCamera(perspectiveCamera);
 
         // setting position of objects in 3D space
-        boxObject.translateXProperty().set(SCENE_SIZE / 2);
-        boxObject.translateYProperty().set(SCENE_SIZE / 2);
+        boxObject.translateXProperty().set(SCENE_WIDTH / 2);
+        boxObject.translateYProperty().set(SCENE_HEIGHT / 2);
 
-        outlineBox.translateXProperty().set(SCENE_SIZE / 2);
-        outlineBox.translateYProperty().set(SCENE_SIZE / 2);
+        outlineBox.translateXProperty().set(SCENE_WIDTH / 2);
+        outlineBox.translateYProperty().set(SCENE_HEIGHT / 2);
 
-        transparentBox.translateXProperty().set(SCENE_SIZE / 2);
-        transparentBox.translateYProperty().set(SCENE_SIZE / 2);
+        transparentBox.translateXProperty().set(SCENE_WIDTH / 2);
+        transparentBox.translateYProperty().set(SCENE_HEIGHT / 2);
 
         // mouse pressed event handler
         sceneObject.setOnMousePressed(event -> {
