@@ -19,38 +19,6 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
     }
 
     /**
-<<<<<<< Updated upstream
-     * Tries to place a parcel in the cargo space.
-     *
-     * @param cargoSpace The cargo space to place the parcel in.
-     * @param parcel The parcel to be placed.
-     * @return true if the parcel was successfully placed, false otherwise.
-     */
-    private boolean tryPlaceParcel(CargoSpace cargoSpace, Parcel parcel) {
-        int maxOrientations = ShapesAndRotations.getRotations(parcel.getType()).length;
-
-        // Iterate through possible orientations
-        for (int orientation = 0; orientation < maxOrientations; orientation++) {
-            // Iterate through positions in cargo space
-            for (int x = 0; x < cargoSpace.getLength(); x++) {
-                for (int y = 0; y < cargoSpace.getWidth(); y++) {
-                    for (int z = 0; z < cargoSpace.getHeight(); z++) {
-                        ParcelPlacement placement = new ParcelPlacement(parcel, x, y, z);
-                        if (cargoSpace.canPlace(placement)) {
-                            cargoSpace.placeParcel(placement);
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-
-    /**
-=======
->>>>>>> Stashed changes
      * Calculates the value density of a parcel.
      *
      * @param parcel The parcel to calculate the value density for.
