@@ -36,13 +36,13 @@ public class Render extends Application {
         outputStageObject.setTitle("Box Demo");
 
         // creating box object
-        Box boxObject = new Box(50, 100, 50);
+        /*Box boxObject = new Box(50, 100, 50);
         boxObject.getTransforms().addAll(rotateX, rotateY);
 
         // creating outline box object
         Box outlineBox = new Box(52, 102, 52);
         outlineBox.setMaterial(new PhongMaterial(Color.BLACK));
-        outlineBox.getTransforms().addAll(rotateX, rotateY);
+        outlineBox.getTransforms().addAll(rotateX, rotateY);*/
 
         CargoSpace cargoSpace = new CargoSpace(33 *sizeMultiplier, 5*sizeMultiplier, 8*sizeMultiplier); // multiply by 2 instead
 
@@ -52,9 +52,12 @@ public class Render extends Application {
         transparentBox.setMaterial(material);
         transparentBox.getTransforms().addAll(rotateX, rotateY);
 
+        Box parcel = displayParcel(new ParcelPlacement(new Parcel("A"), 100, 100, 100, 0));
+        parcel.getTransforms().addAll(rotateX, rotateY);
+
         // creating group for both outline object and block object
         Group groupObject = new Group();
-        groupObject.getChildren().addAll(outlineBox, boxObject, transparentBox);
+        groupObject.getChildren().addAll(parcel, transparentBox);
 
         // creating camera object
         Camera perspectiveCamera = new PerspectiveCamera();
@@ -65,11 +68,11 @@ public class Render extends Application {
         sceneObject.setCamera(perspectiveCamera);
 
         // setting position of objects in 3D space
-        boxObject.translateXProperty().set(SCENE_WIDTH / 2);
+        /*boxObject.translateXProperty().set(SCENE_WIDTH / 2);
         boxObject.translateYProperty().set(SCENE_HEIGHT / 2);
 
         outlineBox.translateXProperty().set(SCENE_WIDTH / 2);
-        outlineBox.translateYProperty().set(SCENE_HEIGHT / 2);
+        outlineBox.translateYProperty().set(SCENE_HEIGHT / 2);*/
 
         transparentBox.translateXProperty().set(SCENE_WIDTH / 2);
         transparentBox.translateYProperty().set(SCENE_HEIGHT / 2);
@@ -94,7 +97,7 @@ public class Render extends Application {
         outputStageObject.show();
     }
 
-    public static void displayParcel(ParcelPlacement parcel) {
+    public Box displayParcel(ParcelPlacement parcel) {
         int length = (int) (parcel.getLength() * 2 * sizeMultiplier);
         int width = (int) (parcel.getWidth() * 2 * sizeMultiplier);
         int height = (int) (parcel.getHeight() * 2 * sizeMultiplier);
@@ -113,6 +116,8 @@ public class Render extends Application {
 
         // Set rotations
         boxObject.getTransforms().addAll(rotateX, rotateY);
+
+        return boxObject;
     }
 
     private List<Transform> getRotationTransforms() {
@@ -124,6 +129,6 @@ public class Render extends Application {
     public static void main(String[] args) {
         launch(args);
 
-        displayParcel(new ParcelPlacement(new Parcel("A"), 100, 100, 100, 0));
+        //displayParcel(new ParcelPlacement(new Parcel("A"), 100, 100, 100, 0));
     }
 }
