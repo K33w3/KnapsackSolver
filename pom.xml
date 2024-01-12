@@ -75,6 +75,12 @@
                     <mainClass>com.bcs2024.knapsack.renderer.Render</mainClass>
                 </configuration>
             </plugin>
+            <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jlink-plugin</artifactId>
+            <version>3.0.0-alpha-1</version>
+            <extensions>true</extensions>
+        </plugin>
         </plugins>
     </build>
 
