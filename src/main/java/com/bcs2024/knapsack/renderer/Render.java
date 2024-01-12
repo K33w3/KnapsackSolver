@@ -1,5 +1,6 @@
 package com.bcs2024.knapsack.renderer;
 
+import com.bcs2024.knapsack.model.CargoSpace;
 import javafx.application.Application;
 import javafx.scene.Camera;
 import javafx.scene.Group;
@@ -35,7 +36,9 @@ public class Render extends Application {
         outlineBox.setMaterial(new PhongMaterial(Color.BLACK));
         outlineBox.getTransforms().addAll(rotateX, rotateY);
 
-        Box transparentBox = new Box(250, 250, 250);
+        CargoSpace cargoSpace = new CargoSpace(33, 5, 8); // multiply by 2 instead
+
+        Box transparentBox = new Box(cargoSpace.getLength(), cargoSpace.getWidth(), cargoSpace.getHeight());
         PhongMaterial material = new PhongMaterial();
         material.setDiffuseColor(Color.rgb(127, 127, 127, 0.3));
         transparentBox.setMaterial(material);
