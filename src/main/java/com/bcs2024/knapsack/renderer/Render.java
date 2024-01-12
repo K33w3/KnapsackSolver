@@ -14,7 +14,7 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 public class Render extends Application {
-    private static final double SCENE_SIZE = 500;
+    private static final double SCENE_SIZE = 1000;
     private double anchorX, anchorY;
     private double anchorAngleX = 0;
     private double anchorAngleY = 0;
@@ -36,7 +36,7 @@ public class Render extends Application {
         outlineBox.setMaterial(new PhongMaterial(Color.BLACK));
         outlineBox.getTransforms().addAll(rotateX, rotateY);
 
-        CargoSpace cargoSpace = new CargoSpace(33 *5, 5*5, 8*5); // multiply by 2 instead
+        CargoSpace cargoSpace = new CargoSpace(33 *15, 5*15, 8*15); // multiply by 2 instead
 
         Box transparentBox = new Box(cargoSpace.getLength(), cargoSpace.getWidth(), cargoSpace.getHeight());
         PhongMaterial material = new PhongMaterial();
