@@ -5,6 +5,8 @@ package com.bcs2024.knapsack.model;
  * Each parcel has a type, length, width, height, and an associated value.
  */
 public class Parcel {
+
+    private double length, width, height;
     private int value;
     private final String type;
     private int[][][][] shapeOrientations; // 4D array to represent 3D shapes with orientations
@@ -18,11 +20,43 @@ public class Parcel {
 
     private void initializeParcel() {
         switch (type) {
-            case "A" -> this.value = 1;
-            case "B" -> this.value = 2;
-            case "C", "L" -> this.value = 3;
-            case "P" -> this.value = 4;
-            case "T" -> this.value = 5;
+            case "A" -> {
+                this.length = 1.0;
+                this.width = 1.0;
+                this.height = 2.0;
+                this.value = 1;
+            }
+            case "B" -> {
+                this.length = 1.0;
+                this.width = 1.5;
+                this.height = 2.0;
+                this.value = 2;
+            }
+            case "C" -> {
+                this.length = 1.5;
+                this.width = 1.5;
+                this.height = 1.5;
+                this.value = 3;
+            }
+            case "L" -> {
+                this.length = 0.5;
+                this.width = 0.5;
+                this.height = 0.5;
+                this.value = 3;
+            }
+            case "P" -> {
+                this.length = 0.5;
+                this.width = 0.5;
+                this.height = 0.5;
+                this.value = 4;
+            }
+            case "T" -> {
+                this.length = 0.5;
+                this.width = 0.5;
+                this.height = 0.5;
+                this.value = 5;
+            }
+
             default -> System.out.println("Invalid type");
         }
     }
@@ -75,6 +109,34 @@ public class Parcel {
      */
     public String getType() {
         return type;
+    }
+
+    public double getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 }
 

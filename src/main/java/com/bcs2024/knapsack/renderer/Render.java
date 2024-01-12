@@ -1,6 +1,8 @@
 package com.bcs2024.knapsack.renderer;
 
 import com.bcs2024.knapsack.model.CargoSpace;
+import com.bcs2024.knapsack.model.Parcel;
+import com.bcs2024.knapsack.model.ParcelPlacement;
 import javafx.application.Application;
 import javafx.scene.Camera;
 import javafx.scene.Group;
@@ -10,7 +12,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Render extends Application {
     private static final double SCENE_HEIGHT = 900;
@@ -40,7 +46,7 @@ public class Render extends Application {
 
         CargoSpace cargoSpace = new CargoSpace(33 *sizeMultiplier, 5*sizeMultiplier, 8*sizeMultiplier); // multiply by 2 instead
 
-        Box transparentBox = new Box(cargoSpace.getLength(), cargoSpace.getWidth(), cargoSpace.getHeight());
+        Box transparentBox = new Box(cargoSpace.getWidth(), cargoSpace.getHeight(), cargoSpace.getLength());
         PhongMaterial material = new PhongMaterial();
         material.setDiffuseColor(Color.rgb(127, 127, 127, 0.3));
         transparentBox.setMaterial(material);
@@ -88,8 +94,36 @@ public class Render extends Application {
         outputStageObject.show();
     }
 
+    public static void displayParcel(ParcelPlacement parcel) {
+        int length = (int) (parcel.getLength() * 2 * sizeMultiplier);
+        int width = (int) (parcel.getWidth() * 2 * sizeMultiplier);
+        int height = (int) (parcel.getHeight() * 2 * sizeMultiplier);
+
+// Create a Box
+        Box boxObject = new Box(width, height, length);
+
+// Set position
+        boxObject.setTranslateX(parcel.getX());
+        boxObject.setTranslateY(parcel.getY());
+        boxObject.setTranslateZ(parcel.getZ());
+
+        // Create rotations
+        Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
+        Rotate rotateY = new Rotate(0, Rotate.Y_AXIS);
+
+        // Set rotations
+        boxObject.getTransforms().addAll(rotateX, rotateY);
+    }
+
+    private List<Transform> getRotationTransforms() {
+        List<Transform> transforms = new ArrayList<>();
+        // Add logic to determine the correct transforms based on orientation
+        return transforms;
+    }
+
     public static void main(String[] args) {
-        // launch JVM
         launch(args);
+
+        displayParcel(new ParcelPlacement(new Parcel("A"), 100, 100, 100, 0));
     }
 }

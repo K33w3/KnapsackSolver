@@ -1,6 +1,12 @@
 package com.bcs2024.knapsack.model;
 
-public class ParcelPlacement {
+import javafx.scene.shape.Box;
+import javafx.scene.transform.Transform;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ParcelPlacement extends Parcel {
     private Parcel parcel;
     private int x, y, z; // Position in the cargo space
     private int orientation; // Representing orientation
@@ -15,14 +21,13 @@ public class ParcelPlacement {
      * @param orientation The orientation of the parcel.
      */
     public ParcelPlacement(Parcel parcel, int x, int y, int z, int orientation) {
+        super(parcel.getType());
         this.parcel = parcel;
         this.x = x;
         this.y = y;
         this.z = z;
         this.orientation = orientation;
     }
-
-    // Getters and Setters for all fields
 
     public Parcel getParcel() {
         return parcel;
