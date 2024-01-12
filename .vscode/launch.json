@@ -6,6 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch",
+            "request": "launch",
+            "mainClass": "com.bcs2024.knapsack/com.bcs2024.knapsack.Launch",
+            "projectName": "knapsack"
+        },
+        {
+            "type": "java",
+            "name": "Launch",
+            "request": "launch",
+            "mainClass": "com.bcs2024.knapsack/com.bcs2024.knapsack.renderer.Launch",
+            "projectName": "knapsack"
+        },
+        {
+            "type": "java",
+            "name": "Launch",
+            "request": "launch",
+            "mainClass": "com.bcs2024.knapsack.renderer.Launch",
+            "projectName": "knapsack"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
