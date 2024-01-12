@@ -36,7 +36,7 @@ public class Render extends Application {
         outlineBox.setMaterial(new PhongMaterial(Color.BLACK));
         outlineBox.getTransforms().addAll(rotateX, rotateY);
 
-        CargoSpace cargoSpace = new CargoSpace(33 *15, 5*15, 8*15); // multiply by 2 instead
+        CargoSpace cargoSpace = new CargoSpace(33 *25, 5*25, 8*25); // multiply by 2 instead
 
         Box transparentBox = new Box(cargoSpace.getLength(), cargoSpace.getWidth(), cargoSpace.getHeight());
         PhongMaterial material = new PhongMaterial();
