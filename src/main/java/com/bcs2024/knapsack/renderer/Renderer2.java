@@ -1,9 +1,5 @@
 package com.bcs2024.knapsack.renderer;
 
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.CountDownLatch;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
@@ -11,9 +7,14 @@ import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
 
 public class Renderer2 extends Application {
 
@@ -62,6 +63,18 @@ public class Renderer2 extends Application {
         scene.setCamera(new PerspectiveCamera());
 
         scene.setOnMouseDragged(this::handleMouseDragged);
+
+        Box block = new Box(10, 10, 10);
+        block.setTranslateX(10);
+        block.setTranslateY(10);
+        block.setTranslateZ(10);
+
+        // Set the color of the block
+        PhongMaterial material = new PhongMaterial();
+        material.setDiffuseColor(Color.WHITE);
+        block.setMaterial(material);
+
+        container.getChildren().add(block);
 
         primaryStage.setTitle("Block Placer");
         primaryStage.setScene(scene);

@@ -1,16 +1,6 @@
 package com.bcs2024.knapsack.renderer;
 
-import com.bcs2024.knapsack.model.CargoSpace;
-import com.bcs2024.knapsack.model.Parcel;
-import com.bcs2024.knapsack.model.ParcelPlacement;
 import javafx.application.Application;
-import javafx.scene.Camera;
-import javafx.scene.Group;
-import javafx.scene.PerspectiveCamera;
-import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
@@ -44,9 +34,9 @@ public class Render extends Application {
         outlineBox.setMaterial(new PhongMaterial(Color.BLACK));
         outlineBox.getTransforms().addAll(rotateX, rotateY);*/
 
-        CargoSpace cargoSpace = new CargoSpace(33 *sizeMultiplier, 5*sizeMultiplier, 8*sizeMultiplier); // multiply by 2 instead
+        //CargoSpace cargoSpace = new CargoSpace(33 *sizeMultiplier, 5*sizeMultiplier, 8*sizeMultiplier); // multiply by 2 instead
 
-        Box transparentBox = new Box(cargoSpace.getWidth(), cargoSpace.getHeight(), cargoSpace.getLength());
+        /*Box transparentBox = new Box(cargoSpace.getWidth(), cargoSpace.getHeight(), cargoSpace.getLength());
         PhongMaterial material = new PhongMaterial();
         material.setDiffuseColor(Color.rgb(127, 127, 127, 0.3));
         transparentBox.setMaterial(material);
@@ -68,11 +58,6 @@ public class Render extends Application {
         sceneObject.setCamera(perspectiveCamera);
 
         // setting position of objects in 3D space
-        /*boxObject.translateXProperty().set(SCENE_WIDTH / 2);
-        boxObject.translateYProperty().set(SCENE_HEIGHT / 2);
-
-        outlineBox.translateXProperty().set(SCENE_WIDTH / 2);
-        outlineBox.translateYProperty().set(SCENE_HEIGHT / 2);*/
 
         transparentBox.translateXProperty().set(SCENE_WIDTH / 2);
         transparentBox.translateYProperty().set(SCENE_HEIGHT / 2);
@@ -94,30 +79,7 @@ public class Render extends Application {
         // display properties
         outputStageObject.setResizable(false);
         outputStageObject.setScene(sceneObject);
-        outputStageObject.show();
-    }
-
-    public Box displayParcel(ParcelPlacement parcel) {
-        int length = (int) (parcel.getLength() * 2 * sizeMultiplier);
-        int width = (int) (parcel.getWidth() * 2 * sizeMultiplier);
-        int height = (int) (parcel.getHeight() * 2 * sizeMultiplier);
-
-// Create a Box
-        Box boxObject = new Box(width, height, length);
-
-// Set position
-        boxObject.setTranslateX(parcel.getX());
-        boxObject.setTranslateY(parcel.getY());
-        boxObject.setTranslateZ(parcel.getZ());
-
-        // Create rotations
-        Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
-        Rotate rotateY = new Rotate(0, Rotate.Y_AXIS);
-
-        // Set rotations
-        boxObject.getTransforms().addAll(rotateX, rotateY);
-
-        return boxObject;
+        outputStageObject.show();*/
     }
 
     private List<Transform> getRotationTransforms() {
