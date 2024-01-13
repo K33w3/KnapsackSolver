@@ -1,4 +1,4 @@
-package com.bcs2024.knapsack.model;
+package com.bcs2024.knapsack.util;
 
 public class ShapesAndRotations {
 
@@ -159,21 +159,15 @@ public class ShapesAndRotations {
   }
 
   public int rotationNum(String type) {
-    switch (type) {
-      case "A":
-        return shapeA.length;
-      case "B":
-        return shapeB.length;
-      case "C":
-        return shapeC.length;
-      case "L":
-        return shapeL.length;
-      case "P":
-        return shapeP.length;
-      case "T":
-        return shapeT.length;
-    }
-    return 0;
+      return switch (type) {
+          case "A" -> shapeA.length;
+          case "B" -> shapeB.length;
+          case "C" -> shapeC.length;
+          case "L" -> shapeL.length;
+          case "P" -> shapeP.length;
+          case "T" -> shapeT.length;
+          default -> 0;
+      };
   }
 
   public int[][][] getShape(String parcelType, int rotation) {
