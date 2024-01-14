@@ -59,7 +59,7 @@ import com.bcs2024.knapsack.model.CargoSpace;
             group.translateXProperty().set(700);
             group.translateYProperty().set(500 - height/2);
 
-            stage.setTitle("GAAAAAYYY");
+            stage.setTitle("3D Container");
             stage.setScene(scene);
             stage.show();
         }
