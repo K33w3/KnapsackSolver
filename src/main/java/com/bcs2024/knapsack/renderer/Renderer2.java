@@ -101,25 +101,26 @@ public class Renderer2 extends Application {
         rotateY.setAngle(rotateYAngle);
     }
 
-    public void addBlock(double x, double y, double z, double width, double height, double depth) {
-        System.out.println("Adding block at (" + x + ", " + y + ", " + z + ") with dimensions (" + width + ", " + height + ", " + depth + ")");
+    private void addBlock(double x, double y, double z, double width, double height, double depth, Color color) {
+        System.out.println("Adding block at (" + x + ", " + y + ", " + z + ") with dimensions (" + width + ", " + height + ", " + depth + ") and color " + color);
         Box block = new Box(width, height, depth);
         block.setTranslateX(x);
         block.setTranslateY(y);
         block.setTranslateZ(z);
+        block.setMaterial(new PhongMaterial(color));
         container.getChildren().add(block);
     }
     
-    public void addBlockLater(double x, double y, double z, double width, double height, double depth) {
-        System.out.println("Scheduling block to be added later at (" + x + ", " + y + ", " + z + ") with dimensions (" + width + ", " + height + ", " + depth + ")");
-        Platform.runLater(() -> addBlock(x, y, z, width, height, depth));
+    private void addBlockLater(double x, double y, double z, double width, double height, double depth, Color color) {
+        System.out.println("Scheduling block to be added later at (" + x + ", " + y + ", " + z + ") with dimensions (" + width + ", " + height + ", " + depth + ") and color " + color);
+        Platform.runLater(() -> addBlock(x, y, z, width, height, depth, color));
     }
 
-    public void addBlockAfterDelay(double x, double y, double z, double width, double height, double depth, long delayMillis) {
+    public void addBlockAfterDelay(double x, double y, double z, double width, double height, double depth, long delayMillis, Color color) {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                addBlockLater(x, y, z, width, height, depth);
+                addBlockLater(x, y, z, width, height, depth, color);
             }
         }, delayMillis);
     }
