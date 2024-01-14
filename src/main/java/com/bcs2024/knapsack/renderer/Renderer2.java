@@ -23,9 +23,12 @@ import java.util.concurrent.CountDownLatch;
 
 public class Renderer2 extends Application {
 
-    private static final double CONTAINER_WIDTH = 600;
-    private static final double CONTAINER_HEIGHT = 400;
+    private static final double CONTAINER_WIDTH = 1200;
+    private static final double CONTAINER_HEIGHT = 600;
     private static final double CONTAINER_DEPTH = 300;
+
+    private static final double SCENE_WIDTH = 1200;
+    private static final double SCENE_HEIGHT = 800;
 
     private static final double BLOCK_SIZE = 50;
 
@@ -73,7 +76,7 @@ public class Renderer2 extends Application {
 
         SubScene subScene = new SubScene(container, CONTAINER_WIDTH, CONTAINER_HEIGHT, true,
                 SceneAntialiasing.BALANCED);
-        subScene.setFill(Color.WHITE);
+        subScene.setFill(Color.LIGHTBLUE);
         subScene.setCamera(new PerspectiveCamera());
 
         AnchorPane root = new AnchorPane();
