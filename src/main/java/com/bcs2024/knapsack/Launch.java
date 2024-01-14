@@ -15,10 +15,10 @@ public class Launch {
             }
 
             Renderer2 renderer2Instance = Renderer2.getInstance();
+
+            //method parameters
+            //renderer2Instance.addBlockAfterDelay(x, y, z, width, height, depth, millisecond to place after program start, COLOR.YOUR_COLOR);
             renderer2Instance.addBlockAfterDelay(120, 150, 100, 50, 50, 50, 1, Color.BLUE);
-            // renderer2Instance.addBlockAfterDelay(120, 100, 190, 77, 50, 50, 2);
-            // renderer2Instance.addBlockAfterDelay(120, 159, 100, 50, 55, 50, 3);
-            // renderer2Instance.addBlockAfterDelay(280, 159, 100, 50, 55, 50, 4);
 
         }).start();
 
