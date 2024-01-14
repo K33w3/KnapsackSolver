@@ -3,8 +3,10 @@ package com.bcs2024.knapsack.algorithm;
 import com.bcs2024.knapsack.model.CargoSpace;
 import com.bcs2024.knapsack.model.Parcel;
 import com.bcs2024.knapsack.model.ParcelPlacement;
+import com.bcs2024.knapsack.renderer.HelloApplication;
 import com.bcs2024.knapsack.util.ShapesAndRotations;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -16,27 +18,32 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
     private final String[] parcelSequence;
     private final double[] weights;
     private final double[] actualWeights;
+    public static int[][][] matrix;
+    private HelloApplication visualization;
 
     public GreedyKnapsackSolver() {
         weights = new double[4];
+        visualization = new HelloApplication();
 
-        // FileUtil.writeInFile("resultsGtraining.txt", ""); TODO uncomment this line to write to file
+        // FileUtil.writeInFile("resultsGtraining.txt", ""); TODO uncomment this line to
+        // write to file
 
         cargoSpace = new CargoSpace();
+        matrix = cargoSpace.getOccupied();
+
         shapes = new ShapesAndRotations();
-        parcelSequence = new String[]{"A", "B", "C"};
+        parcelSequence = new String[] { "A", "B", "C" };
 
         Random random = new Random();
         for (int i = 0; i < 4; i++) {
             weights[i] = random.nextDouble();
         }
-        actualWeights =
-                new double[]{
-                        0.7934029214856616,
-                        0.9831091831983482,
-                        0.4224751952092841,
-                        0.3275013351194519,
-                };
+        actualWeights = new double[] {
+                0.7934029214856616,
+                0.9831091831983482,
+                0.4224751952092841,
+                0.3275013351194519,
+        };
     }
 
     private void putShapes() {
@@ -74,8 +81,9 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
                                 double ratioVolume = calculateValueDensity(parcel);
                                 double volume = calculateVolume(parcel);
                                 int touchedPoints = touched(parcel, cargoSpace.getOccupied(), x, y, z);
-                                //System.out.println(touchedPoints);
-                                double weight = actualWeights[0] * perimeter + actualWeights[1] * ratioVolume + actualWeights[2] * volume + actualWeights[3] * touchedPoints;
+                                // System.out.println(touchedPoints);
+                                double weight = actualWeights[0] * perimeter + actualWeights[1] * ratioVolume
+                                        + actualWeights[2] * volume + actualWeights[3] * touchedPoints;
 
                                 if (weight > highestWeight) {
                                     highestWeight = weight;
@@ -89,7 +97,7 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
                         }
                     }
 
-                    //     System.out.println("X: " + bestX + " Y : " + bestY + " Z :" + bestZ);
+                    // System.out.println("X: " + bestX + " Y : " + bestY + " Z :" + bestZ);
 
                     int[][][] shape = shapes.getShape(bestParcel, rotationMem);
                     Parcel parcel = new Parcel(bestParcel);
@@ -127,26 +135,31 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
             }
         }
 
-        for (int[][] layer : cargoSpace.getOccupied()) {
-            for (int j = 0; j < cargoSpace.getOccupied()[0].length; j++) {
-                for (int k = 0; k < cargoSpace.getOccupied()[0][0].length; k++) {
-                    System.out.print(layer[j][k]);
-                }
-                System.out.println();
-            }
-            System.out.println();
-        }
-
-        System.out.println(Arrays.toString(weights));
-        // try {
-        //   writer.write(Arrays.toString(weights) + "\n");
-        //   writer.write("Count: " + count + "\n");
-        //   writer.close();
-        // } catch (IOException e) {
-        //   System.out.print(e);
+        // for (int[][] layer : cargoSpace.getOccupied()) {
+        // for (int j = 0; j < cargoSpace.getOccupied()[0].length; j++) {
+        // for (int k = 0; k < cargoSpace.getOccupied()[0][0].length; k++) {
+        // System.out.print(layer[j][k]);
         // }
-        System.out.println("A: " + countA + " B: " + countB + " C: " + countC);
+        // System.out.println();
+        // }
+        // System.out.println();
+        // }
+
+        // System.out.println("A: " + countA + " B: " + countB + " C: " + countC);
         System.out.println(count);
+        // visualization.setSolution(matrix);
+        visualization.show();
+
+    // System.out.println(Arrays.toString(actualWeights));
+    // try {
+    // writer.write(Arrays.toString(weights) + "\n");
+    // writer.write("Count: " + count + "\n");
+    // writer.close();
+    // } catch (IOException e) {
+    // System.out.print(e);
+    // }
+    System.out.println("A: "+countA+" B: "+countB+" C: "+countC);System.out.println(count);
+
     }
 
     @Override
@@ -173,8 +186,7 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
         return parcel.getValue() / volume;
     }
 
-    public int touched(Parcel parcel, int[][][] matrix, int posX, int posY, int posZ
-    ) {
+    public int touched(Parcel parcel, int[][][] matrix, int posX, int posY, int posZ) {
         int[][][] shape = parcel.getShape();
         int touchedPoints = 0;
 
@@ -186,7 +198,8 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
                     int z = posZ + k;
 
                     // Check if the current point is on the boundary of the matrix
-                    if (x == 0 || y == 0 || z == 0 || x == matrix.length - 1 || y == matrix[0].length - 1 || z == matrix[0][0].length - 1) {
+                    if (x == 0 || y == 0 || z == 0 || x == matrix.length - 1 || y == matrix[0].length - 1
+                            || z == matrix[0][0].length - 1) {
                         touchedPoints++;
                         continue;
                     }
@@ -195,14 +208,16 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
                     for (int dx = -1; dx <= 1; dx++) {
                         for (int dy = -1; dy <= 1; dy++) {
                             for (int dz = -1; dz <= 1; dz++) {
-                                if (dx == 0 && dy == 0 && dz == 0) continue; // Skip the current point
+                                if (dx == 0 && dy == 0 && dz == 0)
+                                    continue; // Skip the current point
 
                                 int nx = x + dx;
                                 int ny = y + dy;
                                 int nz = z + dz;
 
                                 // Ensure neighboring indices are within bounds
-                                if (nx >= 0 && ny >= 0 && nz >= 0 && nx < matrix.length && ny < matrix[0].length && nz < matrix[0][0].length) {
+                                if (nx >= 0 && ny >= 0 && nz >= 0 && nx < matrix.length && ny < matrix[0].length
+                                        && nz < matrix[0][0].length) {
                                     // Check if the neighboring point has a shape
                                     if (matrix[nx][ny][nz] != 0) { // Assuming 0 represents empty space
                                         touchedPoints++;
