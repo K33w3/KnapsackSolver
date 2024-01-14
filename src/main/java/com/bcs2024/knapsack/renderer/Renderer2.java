@@ -5,7 +5,12 @@ import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
+import javafx.scene.SceneAntialiasing;
+import javafx.scene.SubScene;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -49,6 +54,14 @@ public class Renderer2 extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        VBox menu = new VBox();
+        menu.setPrefWidth(200);
+        menu.setStyle("-fx-background-color: #2f4f4f; -fx-padding: 10;");
+
+        Button addButton = new Button("Add Block");
+        addButton.setOnAction(event -> addBlock(10, 10, 10, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, Color.WHITE));
+        menu.getChildren().add(addButton);
+
         container = new Group();
         container.setTranslateX(CONTAINER_WIDTH / 2);
         container.setTranslateY(CONTAINER_HEIGHT / 2);
@@ -58,7 +71,21 @@ public class Renderer2 extends Application {
         rotateY = new Rotate(0, Rotate.Y_AXIS);
         container.getTransforms().addAll(rotateX, rotateY);
 
-        Scene scene = new Scene(container, CONTAINER_WIDTH, CONTAINER_HEIGHT, true);
+        SubScene subScene = new SubScene(container, CONTAINER_WIDTH, CONTAINER_HEIGHT, true,
+                SceneAntialiasing.BALANCED);
+        subScene.setFill(Color.WHITE);
+        subScene.setCamera(new PerspectiveCamera());
+
+        AnchorPane root = new AnchorPane();
+        root.getChildren().addAll(menu, subScene);
+
+        AnchorPane.setTopAnchor(subScene, 0.0);
+        AnchorPane.setBottomAnchor(subScene, 0.0);
+        AnchorPane.setLeftAnchor(subScene, 200.0);
+        AnchorPane.setRightAnchor(subScene, 0.0);
+
+        Scene scene = new Scene(root, CONTAINER_WIDTH + 200, CONTAINER_HEIGHT, true);
+
         scene.setFill(Color.WHITE);
         scene.setCamera(new PerspectiveCamera());
 
@@ -85,6 +112,7 @@ public class Renderer2 extends Application {
             System.exit(0);
         });
 
+        primaryStage.setResizable(false);
         primaryStage.show();
 
         latch.countDown(); // Notify other threads that the application has started
@@ -101,25 +129,29 @@ public class Renderer2 extends Application {
         rotateY.setAngle(rotateYAngle);
     }
 
-    public void addBlock(double x, double y, double z, double width, double height, double depth) {
-        System.out.println("Adding block at (" + x + ", " + y + ", " + z + ") with dimensions (" + width + ", " + height + ", " + depth + ")");
+    private void addBlock(double x, double y, double z, double width, double height, double depth, Color color) {
+        System.out.println("Adding block at (" + x + ", " + y + ", " + z + ") with dimensions (" + width + ", " + height
+                + ", " + depth + ") and color " + color);
         Box block = new Box(width, height, depth);
         block.setTranslateX(x);
         block.setTranslateY(y);
         block.setTranslateZ(z);
+        block.setMaterial(new PhongMaterial(color));
         container.getChildren().add(block);
     }
-    
-    public void addBlockLater(double x, double y, double z, double width, double height, double depth) {
-        System.out.println("Scheduling block to be added later at (" + x + ", " + y + ", " + z + ") with dimensions (" + width + ", " + height + ", " + depth + ")");
-        Platform.runLater(() -> addBlock(x, y, z, width, height, depth));
+
+    private void addBlockLater(double x, double y, double z, double width, double height, double depth, Color color) {
+        System.out.println("Scheduling block to be added later at (" + x + ", " + y + ", " + z + ") with dimensions ("
+                + width + ", " + height + ", " + depth + ") and color " + color);
+        Platform.runLater(() -> addBlock(x, y, z, width, height, depth, color));
     }
 
-    public void addBlockAfterDelay(double x, double y, double z, double width, double height, double depth, long delayMillis) {
+    public void addBlockAfterDelay(double x, double y, double z, double width, double height, double depth,
+            long delayMillis, Color color) {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                addBlockLater(x, y, z, width, height, depth);
+                addBlockLater(x, y, z, width, height, depth, color);
             }
         }, delayMillis);
     }
