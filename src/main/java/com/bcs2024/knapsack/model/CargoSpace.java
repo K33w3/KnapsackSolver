@@ -1,11 +1,16 @@
 package com.bcs2024.knapsack.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CargoSpace {
 
     private final double length = 16.5;
     private final double width = 2.5;
     private final double height = 4;
     private int[][][] occupied;
+    private int filledSlotsCount = 0;
+    private List<ParcelPlacement> placements = new ArrayList<>();
 
     public CargoSpace() {
         int x = (int) (width * 2);
@@ -52,11 +57,13 @@ public class CargoSpace {
                         // Check if indices are within the bounds
                         if (x >= 0 && x < (int)(this.width * 2) && y >= 0 && y < (int)(this.height * 2) && z >= 0 && z < (int)(this.length * 2)) {
                             this.occupied[x][y][z] = placement.getShape()[i][j][k];
+                            filledSlotsCount++;
                         }
                     }
                 }
             }
         }
+        placements.add(placement);
     }
 
 
@@ -76,6 +83,10 @@ public class CargoSpace {
         return this.occupied;
     }
 
+    public int getFilledSlotsCount(){return this.filledSlotsCount;}
+    public List<ParcelPlacement> getPlacements() {
+        return placements;
+    }
     public void setOccupied(int[][][] occupied) {
         this.occupied = occupied;
     }
