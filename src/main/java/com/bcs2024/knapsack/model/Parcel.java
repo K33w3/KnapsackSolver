@@ -1,5 +1,7 @@
 package com.bcs2024.knapsack.model;
 
+import com.bcs2024.knapsack.util.ShapesAndRotations;
+
 public class Parcel {
 
   private double length, width, height, value;
@@ -70,5 +72,13 @@ public class Parcel {
 
   public String getType() {
     return type;
+  }
+
+  public void setShape(int[][][] shape) {
+    this.shape = shape;
+  }
+
+  public void setType(String type) {
+    this.type = type;
   }
 }

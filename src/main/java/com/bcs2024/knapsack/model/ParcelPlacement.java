@@ -1,30 +1,37 @@
 package com.bcs2024.knapsack.model;
 
-/**
- * Represents a parcel with specific dimensions and value.
- * Each parcel has a type, length, width, height, and an associated value.
- */
-public class ParcelPlacement {
+import javafx.scene.paint.Color;
 
+public class ParcelPlacement extends Parcel {
   private Parcel parcel;
   private int x, y, z; // Position in the cargo space
 
-  // private int orientation; // Representing orientation, can be an integer or a more complex type
+  private Color color;
 
   /**
-   * Constructs a new ParcelPlacement with specified parcel, position and orientation.
+   * Constructs a new ParcelPlacement with specified parcel, position, and orientation.
    *
-   * @param parcel The parcel to place.
-   * @param x The x-coordinate in the cargo space.
-   * @param y The y-coordinate in the cargo space.
-   * @param z The z-coordinate in the cargo space.
+   * @param parcel      The parcel to place.
+   * @param x           The x-coordinate in the cargo space.
+   * @param y           The y-coordinate in the cargo space.
+   * @param z           The z-coordinate in the cargo space.
    */
   public ParcelPlacement(Parcel parcel, int x, int y, int z) {
+    super(parcel.getType());
+
+      switch (parcel.getType()) {
+          case "A" -> this.color = Color.rgb(255, 0, 0);
+          case "B" -> this.color = Color.rgb(0, 255, 0);
+          case "C" -> this.color = Color.rgb(0, 0, 255);
+          case "L" -> this.color = Color.rgb(255, 255, 0);
+          case "P" -> this.color = Color.rgb(0, 255, 255);
+          case "T" -> this.color = Color.rgb(255, 0, 255);
+      }
+
     this.parcel = parcel;
     this.x = x;
     this.y = y;
     this.z = z;
-    //this.orientation = orientation;
   }
 
   public Parcel getParcel() {
@@ -59,14 +66,7 @@ public class ParcelPlacement {
     this.z = z;
   }
 
-  /**
-   * Checks if the parcel placement, including its orientation, is valid for the cargo space.
-   *
-   * @param cargoSpace The cargo space to check for.
-   * @return true if the parcel placement is valid, false otherwise.
-   */
-  public boolean isValidForCargoSpace(CargoSpace cargoSpace) {
-    // Directly use the 'isSpaceAvailable' method from CargoSpace class
-    return cargoSpace.isSpaceAvailable(this);
+  public Color getColor() {
+    return color;
   }
 }
