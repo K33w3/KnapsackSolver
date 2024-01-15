@@ -8,14 +8,14 @@ public class CargoSpace {
     private final double length = 16.5;
     private final double width = 2.5;
     private final double height = 4;
+    private final List<ParcelPlacement> placements = new ArrayList<>();
     private int[][][] occupied;
     private int filledSlotsCount = 0;
-    private List<ParcelPlacement> placements = new ArrayList<>();
 
     public CargoSpace() {
-        int x = (int) (width * 2);
-        int y = (int) (height * 2);
-        int z = (int) (length * 2);
+        final int x = (int) (width * 2);
+        final int y = (int) (height * 2);
+        final int z = (int) (length * 2);
         occupied = new int[x][y][z];
 
         for (int i = 0; i < x; i++) {
@@ -27,14 +27,14 @@ public class CargoSpace {
         }
     }
 
-    public boolean canPlace(int[][][] shape, int startX, int startY, int startZ) {
+    public boolean canPlace(final int[][][] shape, final int startX, final int startY, final int startZ) {
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[0].length; j++) {
                 for (int k = 0; k < shape[0][0].length; k++) {
                     if (shape[i][j][k] != 0) {
-                        int x = startX + k;
-                        int y = startY + j;
-                        int z = startZ + i;
+                        final int x = startX + k;
+                        final int y = startY + j;
+                        final int z = startZ + i;
                         if (x >= (int) (this.width * 2) || y >= (int) (this.height * 2) || z >= (int) (this.length * 2) || occupied[x][y][z] != -1) {
                             return false;
                         }
@@ -45,17 +45,17 @@ public class CargoSpace {
         return true;
     }
 
-    public void placeParcel(ParcelPlacement placement) {
+    public void placeParcel(final ParcelPlacement placement) {
         for (int i = 0; i < placement.getShape().length; i++) {
             for (int j = 0; j < placement.getShape()[0].length; j++) {
                 for (int k = 0; k < placement.getShape()[0][0].length; k++) {
                     if (placement.getShape()[i][j][k] != 0) {
-                        int x = placement.getX() + k;
-                        int y = placement.getY() + j;
-                        int z = placement.getZ() + i;
+                        final int x = placement.getX() + k;
+                        final int y = placement.getY() + j;
+                        final int z = placement.getZ() + i;
 
                         // Check if indices are within the bounds
-                        if (x >= 0 && x < (int)(this.width * 2) && y >= 0 && y < (int)(this.height * 2) && z >= 0 && z < (int)(this.length * 2)) {
+                        if (x >= 0 && x < (int) (this.width * 2) && y >= 0 && y < (int) (this.height * 2) && z >= 0 && z < (int) (this.length * 2)) {
                             this.occupied[x][y][z] = placement.getShape()[i][j][k];
                             filledSlotsCount++;
                         }
@@ -63,7 +63,41 @@ public class CargoSpace {
                 }
             }
         }
+
         placements.add(placement);
+    }
+
+    public boolean canPlace(final int[][][] shape, final int startX, final int startY, final int startZ, final int[][][] destination) {
+        for (int i = 0; i < shape.length; i++) {
+            for (int j = 0; j < shape[0].length; j++) {
+                for (int k = 0; k < shape[0][0].length; k++) {
+                    if (shape[i][j][k] != 0) {
+                        final int x = startX + k;
+                        final int y = startY + j;
+                        final int z = startZ + i;
+                        if (x >= (int) (this.width * 2) || y >= (int) (this.height * 2) || z >= (int) (this.length * 2) || destination[x][y][z] != -1) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public void placeParcel(final int[][][] shape, final int startX, final int startY, final int startZ, final int[][][] destination) {
+        for (int i = 0; i < shape.length; i++) {
+            for (int j = 0; j < shape[0].length; j++) {
+                for (int k = 0; k < shape[0][0].length; k++) {
+                    if (shape[i][j][k] != 0) {
+                        final int x = startX + k;
+                        final int y = startY + j;
+                        final int z = startZ + i;
+                        destination[x][y][z] = shape[i][j][k];
+                    }
+                }
+            }
+        }
     }
 
 
@@ -83,11 +117,15 @@ public class CargoSpace {
         return this.occupied;
     }
 
-    public int getFilledSlotsCount(){return this.filledSlotsCount;}
+    public void setOccupied(final int[][][] occupied) {
+        this.occupied = occupied;
+    }
+
+    public int getFilledSlotsCount() {
+        return this.filledSlotsCount;
+    }
+
     public List<ParcelPlacement> getPlacements() {
         return placements;
-    }
-    public void setOccupied(int[][][] occupied) {
-        this.occupied = occupied;
     }
 }

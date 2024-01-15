@@ -1,24 +1,18 @@
 package com.bcs2024.knapsack.model;
 
-import com.bcs2024.knapsack.algorithm.Chromosome;
-import com.bcs2024.knapsack.util.ShapesAndRotations;
-
-import java.util.Arrays;
-import java.util.List;
-
 public class EquilibriumAndDistribution {
     private CargoSpace cargoSpace;
     private int[] rotations;
     private String[] genes;
     private int[][][] matrix;
 
-    public EquilibriumAndDistribution(CargoSpace cargoSpace, int[] rotations, String[] genes) {
+    public EquilibriumAndDistribution(final CargoSpace cargoSpace, final int[] rotations, final String[] genes) {
         this.genes = genes;
         this.rotations = rotations;
         this.cargoSpace = cargoSpace;
     }
 
-public void fillContainer(CargoSpace cargoSpace, String[] genes, int[] rotations){
+/*public void fillContainer(CargoSpace cargoSpace, String[] genes, int[] rotations){
     ShapesAndRotations shapes = new ShapesAndRotations();
 
         matrix = cargoSpace.getOccupied();
@@ -82,17 +76,15 @@ public void fillContainer(CargoSpace cargoSpace, String[] genes, int[] rotations
         double[] centerOfMass = calculateCenterOfMass();
         double sum = centerOfMass[0] + centerOfMass[1] + centerOfMass[2];
         return sum/3.0;
-    }
-
-
+    }*/
 
 
     // Method to calculate the distribution of parcels
     public double calculateDistribution() {
-        int totalSlots = cargoSpace.getOccupied().length *
+        final int totalSlots = cargoSpace.getOccupied().length *
                 cargoSpace.getOccupied()[0].length *
                 cargoSpace.getOccupied()[0][0].length;
-        int filledSlots = cargoSpace.getFilledSlotsCount();
+        final int filledSlots = cargoSpace.getFilledSlotsCount();
 
         if (totalSlots == 0) {
             return 0.0;
@@ -102,7 +94,7 @@ public void fillContainer(CargoSpace cargoSpace, String[] genes, int[] rotations
     }
 
 
-    public static void main(String[] args){
+    /*public static void main(String[] args){
 
         String[] genes = {"C", "C", "B", "B", "A", "A", "C", "A", "C", "B", "C", "C", "A", "C", "A", "A", "A", "C", "C", "B", "B", "A", "A", "B", "B", "C", "C", "A", "A", "C", "B","B", "B", "A", "B", "B", "C", "C", "C", "B", "A", "C","B", "B", "C", "C", "C", "A", "C", "C", "A", "A", "A", "B"};
         int[] rotations = {0, 0, 4, 4, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0, 3, 2, 0, 0, 2, 1, 0, 1, 5, 1, 1, 4, 1, 0, 0, 0, 3, 1, 0, 1, 3, 0, 0, 0, 1, 0, 0, 1, 0, 1, 5};
@@ -122,7 +114,7 @@ public void fillContainer(CargoSpace cargoSpace, String[] genes, int[] rotations
         // Calculate distribution
         double distribution = equilibrium.calculateDistribution();
         System.out.println("Distribution: " + distribution);
-    }
+    }*/
 
-    }
+}
 
