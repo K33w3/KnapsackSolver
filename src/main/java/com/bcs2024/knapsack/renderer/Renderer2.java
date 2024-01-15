@@ -10,6 +10,7 @@ import javafx.scene.SubScene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -27,8 +28,8 @@ public class Renderer2 extends Application {
     private static final double CONTAINER_HEIGHT = 600;
     private static final double CONTAINER_DEPTH = 300;
 
-    private static final double SCENE_WIDTH = 1200;
-    private static final double SCENE_HEIGHT = 800;
+    // private static final double SCENE_WIDTH = 1200;
+    // private static final double SCENE_HEIGHT = 800;
 
     private static final double BLOCK_SIZE = 50;
 
@@ -59,6 +60,8 @@ public class Renderer2 extends Application {
     public void start(Stage primaryStage) {
         VBox menu = new VBox();
         menu.setPrefWidth(200);
+        menu.setMaxHeight(Double.MAX_VALUE);
+        VBox.setVgrow(menu, Priority.ALWAYS);
         menu.setStyle("-fx-background-color: #2f4f4f; -fx-padding: 10;");
 
         Button addButton = new Button("Add Block");
@@ -81,6 +84,10 @@ public class Renderer2 extends Application {
 
         AnchorPane root = new AnchorPane();
         root.getChildren().addAll(menu, subScene);
+
+        AnchorPane.setTopAnchor(menu, 0.0);
+        AnchorPane.setBottomAnchor(menu, 0.0);
+        AnchorPane.setTopAnchor(subScene, 0.0);
 
         AnchorPane.setTopAnchor(subScene, 0.0);
         AnchorPane.setBottomAnchor(subScene, 0.0);
