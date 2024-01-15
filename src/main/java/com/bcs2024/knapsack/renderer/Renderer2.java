@@ -79,14 +79,13 @@ public class Renderer2 extends Application {
         primaryStage.setTitle("Block Placer");
         primaryStage.setScene(scene);
 
-        primaryStage.setOnCloseRequest(event -> {
+        /*primaryStage.setOnCloseRequest(event -> {
             // cleanup code that might be needed in the future can be added here
             Platform.exit();
             System.exit(0);
-        });
+        });*/
 
         primaryStage.show();
-
         latch.countDown(); // Notify other threads that the application has started
     }
 

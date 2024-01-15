@@ -6,18 +6,17 @@ import com.bcs2024.knapsack.model.ParcelPlacement;
 import com.bcs2024.knapsack.util.ShapesAndRotations;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
 
-    private final CargoSpace cargoSpace;
+    private CargoSpace cargoSpace;
     private final ShapesAndRotations shapes;
     private final String[] parcelSequence;
     private final double[] weights;
     private final double[] actualWeights;
 
-    public GreedyKnapsackSolver() {
+    public GreedyKnapsackSolver() { // TODO
         weights = new double[4];
 
         // FileUtil.writeInFile("resultsGtraining.txt", ""); TODO uncomment this line to write to file
@@ -150,7 +149,9 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
     }
 
     @Override
-    public void solve(CargoSpace cargoSpace, List<Parcel> parcels) {
+    public void solve() {
+            this.putShapes();
+            System.out.println(Arrays.deepToString(getCargoSpace().getOccupied()));
     }
 
     public static void main(String[] args) {
@@ -173,8 +174,7 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
         return parcel.getValue() / volume;
     }
 
-    public int touched(Parcel parcel, int[][][] matrix, int posX, int posY, int posZ
-    ) {
+    public int touched(Parcel parcel, int[][][] matrix, int posX, int posY, int posZ) {
         int[][][] shape = parcel.getShape();
         int touchedPoints = 0;
 
@@ -220,5 +220,9 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
             }
         }
         return touchedPoints;
+    }
+
+    public CargoSpace getCargoSpace() {
+        return cargoSpace;
     }
 }
