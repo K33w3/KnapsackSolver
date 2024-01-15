@@ -8,12 +8,11 @@ import com.bcs2024.knapsack.util.ShapesAndRotations;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
 
-    private final CargoSpace cargoSpace;
+    private CargoSpace cargoSpace;
     private final ShapesAndRotations shapes;
     private final String[] parcelSequence;
     private final double[] weights;
@@ -21,7 +20,7 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
     public static int[][][] matrix;
     private HelloApplication visualization;
 
-    public GreedyKnapsackSolver() {
+    public GreedyKnapsackSolver() { // TODO
         weights = new double[4];
         visualization = new HelloApplication();
 
@@ -163,7 +162,9 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
     }
 
     @Override
-    public void solve(CargoSpace cargoSpace, List<Parcel> parcels) {
+    public void solve() {
+            this.putShapes();
+            System.out.println(Arrays.deepToString(getCargoSpace().getOccupied()));
     }
 
     public static void main(String[] args) {
@@ -235,5 +236,9 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
             }
         }
         return touchedPoints;
+    }
+
+    public CargoSpace getCargoSpace() {
+        return cargoSpace;
     }
 }
