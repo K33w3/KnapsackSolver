@@ -1,5 +1,10 @@
 package com.bcs2024.knapsack.model;
 
+import com.bcs2024.knapsack.util.ShapesAndRotations;
+
+import java.util.Arrays;
+import java.util.List;
+
 public class EquilibriumAndDistribution {
     private CargoSpace cargoSpace;
     private int[] rotations;
@@ -12,8 +17,8 @@ public class EquilibriumAndDistribution {
         this.cargoSpace = cargoSpace;
     }
 
-/*public void fillContainer(CargoSpace cargoSpace, String[] genes, int[] rotations){
-    ShapesAndRotations shapes = new ShapesAndRotations();
+    public void fillContainer(final CargoSpace cargoSpace, final String[] genes, final int[] rotations) {
+        final ShapesAndRotations shapes = new ShapesAndRotations();
 
         matrix = cargoSpace.getOccupied();
 
@@ -22,25 +27,25 @@ public class EquilibriumAndDistribution {
                 for (int z = 0; z < matrix[0][0].length; z++) {
                     for (int i = 0; i < genes.length; i++) {
 
-                        Parcel parcel = new Parcel(genes[i]);
-                        int rotation = rotations[i];
-                        int[][][] shape = shapes.getShape(genes[i], rotation);
+                        final Parcel parcel = new Parcel(genes[i]);
+                        final int rotation = rotations[i];
+                        final int[][][] shape = shapes.getShape(genes[i], rotation);
                         parcel.setShape(shape);
 
                         if (cargoSpace.canPlace(shape, x, y, z)) {
-                            ParcelPlacement placement = new ParcelPlacement(
+                            final ParcelPlacement placement = new ParcelPlacement(
                                     parcel,
                                     x,
                                     y,
                                     z
                             );
                             cargoSpace.placeParcel(placement);
-                            }
                         }
                     }
                 }
             }
         }
+    }
 
 
     public double[] calculateCenterOfMass() {
@@ -49,11 +54,11 @@ public class EquilibriumAndDistribution {
         double weightedSumY = 0.0;
         double weightedSumZ = 0.0;
 
-        List<ParcelPlacement> placements = cargoSpace.getPlacements();
+        final List<ParcelPlacement> placements = cargoSpace.getPlacements();
 
-        for (ParcelPlacement placement : placements) {
-            Parcel parcel = placement.getParcel();
-            double parcelVolume = parcel.getVolume(parcel.getType());
+        for (final ParcelPlacement placement : placements) {
+            final Parcel parcel = placement.getParcel();
+            final double parcelVolume = parcel.getVolume(parcel.getType());
             totalVolume += parcelVolume;
             weightedSumX += parcelVolume * placement.getX();
             weightedSumY += parcelVolume * placement.getY();
@@ -61,9 +66,9 @@ public class EquilibriumAndDistribution {
         }
 
         if (totalVolume != 0) {
-            double centerOfMassX = weightedSumX / totalVolume;
-            double centerOfMassY = weightedSumY / totalVolume;
-            double centerOfMassZ = weightedSumZ / totalVolume;
+            final double centerOfMassX = weightedSumX / totalVolume;
+            final double centerOfMassY = weightedSumY / totalVolume;
+            final double centerOfMassZ = weightedSumZ / totalVolume;
 
             return new double[]{centerOfMassX, centerOfMassY, centerOfMassZ};
         }
@@ -72,11 +77,11 @@ public class EquilibriumAndDistribution {
         return new double[]{0.0, 0.0, 0.0};
     }
 
-    public double calculateAverageCenterOfMass(){
-        double[] centerOfMass = calculateCenterOfMass();
-        double sum = centerOfMass[0] + centerOfMass[1] + centerOfMass[2];
-        return sum/3.0;
-    }*/
+    public double calculateAverageCenterOfMass() {
+        final double[] centerOfMass = calculateCenterOfMass();
+        final double sum = centerOfMass[0] + centerOfMass[1] + centerOfMass[2];
+        return sum / 3.0;
+    }
 
 
     // Method to calculate the distribution of parcels
@@ -94,27 +99,27 @@ public class EquilibriumAndDistribution {
     }
 
 
-    /*public static void main(String[] args){
+    public static void main(final String[] args) {
 
-        String[] genes = {"C", "C", "B", "B", "A", "A", "C", "A", "C", "B", "C", "C", "A", "C", "A", "A", "A", "C", "C", "B", "B", "A", "A", "B", "B", "C", "C", "A", "A", "C", "B","B", "B", "A", "B", "B", "C", "C", "C", "B", "A", "C","B", "B", "C", "C", "C", "A", "C", "C", "A", "A", "A", "B"};
-        int[] rotations = {0, 0, 4, 4, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0, 3, 2, 0, 0, 2, 1, 0, 1, 5, 1, 1, 4, 1, 0, 0, 0, 3, 1, 0, 1, 3, 0, 0, 0, 1, 0, 0, 1, 0, 1, 5};
+        final String[] genes = {"C", "C", "B", "B", "A", "A", "C", "A", "C", "B", "C", "C", "A", "C", "A", "A", "A", "C", "C", "B", "B", "A", "A", "B", "B", "C", "C", "A", "A", "C", "B", "B", "B", "A", "B", "B", "C", "C", "C", "B", "A", "C", "B", "B", "C", "C", "C", "A", "C", "C", "A", "A", "A", "B"};
+        final int[] rotations = {0, 0, 4, 4, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0, 3, 2, 0, 0, 2, 1, 0, 1, 5, 1, 1, 4, 1, 0, 0, 0, 3, 1, 0, 1, 3, 0, 0, 0, 1, 0, 0, 1, 0, 1, 5};
 
-        CargoSpace cargoSpace = new CargoSpace();
+        final CargoSpace cargoSpace = new CargoSpace();
 
-        EquilibriumAndDistribution equilibrium = new EquilibriumAndDistribution(cargoSpace, rotations, genes);
+        final EquilibriumAndDistribution equilibrium = new EquilibriumAndDistribution(cargoSpace, rotations, genes);
 
         equilibrium.fillContainer(cargoSpace, genes, rotations);
 
         // Calculate center of mass
-        double[] centerOfMass = equilibrium.calculateCenterOfMass();
+        final double[] centerOfMass = equilibrium.calculateCenterOfMass();
         System.out.println("Center of Mass: " + Arrays.toString(centerOfMass));
         // Calculate center of mass Average
-        double averageCenterOfMass = equilibrium.calculateAverageCenterOfMass();
+        final double averageCenterOfMass = equilibrium.calculateAverageCenterOfMass();
         System.out.println("Average Center of Mass: " + averageCenterOfMass);
         // Calculate distribution
-        double distribution = equilibrium.calculateDistribution();
+        final double distribution = equilibrium.calculateDistribution();
         System.out.println("Distribution: " + distribution);
-    }*/
+    }
 
 }
 
