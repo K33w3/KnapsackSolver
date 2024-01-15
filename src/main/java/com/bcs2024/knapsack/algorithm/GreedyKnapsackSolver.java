@@ -6,38 +6,37 @@ import com.bcs2024.knapsack.model.ParcelPlacement;
 import com.bcs2024.knapsack.renderer.HelloApplication;
 import com.bcs2024.knapsack.util.ShapesAndRotations;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
 public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
 
-    private CargoSpace cargoSpace;
+    private final CargoSpace cargoSpace = HelloApplication.cargoSpace;
     private final ShapesAndRotations shapes;
     private final String[] parcelSequence;
     private final double[] weights;
     private final double[] actualWeights;
-    public static int[][][] matrix;
-    private HelloApplication visualization;
+    //private final HelloApplication visualization;
 
     public GreedyKnapsackSolver() { // TODO
         weights = new double[4];
-        visualization = new HelloApplication();
+        // visualization = new HelloApplication();
 
         // FileUtil.writeInFile("resultsGtraining.txt", ""); TODO uncomment this line to
         // write to file
 
-        cargoSpace = new CargoSpace();
-        matrix = cargoSpace.getOccupied();
+        //cargoSpace = new CargoSpace();
+        //matrix = cargoSpace.getOccupied();
 
         shapes = new ShapesAndRotations();
-        parcelSequence = new String[] { "A", "B", "C" };
+        parcelSequence = new String[]{"A", "B", "C"};
 
-        Random random = new Random();
+        final Random random = new Random();
         for (int i = 0; i < 4; i++) {
             weights[i] = random.nextDouble();
         }
-        actualWeights = new double[] {
+
+        actualWeights = new double[]{
                 0.7934029214856616,
                 0.9831091831983482,
                 0.4224751952092841,
@@ -69,19 +68,19 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
                 for (int z = 0; z < cargoSpace.getOccupied()[0][0].length; z++) {
                     double highestWeight = Double.NEGATIVE_INFINITY;
 
-                    for (String parcelType : parcelSequence) {
-                        Parcel parcel = new Parcel(parcelType);
+                    for (final String parcelType : parcelSequence) {
+                        final Parcel parcel = new Parcel(parcelType);
 
                         for (int rotation = 0; rotation < shapes.rotationNum(parcelType); rotation++) {
-                            int[][][] shape = shapes.getShape(parcelType, rotation);
+                            final int[][][] shape = shapes.getShape(parcelType, rotation);
 
-                            if (cargoSpace.canPlace(shape, x, y, z)) {
-                                double perimeter = calculatePerimeter(parcel);
-                                double ratioVolume = calculateValueDensity(parcel);
-                                double volume = calculateVolume(parcel);
-                                int touchedPoints = touched(parcel, cargoSpace.getOccupied(), x, y, z);
+                            if (cargoSpace.canPlace(shape, x, y, z, cargoSpace.getOccupied())) {
+                                final double perimeter = calculatePerimeter(parcel);
+                                final double ratioVolume = calculateValueDensity(parcel);
+                                final double volume = calculateVolume(parcel);
+                                final int touchedPoints = touched(parcel, cargoSpace.getOccupied(), x, y, z);
                                 // System.out.println(touchedPoints);
-                                double weight = actualWeights[0] * perimeter + actualWeights[1] * ratioVolume
+                                final double weight = actualWeights[0] * perimeter + actualWeights[1] * ratioVolume
                                         + actualWeights[2] * volume + actualWeights[3] * touchedPoints;
 
                                 if (weight > highestWeight) {
@@ -98,8 +97,8 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
 
                     // System.out.println("X: " + bestX + " Y : " + bestY + " Z :" + bestZ);
 
-                    int[][][] shape = shapes.getShape(bestParcel, rotationMem);
-                    Parcel parcel = new Parcel(bestParcel);
+                    final int[][][] shape = shapes.getShape(bestParcel, rotationMem);
+                    final Parcel parcel = new Parcel(bestParcel);
                     parcel.setShape(shape);
                     parcel.setType(bestParcel);
 
@@ -127,76 +126,81 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
                                 count += 5;
                             }
                         }
-                        ParcelPlacement placement = new ParcelPlacement(parcel, bestX, bestY, bestZ);
-                        cargoSpace.placeParcel(placement);
+                        final ParcelPlacement placement = new ParcelPlacement(parcel, lastX, lastY, lastZ);
+
+                        System.out.println("placement: " + Arrays.deepToString(placement.getShape()));
+
+                        cargoSpace.placeParcel(shape, lastX, lastY, lastZ, cargoSpace.getOccupied());
                     }
                 }
             }
         }
 
-        // for (int[][] layer : cargoSpace.getOccupied()) {
-        // for (int j = 0; j < cargoSpace.getOccupied()[0].length; j++) {
-        // for (int k = 0; k < cargoSpace.getOccupied()[0][0].length; k++) {
-        // System.out.print(layer[j][k]);
-        // }
-        // System.out.println();
-        // }
-        // System.out.println();
-        // }
+        for (final int[][] layer : cargoSpace.getOccupied()) {
+            for (int j = 0; j < cargoSpace.getOccupied()[0].length; j++) {
+                for (int k = 0; k < cargoSpace.getOccupied()[0][0].length; k++) {
+                    System.out.print(layer[j][k]);
+                }
+                System.out.println();
+            }
+
+            System.out.println();
+        }
 
         // System.out.println("A: " + countA + " B: " + countB + " C: " + countC);
         System.out.println(count);
         // visualization.setSolution(matrix);
-        visualization.show();
+        // visualization.show();
 
-    // System.out.println(Arrays.toString(actualWeights));
-    // try {
-    // writer.write(Arrays.toString(weights) + "\n");
-    // writer.write("Count: " + count + "\n");
-    // writer.close();
-    // } catch (IOException e) {
-    // System.out.print(e);
-    // }
-    System.out.println("A: "+countA+" B: "+countB+" C: "+countC);System.out.println(count);
+        // System.out.println(Arrays.toString(actualWeights));
+        // try {
+        // writer.write(Arrays.toString(weights) + "\n");
+        // writer.write("Count: " + count + "\n");
+        // writer.close();
+        // } catch (IOException e) {
+        // System.out.print(e);
+        // }
+        System.out.println("A: " + countA + " B: " + countB + " C: " + countC);
+        System.out.println(count);
 
     }
 
     @Override
     public void solve() {
-            this.putShapes();
-            System.out.println(Arrays.deepToString(getCargoSpace().getOccupied()));
+        this.putShapes();
+        System.out.println(Arrays.deepToString(getCargoSpace().getOccupied()));
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         for (int i = 0; i < 10; i++) {
-            GreedyKnapsackSolver solver = new GreedyKnapsackSolver();
+            final GreedyKnapsackSolver solver = new GreedyKnapsackSolver();
             solver.putShapes();
         }
     }
 
-    public double calculatePerimeter(Parcel parcel) {
+    public double calculatePerimeter(final Parcel parcel) {
         return parcel.getHeight();
     }
 
-    public double calculateVolume(Parcel parcel) {
+    public double calculateVolume(final Parcel parcel) {
         return parcel.getHeight() * parcel.getLength() * parcel.getWidth();
     }
 
-    public double calculateValueDensity(Parcel parcel) {
-        double volume = parcel.getLength() * parcel.getWidth() * parcel.getHeight();
+    public double calculateValueDensity(final Parcel parcel) {
+        final double volume = parcel.getLength() * parcel.getWidth() * parcel.getHeight();
         return parcel.getValue() / volume;
     }
 
-    public int touched(Parcel parcel, int[][][] matrix, int posX, int posY, int posZ) {
-        int[][][] shape = parcel.getShape();
+    public int touched(final Parcel parcel, final int[][][] matrix, final int posX, final int posY, final int posZ) {
+        final int[][][] shape = parcel.getShape();
         int touchedPoints = 0;
 
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[0].length; j++) {
                 for (int k = 0; k < shape[0][0].length; k++) {
-                    int x = posX + i;
-                    int y = posY + j;
-                    int z = posZ + k;
+                    final int x = posX + i;
+                    final int y = posY + j;
+                    final int z = posZ + k;
 
                     // Check if the current point is on the boundary of the matrix
                     if (x == 0 || y == 0 || z == 0 || x == matrix.length - 1 || y == matrix[0].length - 1
@@ -212,9 +216,9 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
                                 if (dx == 0 && dy == 0 && dz == 0)
                                     continue; // Skip the current point
 
-                                int nx = x + dx;
-                                int ny = y + dy;
-                                int nz = z + dz;
+                                final int nx = x + dx;
+                                final int ny = y + dy;
+                                final int nz = z + dz;
 
                                 // Ensure neighboring indices are within bounds
                                 if (nx >= 0 && ny >= 0 && nz >= 0 && nx < matrix.length && ny < matrix[0].length

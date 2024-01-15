@@ -36,13 +36,12 @@ public class RenderCargo extends Application {
         cargoSpaceBox.setMaterial(new PhongMaterial(Color.TRANSPARENT));
         cargoSpaceBox.getTransforms().addAll(rotateX, rotateY);
 
-        // Assuming cargoSpace.getOccupied() returns a 3D boolean array where true means the cell is occupied
-        int[][][] occupied = cargoSpace.getOccupied(); // TODO
+        int[][][] occupied = cargoSpace.getOccupied();
 
         for (int x = 0; x < occupied.length; x++) {
             for (int y = 0; y < occupied[0].length; y++) {
                 for (int z = 0; z < occupied[0][0].length; z++) {
-                    if (occupied[x][y][z] != 0) { // Assuming non-zero indicates an occupied cell
+                    if (occupied[x][y][z] != 0) {
                         Box cell = new Box(sizeMultiplier, sizeMultiplier, sizeMultiplier);
                         cell.setTranslateX(x * sizeMultiplier);
                         cell.setTranslateY(y * sizeMultiplier);
