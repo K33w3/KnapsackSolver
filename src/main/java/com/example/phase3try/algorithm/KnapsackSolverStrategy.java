@@ -1,7 +1,7 @@
-package com.bcs2024.knapsack.algorithm;
+package com.example.phase3try.algorithm;
 
-import com.bcs2024.knapsack.model.CargoSpace;
-import com.bcs2024.knapsack.model.Parcel;
+import com.example.phase3try.model.CargoSpace;
+import com.example.phase3try.model.Parcel;
 
 import java.util.List;
 

@@ -1,6 +1,8 @@
-module com.bcs2024.knapsack {
+module com.example.phase3try {
     requires javafx.controls;
     requires javafx.fxml;
 
-    opens com.bcs2024.knapsack.renderer to javafx.graphics;
+
+    opens com.example.phase3try to javafx.fxml;
+    exports com.example.phase3try;
 }
