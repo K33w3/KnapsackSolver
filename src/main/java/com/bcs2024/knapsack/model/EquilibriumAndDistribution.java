@@ -27,10 +27,9 @@ public class EquilibriumAndDistribution {
                 for (int z = 0; z < matrix[0][0].length; z++) {
                     for (int i = 0; i < genes.length; i++) {
 
-                        final Parcel parcel = new Parcel(genes[i]);
                         final int rotation = rotations[i];
                         final int[][][] shape = shapes.getShape(genes[i], rotation);
-                        parcel.setShape(shape);
+                        final Parcel parcel = new Parcel(genes[i], shape);
 
                         if (cargoSpace.canPlace(shape, x, y, z)) {
                             final ParcelPlacement placement = new ParcelPlacement(
@@ -58,7 +57,7 @@ public class EquilibriumAndDistribution {
 
         for (final ParcelPlacement placement : placements) {
             final Parcel parcel = placement.getParcel();
-            final double parcelVolume = parcel.getVolume(parcel.getType());
+            final double parcelVolume = parcel.getVolume();
             totalVolume += parcelVolume;
             weightedSumX += parcelVolume * placement.getX();
             weightedSumY += parcelVolume * placement.getY();

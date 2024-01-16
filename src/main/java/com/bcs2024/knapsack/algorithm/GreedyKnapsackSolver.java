@@ -20,13 +20,8 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
 
     public GreedyKnapsackSolver() { // TODO
         weights = new double[4];
-        // visualization = new HelloApplication();
 
         // FileUtil.writeInFile("resultsGtraining.txt", ""); TODO uncomment this line to
-        // write to file
-
-        //cargoSpace = new CargoSpace();
-        //matrix = cargoSpace.getOccupied();
 
         shapes = new ShapesAndRotations();
         parcelSequence = new String[]{"A", "B", "C"};
@@ -74,10 +69,10 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
                         for (int rotation = 0; rotation < shapes.rotationNum(parcelType); rotation++) {
                             final int[][][] shape = shapes.getShape(parcelType, rotation);
 
-                            if (cargoSpace.canPlace(shape, x, y, z, cargoSpace.getOccupied())) {
-                                final double perimeter = calculatePerimeter(parcel);
-                                final double ratioVolume = calculateValueDensity(parcel);
-                                final double volume = calculateVolume(parcel);
+                            if (cargoSpace.canPlace(shape, x, y, z)) {
+                                final double perimeter = parcel.calculateSurfaceArea();
+                                final double ratioVolume = parcel.getValueDensity();
+                                final double volume = parcel.getVolume();
                                 final int touchedPoints = touched(parcel, cargoSpace.getOccupied(), x, y, z);
                                 // System.out.println(touchedPoints);
                                 final double weight = actualWeights[0] * perimeter + actualWeights[1] * ratioVolume
@@ -98,9 +93,11 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
                     // System.out.println("X: " + bestX + " Y : " + bestY + " Z :" + bestZ);
 
                     final int[][][] shape = shapes.getShape(bestParcel, rotationMem);
-                    final Parcel parcel = new Parcel(bestParcel);
-                    parcel.setShape(shape);
+                    final Parcel parcel = new Parcel(bestParcel, shape);
                     parcel.setType(bestParcel);
+
+                    System.out.println("shape: " + Arrays.deepToString(shape));
+                    System.out.println("parcel: " + Arrays.deepToString(parcel.getShape()));
 
                     if (bestX == lastX && bestY == lastY && bestZ == lastZ) {
                         isNewPosition = false;
@@ -126,11 +123,10 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
                                 count += 5;
                             }
                         }
-                        final ParcelPlacement placement = new ParcelPlacement(parcel, lastX, lastY, lastZ);
 
-                        System.out.println("placement: " + Arrays.deepToString(placement.getShape()));
-
-                        cargoSpace.placeParcel(shape, lastX, lastY, lastZ, cargoSpace.getOccupied());
+                        final ParcelPlacement placement = new ParcelPlacement(parcel, bestX, bestY, bestZ);
+                        placement.setShape(shape);
+                        cargoSpace.placeParcel(placement);
                     }
                 }
             }
@@ -149,8 +145,6 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
 
         // System.out.println("A: " + countA + " B: " + countB + " C: " + countC);
         System.out.println(count);
-        // visualization.setSolution(matrix);
-        // visualization.show();
 
         // System.out.println(Arrays.toString(actualWeights));
         // try {
@@ -178,7 +172,7 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
         }
     }
 
-    public double calculatePerimeter(final Parcel parcel) {
+    /*public double calculatePerimeter(final Parcel parcel) {
         return parcel.getHeight();
     }
 
@@ -189,7 +183,7 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
     public double calculateValueDensity(final Parcel parcel) {
         final double volume = parcel.getLength() * parcel.getWidth() * parcel.getHeight();
         return parcel.getValue() / volume;
-    }
+    }*/
 
     public int touched(final Parcel parcel, final int[][][] matrix, final int posX, final int posY, final int posZ) {
         final int[][][] shape = parcel.getShape();
