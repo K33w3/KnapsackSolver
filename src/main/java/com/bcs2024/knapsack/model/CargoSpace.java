@@ -46,19 +46,18 @@ public class CargoSpace {
     }
 
     public void placeParcel(final ParcelPlacement placement) {
-        for (int i = 0; i < placement.getShape().length; i++) {
-            for (int j = 0; j < placement.getShape()[0].length; j++) {
-                for (int k = 0; k < placement.getShape()[0][0].length; k++) {
-                    if (placement.getShape()[i][j][k] != 0) {
+        final int[][][] shape = placement.getShape();
+
+        for (int i = 0; i < shape.length; i++) {
+            for (int j = 0; j < shape[0].length; j++) {
+                for (int k = 0; k < shape[0][0].length; k++) {
+                    if (shape[i][j][k] != 0) {
                         final int x = placement.getX() + k;
                         final int y = placement.getY() + j;
                         final int z = placement.getZ() + i;
 
-                        // Check if indices are within the bounds
-                        if (x >= 0 && x < (int) (this.width * 2) && y >= 0 && y < (int) (this.height * 2) && z >= 0 && z < (int) (this.length * 2)) {
-                            this.occupied[x][y][z] = placement.getShape()[i][j][k];
-                            filledSlotsCount++;
-                        }
+                        this.occupied[x][y][z] = shape[i][j][k];
+                        filledSlotsCount++;
                     }
                 }
             }
@@ -66,40 +65,6 @@ public class CargoSpace {
 
         placements.add(placement);
     }
-
-    public boolean canPlace(final int[][][] shape, final int startX, final int startY, final int startZ, final int[][][] destination) {
-        for (int i = 0; i < shape.length; i++) {
-            for (int j = 0; j < shape[0].length; j++) {
-                for (int k = 0; k < shape[0][0].length; k++) {
-                    if (shape[i][j][k] != 0) {
-                        final int x = startX + k;
-                        final int y = startY + j;
-                        final int z = startZ + i;
-                        if (x >= (int) (this.width * 2) || y >= (int) (this.height * 2) || z >= (int) (this.length * 2) || destination[x][y][z] != -1) {
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    public void placeParcel(final int[][][] shape, final int startX, final int startY, final int startZ, final int[][][] destination) {
-        for (int i = 0; i < shape.length; i++) {
-            for (int j = 0; j < shape[0].length; j++) {
-                for (int k = 0; k < shape[0][0].length; k++) {
-                    if (shape[i][j][k] != 0) {
-                        final int x = startX + k;
-                        final int y = startY + j;
-                        final int z = startZ + i;
-                        destination[x][y][z] = shape[i][j][k];
-                    }
-                }
-            }
-        }
-    }
-
 
     public double getLength() {
         return length;

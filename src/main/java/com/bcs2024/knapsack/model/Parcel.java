@@ -4,81 +4,86 @@ import com.bcs2024.knapsack.util.ShapesAndRotations;
 
 public class Parcel {
 
-  private double length, width, height, value;
-  private String type;
-  private int[][][] shape;
-  private ShapesAndRotations shapes;
+    private int value;
+    private String type;
+    private int[][][] shape;
 
-  public Parcel(String type) {
-    shapes = new ShapesAndRotations();
-    this.type = type;
-    this.shape = shapes.getShape(type, 0);
-    initializeParcel();
-  }
-
-  private void initializeParcel() {
-    switch (type) {
-      case "A" -> {
-        this.length = 1.0;
-        this.width = 1.0;
-        this.height = 2.0;
-        this.value = 3;
-      }
-      case "B" -> {
-        this.length = 1.0;
-        this.width = 1.5;
-        this.height = 2.0;
-        this.value = 4;
-      }
-      case "C" -> {
-        this.length = 1.5;
-        this.width = 1.5;
-        this.height = 1.5;
-        this.value = 5;
-      }
-      case "L", "P", "T" -> {
-        this.length = 0.5;
-        this.width = 0.5;
-        this.height = 0.5;
-        this.value = 0;
-      }
-      default -> System.out.println("Invalid type");
+    public Parcel(final String type, final int[][][] shape) {
+        this.type = type;
+        this.shape = shape;
+        initializeParcel();
     }
-  }
 
-  public double getVolume(String type) {
-    return this.length * this.height * this.width;
-  }
+    public Parcel(final String type) {
+        this.type = type;
+        this.shape = new ShapesAndRotations().getShape(type, 0);
+        initializeParcel();
+    }
 
-  public int[][][] getShape() {
-    return shape;
-  }
+    private void initializeParcel() {
+        switch (type) {
+            case "A", "L" -> this.value = 3;
+            case "B", "P" -> this.value = 4;
+            case "C", "T" -> this.value = 5;
+            default -> System.out.println("Invalid type");
+        }
+    }
 
-  public double getLength() {
-    return length;
-  }
+    public int[][][] getShape() {
+        return shape;
+    }
 
-  public double getWidth() {
-    return width;
-  }
+    public double getValue() {
+        return value;
+    }
 
-  public double getHeight() {
-    return height;
-  }
+    public String getType() {
+        return type;
+    }
 
-  public double getValue() {
-    return value;
-  }
+    public void setShape(final int[][][] shape) {
+        this.shape = shape;
+    }
 
-  public String getType() {
-    return type;
-  }
+    public void setType(final String type) {
+        this.type = type;
+    }
 
-  public void setShape(int[][][] shape) {
-    this.shape = shape;
-  }
+    public double getVolume() {
+        final double volume = switch (type) {
+            case "A" -> 1.0 * 1.0 * 2.0;
+            case "B" -> 1.0 * 1.5 * 2.0;
+            case "C" -> 1.5 * 1.5 * 1.5;
+            case "L", "P", "T" ->
+                // Dimensions for pentomino shapes (L, P, T): 5 cubes of 0.5 x 0.5 x 0.5
+                    5 * (0.5 * 0.5 * 0.5);
+            default -> throw new IllegalArgumentException("Unknown parcel type: " + type);
+        };
 
-  public void setType(String type) {
-    this.type = type;
-  }
+        return volume;
+    }
+
+    public double getValueDensity() {
+        final double valueDensity = switch (type) {
+            case "A" -> 1.0 / 2.0;
+            case "B" -> 1.5 / 2.0;
+            case "C" -> 1.5 / 1.5;
+            case "L", "P", "T" -> 5 * (0.5 / 0.5);
+            default -> throw new IllegalArgumentException("Unknown parcel type: " + type);
+        };
+
+        return valueDensity;
+    }
+
+    public double calculateSurfaceArea() {
+        // Assuming shape array dimensions represent length, width, and height
+        // and the parcel is a rectangular prism
+        final int length = shape.length;
+        final int width = shape[0].length;
+        final int height = shape[0][0].length;
+
+        // Calculate the surface area of the parcel
+        final double surfaceArea = 2.0 * (length * width + width * height + height * length);
+        return surfaceArea;
+    }
 }
