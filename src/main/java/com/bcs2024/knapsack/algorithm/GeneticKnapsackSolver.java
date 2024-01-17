@@ -12,18 +12,31 @@ import java.util.Random;
 
 public class GeneticKnapsackSolver {
 
-    private int POPULATION_SIZE = 100;
     private final double MUTATION_RATE = 0.3;
     private final double CROSSOVER_RATE = 0.8;
     private final int MAX_GENERATIONS = 2;
     private final int GENE_LENGTH = 54;
+    private final Random random = new Random();
+    private final int POPULATION_SIZE = 100;
     private List<Chromosome> population;
     private int[][][] matrix;
-    private final Random random = new Random();
     private int[] bestSolutionRotation;
     private String[] bestSolutionGene;
 
-    public void solve(final CargoSpace cargoSpace, final List<Parcel> parcels) {
+    public static void main(final String[] args) {
+        final CargoSpace cargoSpace = new CargoSpace();
+
+        final List<Parcel> parcels = new ArrayList<>();
+        parcels.add(new Parcel("A"));
+        parcels.add(new Parcel("B"));
+        parcels.add(new Parcel("C"));
+
+        final GeneticKnapsackSolver solver = new GeneticKnapsackSolver();
+
+        solver.solve();
+    }
+
+    public void solve() {
         bestSolutionGene = new String[GENE_LENGTH];
         bestSolutionRotation = new int[GENE_LENGTH];
 
@@ -32,12 +45,7 @@ public class GeneticKnapsackSolver {
             evaluateFitness(population);
             crossover();
             mutation();
-            System.out.println(
-                    "Generation: " +
-                            i +
-                            " done. -------------------------------------------------------------------------------" +
-                            "\n"
-            );
+            System.out.println("Generation: " + i + " done. -------------------------------------------------------------------------------" + "\n");
         }
         System.out.println("Rotation: " + Arrays.toString(bestSolutionRotation));
         System.out.println("Genes: " + Arrays.toString(bestSolutionGene));
@@ -67,18 +75,13 @@ public class GeneticKnapsackSolver {
                     for (int z = 0; z < matrix[0][0].length; z++) {
                         for (int i = 0; i < chromo.getGenes().length; i++) {
                             final String gene = chromo.getGenes()[i];
-                            final Parcel parcel = new Parcel(gene);
                             final int rotation = chromo.getRotationFromGene(i);
                             final int[][][] shape = shapes.getShape(gene, rotation);
-                            parcel.setShape(shape);
+                            final Parcel parcel = new Parcel(gene, shape);
 
                             if (localCargoSpace.canPlace(shape, x, y, z)) {
-                                final ParcelPlacement placement = new ParcelPlacement(
-                                        parcel,
-                                        x,
-                                        y,
-                                        z
-                                );
+                                final ParcelPlacement placement = new ParcelPlacement(parcel, x, y, z);
+
                                 localCargoSpace.placeParcel(placement);
 
                                 switch (gene) {
@@ -91,6 +94,7 @@ public class GeneticKnapsackSolver {
                     }
                 }
             }
+
             chromo.setFitness(totalValue);
             bestSolutionRotation = chromo.getRotations();
             bestSolutionGene = chromo.getGenes();
@@ -104,15 +108,11 @@ public class GeneticKnapsackSolver {
         final List<Chromosome> tournamentParticipants = new ArrayList<>();
 
         if (tournamentSize > population.size() || tournamentSize < 1) {
-            throw new IllegalArgumentException(
-                    "Tournament size should be between 1 and population size."
-            );
+            throw new IllegalArgumentException("Tournament size should be between 1 and population size.");
         }
 
         for (int i = 0; i < tournamentSize; i++) {
-            tournamentParticipants.add(
-                    population.get(random.nextInt(population.size()))
-            );
+            tournamentParticipants.add(population.get(random.nextInt(population.size())));
         }
 
         Chromosome winner = tournamentParticipants.get(0);
@@ -124,6 +124,18 @@ public class GeneticKnapsackSolver {
 
         return winner;
     }
+
+    // private Chromosome repair(Chromosome chromosome) {
+    //   int currentPopulationSize = population.size();
+    //   int tournamentSize = Math.min(2, currentPopulationSize); // Adjust based on your requirement
+
+    //   while (true) {
+    //     Chromosome newChromo = tournamentSelection(tournamentSize);
+    //     if (isValid(newChromo)) {
+    //       return newChromo;
+    //     }
+    //   }
+    // }
 
     private void crossover() {
         final List<Chromosome> newPopulation = new ArrayList<>();
@@ -188,18 +200,6 @@ public class GeneticKnapsackSolver {
         population = newPopulation;
     }
 
-    // private Chromosome repair(Chromosome chromosome) {
-    //   int currentPopulationSize = population.size();
-    //   int tournamentSize = Math.min(2, currentPopulationSize); // Adjust based on your requirement
-
-    //   while (true) {
-    //     Chromosome newChromo = tournamentSelection(tournamentSize);
-    //     if (isValid(newChromo)) {
-    //       return newChromo;
-    //     }
-    //   }
-    // }
-
     private void mutation() {
         for (final Chromosome chromo : population) {
             if (random.nextDouble() < MUTATION_RATE) {
@@ -210,9 +210,7 @@ public class GeneticKnapsackSolver {
                 chromo.getGenes()[index] = newType;
 
                 final ShapesAndRotations shapesAndRotations = new ShapesAndRotations();
-                final int newRotation = random.nextInt(
-                        shapesAndRotations.rotationNum(newType)
-                );
+                final int newRotation = random.nextInt(shapesAndRotations.rotationNum(newType));
                 chromo.getRotations()[index] = newRotation;
             }
         }
@@ -246,18 +244,5 @@ public class GeneticKnapsackSolver {
         }
 
         return totalValue > 0;
-    }
-
-    public static void main(final String[] args) {
-        final CargoSpace cargoSpace = new CargoSpace();
-
-        final List<Parcel> parcels = new ArrayList<>();
-        parcels.add(new Parcel("A"));
-        parcels.add(new Parcel("B"));
-        parcels.add(new Parcel("C"));
-
-        final GeneticKnapsackSolver solver = new GeneticKnapsackSolver();
-
-        solver.solve(cargoSpace, parcels);
     }
 }

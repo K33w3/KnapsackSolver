@@ -8,23 +8,82 @@ public class Parcel {
     private String type;
     private int[][][] shape;
 
+    private int id;
+
     public Parcel(final String type, final int[][][] shape) {
         this.type = type;
         this.shape = shape;
-        initializeParcel();
+        initializeParcelByType();
+    }
+
+    public Parcel(final int id, final int[][][] shape) {
+        this.id = id;
+        this.shape = shape;
+        initializeParcelById();
     }
 
     public Parcel(final String type) {
         this.type = type;
         this.shape = new ShapesAndRotations().getShape(type, 0);
-        initializeParcel();
+        initializeParcelByType();
     }
 
-    private void initializeParcel() {
+    private void initializeParcelByType() {
         switch (type) {
-            case "A", "L" -> this.value = 3;
-            case "B", "P" -> this.value = 4;
-            case "C", "T" -> this.value = 5;
+            case "A" -> {
+                this.value = 3;
+                this.id = 1;
+            }
+            case "B" -> {
+                this.value = 4;
+                this.id = 2;
+            }
+            case "C" -> {
+                this.value = 5;
+                this.id = 3;
+            }
+            case "L" -> {
+                this.value = 3;
+                this.id = 4;
+            }
+            case "P" -> {
+                this.value = 4;
+                this.id = 5;
+            }
+            case "T" -> {
+                this.value = 5;
+                this.id = 6;
+            }
+            default -> System.out.println("Invalid type");
+        }
+    }
+
+    private void initializeParcelById() {
+        switch (id) {
+            case 1 -> {
+                this.value = 3;
+                this.type = "A";
+            }
+            case 2 -> {
+                this.value = 4;
+                this.type = "B";
+            }
+            case 3 -> {
+                this.value = 5;
+                this.type = "C";
+            }
+            case 4 -> {
+                this.value = 3;
+                this.type = "L";
+            }
+            case 5 -> {
+                this.value = 4;
+                this.type = "P";
+            }
+            case 6 -> {
+                this.value = 5;
+                this.type = "T";
+            }
             default -> System.out.println("Invalid type");
         }
     }
@@ -33,7 +92,7 @@ public class Parcel {
         return shape;
     }
 
-    public double getValue() {
+    public int getValue() {
         return value;
     }
 
@@ -47,6 +106,10 @@ public class Parcel {
 
     public void setType(final String type) {
         this.type = type;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public double getVolume() {

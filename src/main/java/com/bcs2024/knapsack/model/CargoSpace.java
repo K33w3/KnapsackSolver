@@ -5,17 +5,17 @@ import java.util.List;
 
 public class CargoSpace {
 
-    private final double length = 16.5;
-    private final double width = 2.5;
-    private final double height = 4;
+    public static final double length = 16.5 * 2;
+    public static final double width = 2.5 * 2;
+    public static final double height = 4 * 2;
     private final List<ParcelPlacement> placements = new ArrayList<>();
     private int[][][] occupied;
     private int filledSlotsCount = 0;
 
     public CargoSpace() {
-        final int x = (int) (width * 2);
-        final int y = (int) (height * 2);
-        final int z = (int) (length * 2);
+        final int x = (int) (width);
+        final int y = (int) (height);
+        final int z = (int) (length);
         occupied = new int[x][y][z];
 
         for (int i = 0; i < x; i++) {
@@ -35,7 +35,7 @@ public class CargoSpace {
                         final int x = startX + k;
                         final int y = startY + j;
                         final int z = startZ + i;
-                        if (x >= (int) (this.width * 2) || y >= (int) (this.height * 2) || z >= (int) (this.length * 2) || occupied[x][y][z] != -1) {
+                        if (x >= (int) (width) || y >= (int) (height) || z >= (int) (length) || occupied[x][y][z] != -1) {
                             return false;
                         }
                     }
@@ -66,6 +66,21 @@ public class CargoSpace {
         placements.add(placement);
     }
 
+    public void placeParcel(final int[][][] shape, final int startX, final int startY, final int startZ, final int[][][] destination) { // TODO
+        for (int i = 0; i < shape.length; i++) {
+            for (int j = 0; j < shape[0].length; j++) {
+                for (int k = 0; k < shape[0][0].length; k++) {
+                    if (shape[i][j][k] != 0) {
+                        final int x = startX + k;
+                        final int y = startY + j;
+                        final int z = startZ + i;
+                        destination[x][y][z] = shape[i][j][k];
+                    }
+                }
+            }
+        }
+    }
+    
     public double getLength() {
         return length;
     }
