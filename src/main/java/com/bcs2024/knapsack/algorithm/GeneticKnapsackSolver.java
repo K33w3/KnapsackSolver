@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class GeneticKnapsackSolver {
 
-    private int POPULATION_SIZE = 100;
+    private final int POPULATION_SIZE = 100;
     private final double MUTATION_RATE = 0.3;
     private final double CROSSOVER_RATE = 0.8;
     private final int MAX_GENERATIONS = 2;
@@ -56,10 +56,12 @@ public class GeneticKnapsackSolver {
         final ShapesAndRotations shapes = new ShapesAndRotations();
 
         for (final Chromosome chromo : population) {
-            int totalValue = 0; // Reset totalValue for each chromosome
-            final CargoSpace localCargoSpace = new CargoSpace(); // Create a new instance of CargoSpace
+            int totalValue = 0;
+            int countA = 0;
+            int countB = 0;
+            int countC = 0;
+            final CargoSpace localCargoSpace = new CargoSpace();
 
-            // Assume cargoSpace.getOccupied() initializes the matrix for CargoSpace
             matrix = localCargoSpace.getOccupied();
 
             for (int x = 0; x < matrix.length; x++) {
@@ -73,18 +75,21 @@ public class GeneticKnapsackSolver {
                             parcel.setShape(shape);
 
                             if (localCargoSpace.canPlace(shape, x, y, z)) {
-                                final ParcelPlacement placement = new ParcelPlacement(
-                                        parcel,
-                                        x,
-                                        y,
-                                        z
-                                );
-                                localCargoSpace.placeParcel(placement);
+                                localCargoSpace.placeParcel(shape, x, y, z, matrix);
 
                                 switch (gene) {
-                                    case "A" -> totalValue += 3;
-                                    case "B" -> totalValue += 4;
-                                    case "C" -> totalValue += 5;
+                                    case "A" -> {
+                                        totalValue += 3;
+                                        countA++;
+                                    }
+                                    case "B" -> {
+                                        totalValue += 4;
+                                        countB++;
+                                    }
+                                    case "C" -> {
+                                        totalValue += 5;
+                                        countC++;
+                                    }
                                 }
                             }
                         }
@@ -97,6 +102,7 @@ public class GeneticKnapsackSolver {
             System.out.println("Chromosome Fitness: " + totalValue);
             System.out.println(Arrays.toString(chromo.getRotations()));
             System.out.println(Arrays.toString(chromo.getGenes()));
+            System.out.println("A: " + countA + " B: " + countB + " C: " + countC);
         }
     }
 

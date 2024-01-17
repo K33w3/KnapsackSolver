@@ -33,7 +33,7 @@ public class HelloApplication extends Application {
         height = (int) (cargoSpace.getHeight() * 2) * 30;
         width = (int) (cargoSpace.getWidth() * 2) * 30;
         solution = cargoSpace.getOccupied(); //GreedyKnapsackSolver.getSolution();
-        solution = DancingLinks.field;
+//        solution = DancingLinks.field;
     }
 
     @Override
