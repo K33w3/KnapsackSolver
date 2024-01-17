@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 public class UI extends Application {
 
-    public static CargoSpace getCargoSpace = new CargoSpace();
+    public static CargoSpace cargoSpace = new CargoSpace();
     private double anchorX, anchorY;
     private double anchorAngleX;
     private double anchorAngleY;
@@ -27,9 +27,9 @@ public class UI extends Application {
     private int width;
 
     public UI() {
-        length = (int) (getCargoSpace.getLength()) * 30;
-        height = (int) (getCargoSpace.getHeight()) * 30;
-        width = (int) (getCargoSpace.getWidth()) * 30;
+        length = (int) (cargoSpace.getLength()) * 30;
+        height = (int) (cargoSpace.getHeight()) * 30;
+        width = (int) (cargoSpace.getWidth()) * 30;
 //        solution = GreedyKnapsackSolver.matrix;
         //solution = cargoSpace.getOccupied();
 //        solution = Experiment.field;
@@ -56,22 +56,22 @@ public class UI extends Application {
     }
 
     private void drawContainer() {
-        for (int i = 0; i < getCargoSpace.getOccupied().length; i++) {
-            for (int j = 0; j < getCargoSpace.getOccupied()[0].length; j++) {
-                for (int k = 0; k < getCargoSpace.getOccupied()[0][0].length; k++) {
-                    if (getCargoSpace.getOccupied()[i][j][k] != -1) {
-                        final double boxWidth = width / getCargoSpace.getOccupied().length;
-                        final double boxHeight = height / getCargoSpace.getOccupied()[0].length;
-                        final double boxDepth = length / getCargoSpace.getOccupied()[0][0].length;
+        for (int i = 0; i < cargoSpace.getOccupied().length; i++) {
+            for (int j = 0; j < cargoSpace.getOccupied()[0].length; j++) {
+                for (int k = 0; k < cargoSpace.getOccupied()[0][0].length; k++) {
+                    if (cargoSpace.getOccupied()[i][j][k] != -1) {
+                        final double boxWidth = width / cargoSpace.getOccupied().length;
+                        final double boxHeight = height / cargoSpace.getOccupied()[0].length;
+                        final double boxDepth = length / cargoSpace.getOccupied()[0][0].length;
 
                         box = new Box(boxWidth, boxHeight, boxDepth);
 
-                        box.translateXProperty().set((i - getCargoSpace.getOccupied().length / 2) * boxWidth);
-                        box.translateYProperty().set((j - getCargoSpace.getOccupied()[0].length / 2) * boxHeight);
-                        box.translateZProperty().set((k - getCargoSpace.getOccupied()[0][0].length / 2) * boxDepth);
+                        box.translateXProperty().set((i - cargoSpace.getOccupied().length / 2) * boxWidth);
+                        box.translateYProperty().set((j - cargoSpace.getOccupied()[0].length / 2) * boxHeight);
+                        box.translateZProperty().set((k - cargoSpace.getOccupied()[0][0].length / 2) * boxDepth);
 
                         final PhongMaterial material = new PhongMaterial();
-                        material.setDiffuseColor(getColorById(getCargoSpace.getOccupied()[i][j][k]));
+                        material.setDiffuseColor(getColorById(cargoSpace.getOccupied()[i][j][k]));
                         box.setMaterial(material);
                         group.getChildren().add(box);
                     }

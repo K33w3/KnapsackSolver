@@ -23,7 +23,7 @@ public class DancingLinks {
     public int countB = 0;
     public int countC = 0;
 
-    private CargoSpace cargoSpace = UI.getCargoSpace;
+    private CargoSpace cargoSpace = UI.cargoSpace;
 
     public DancingLinks(final int columns) {
         answer = new Stack<>();
@@ -107,13 +107,12 @@ public class DancingLinks {
 //            if (DLSearch.totalValue >= 1190){
             if (root.R == root) {
                 stop = true;
-                final UI ui = new UI();
-                ui.show();
+                //final UI ui = new UI(); TODO
+                //ui.show(); TODO
                 return;
             }
 
             cargoSpace.setOccupied(new int[width][height][length]);
-            //cargoSpace.getOccupied() = new int[width][height][length]; TODO
         }
 
         Header head = (Header) root.R;

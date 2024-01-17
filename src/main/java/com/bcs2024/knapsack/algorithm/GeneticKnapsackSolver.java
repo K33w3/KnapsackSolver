@@ -2,6 +2,7 @@ package com.bcs2024.knapsack.algorithm;
 
 import com.bcs2024.knapsack.model.CargoSpace;
 import com.bcs2024.knapsack.model.Parcel;
+import com.bcs2024.knapsack.renderer.UI;
 import com.bcs2024.knapsack.util.ShapesAndRotations;
 
 import java.util.ArrayList;
@@ -18,18 +19,21 @@ public class GeneticKnapsackSolver {
     private final Random random = new Random();
     private final int POPULATION_SIZE = 100;
     private List<Chromosome> population;
-    private int[][][] matrix;
+    //private int[][][] matrix;
     private int[] bestSolutionRotation;
     private String[] bestSolutionGene;
 
+    private Chromosome bestChromosome;
+
+    private CargoSpace cargoSpace = UI.cargoSpace;
+
     public static void main(final String[] args) {
-        final List<Parcel> parcels = new ArrayList<>();
+        /*final List<Parcel> parcels = new ArrayList<>();
         parcels.add(new Parcel("A"));
         parcels.add(new Parcel("B"));
-        parcels.add(new Parcel("C"));
+        parcels.add(new Parcel("C"));*/
 
         final GeneticKnapsackSolver solver = new GeneticKnapsackSolver();
-
         solver.solve();
     }
 
@@ -44,8 +48,10 @@ public class GeneticKnapsackSolver {
             mutation();
             System.out.println("Generation: " + i + " done. -------------------------------------------------------------------------------" + "\n");
         }
+
         System.out.println("Rotation: " + Arrays.toString(bestSolutionRotation));
         System.out.println("Genes: " + Arrays.toString(bestSolutionGene));
+        applyBestSolution();
     }
 
     private void initializePopulation() {
@@ -69,11 +75,12 @@ public class GeneticKnapsackSolver {
             int countC = 0;
             final CargoSpace localCargoSpace = new CargoSpace();
 
-            matrix = localCargoSpace.getOccupied();
+            //matrix = localCargoSpace.getOccupied();
+            final int[][][] occupied = localCargoSpace.getOccupied();
 
-            for (int x = 0; x < matrix.length; x++) {
-                for (int y = 0; y < matrix[0].length; y++) {
-                    for (int z = 0; z < matrix[0][0].length; z++) {
+            for (int x = 0; x < occupied.length; x++) {
+                for (int y = 0; y < occupied[0].length; y++) {
+                    for (int z = 0; z < occupied[0][0].length; z++) {
                         for (int i = 0; i < chromo.getGenes().length; i++) {
                             final String gene = chromo.getGenes()[i];
                             final int rotation = chromo.getRotationFromGene(i);
@@ -83,7 +90,7 @@ public class GeneticKnapsackSolver {
                             if (localCargoSpace.canPlace(shape, x, y, z)) {
                                 //final ParcelPlacement placement = new ParcelPlacement(parcel, x, y, z);
                                 //localCargoSpace.placeParcel(placement);
-                                localCargoSpace.placeParcel(shape, x, y, z, matrix);
+                                localCargoSpace.placeParcel(shape, x, y, z, occupied);
 
                                 switch (gene) {
                                     case "A" -> {
@@ -109,6 +116,7 @@ public class GeneticKnapsackSolver {
             chromo.setFitness(totalValue);
             bestSolutionRotation = chromo.getRotations();
             bestSolutionGene = chromo.getGenes();
+            bestChromosome = chromo;
             System.out.println("Chromosome Fitness: " + totalValue);
             System.out.println(Arrays.toString(chromo.getRotations()));
             System.out.println(Arrays.toString(chromo.getGenes()));
@@ -232,11 +240,11 @@ public class GeneticKnapsackSolver {
         final ShapesAndRotations shapes = new ShapesAndRotations();
         int totalValue = 0;
         final CargoSpace cargoSpace = new CargoSpace();
-        matrix = cargoSpace.getOccupied();
+        final int[][][] occupied = cargoSpace.getOccupied();
 
-        for (int x = 0; x < matrix.length; x++) {
-            for (int y = 0; y < matrix[0].length; y++) {
-                for (int z = 0; z < matrix[0][0].length; z++) {
+        for (int x = 0; x < occupied.length; x++) {
+            for (int y = 0; y < occupied[0].length; y++) {
+                for (int z = 0; z < occupied[0][0].length; z++) {
                     for (int i = 0; i < chromo.getGenes().length; i++) {
                         final String gene = chromo.getGenes()[i];
                         final int rotation = chromo.getRotationFromGene(i);
@@ -256,5 +264,38 @@ public class GeneticKnapsackSolver {
         }
 
         return totalValue > 0;
+    }
+
+    private void applyBestSolution() {
+        if (bestChromosome == null) {
+            System.out.println("No optimal solution found.");
+            return;
+        }
+        final CargoSpace bestCargoSpace = new CargoSpace();
+        final ShapesAndRotations shapes = new ShapesAndRotations();
+        final int[][][] occupied = bestCargoSpace.getOccupied();
+
+        // Use the best chromosome to set the cargo space fields
+        for (int i = 0; i < bestChromosome.getGenes().length; i++) {
+            final String gene = bestChromosome.getGenes()[i];
+            final int rotation = bestChromosome.getRotationFromGene(i);
+            final int[][][] shape = shapes.getShape(gene, rotation);
+            //final Parcel parcel = new Parcel(gene, shape);
+
+            // Find the position to place the parcel and place it
+            for (int x = 0; x < occupied.length; x++) {
+                for (int y = 0; y < occupied[0].length; y++) {
+                    for (int z = 0; z < occupied[0][0].length; z++) {
+                        if (bestCargoSpace.canPlace(shape, x, y, z)) {
+                            bestCargoSpace.placeParcel(shape, x, y, z, occupied);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        cargoSpace.setOccupied(occupied);
+        System.out.println(Arrays.deepToString(cargoSpace.getOccupied()));
     }
 }
