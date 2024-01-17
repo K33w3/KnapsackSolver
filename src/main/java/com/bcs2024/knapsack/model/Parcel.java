@@ -7,6 +7,7 @@ public class Parcel {
     private int value;
     private String type;
     private int[][][] shape;
+    private int id;
 
     private int id;
 
@@ -88,6 +89,18 @@ public class Parcel {
         }
     }
 
+    private int setId(String type) {
+        return switch (type) {
+            case "A" ->  1;
+            case "B" ->  2;
+            case "C" ->  3;
+            case "L" ->  4;
+            case "P" ->  5;
+            case "T" ->  6;
+            default -> -1;
+        };
+    }
+
     public int[][][] getShape() {
         return shape;
     }
@@ -136,6 +149,10 @@ public class Parcel {
         };
 
         return valueDensity;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public double calculateSurfaceArea() {
