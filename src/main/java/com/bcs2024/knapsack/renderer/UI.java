@@ -1,6 +1,5 @@
 package com.bcs2024.knapsack.renderer;
 
-import com.bcs2024.knapsack.algorithm.DancingLinks;
 import com.bcs2024.knapsack.model.CargoSpace;
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
@@ -12,7 +11,7 @@ import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
-public class HelloApplication extends Application {
+public class UI extends Application {
 
     public static CargoSpace cargoSpace = new CargoSpace();
     private double anchorX, anchorY;
@@ -20,7 +19,6 @@ public class HelloApplication extends Application {
     private double anchorAngleY;
     private final DoubleProperty angleX = new SimpleDoubleProperty(0);
     private final DoubleProperty angleY = new SimpleDoubleProperty(0);
-    private static int[][][] solution;
     private Group group = new Group();
     private Camera camera;
     private Box box;
@@ -28,12 +26,13 @@ public class HelloApplication extends Application {
     private int height;
     private int width;
 
-    public HelloApplication() {
+    public UI() {
         length = (int) (cargoSpace.getLength()) * 30;
         height = (int) (cargoSpace.getHeight()) * 30;
         width = (int) (cargoSpace.getWidth()) * 30;
-        solution = cargoSpace.getOccupied(); //GreedyKnapsackSolver.getSolution();
-        solution = DancingLinks.field;
+//        solution = GreedyKnapsackSolver.matrix;
+        //solution = cargoSpace.getOccupied();
+//        solution = Experiment.field;
     }
 
     @Override
@@ -51,28 +50,28 @@ public class HelloApplication extends Application {
         group.translateXProperty().set(700);
         group.translateYProperty().set(500 - height / 2);
 
-        stage.setTitle("3D Container");
+        stage.setTitle("KnapSack");
         stage.setScene(scene);
         stage.show();
     }
 
     private void drawContainer() {
-        for (int i = 0; i < solution.length; i++) {
-            for (int j = 0; j < solution[0].length; j++) {
-                for (int k = 0; k < solution[0][0].length; k++) {
-                    if (solution[i][j][k] != -1) {
-                        final double boxWidth = width / solution.length;
-                        final double boxHeight = height / solution[0].length;
-                        final double boxDepth = length / solution[0][0].length;
+        for (int i = 0; i < cargoSpace.getOccupied().length; i++) {
+            for (int j = 0; j < cargoSpace.getOccupied()[0].length; j++) {
+                for (int k = 0; k < cargoSpace.getOccupied()[0][0].length; k++) {
+                    if (cargoSpace.getOccupied()[i][j][k] != -1) {
+                        final double boxWidth = width / cargoSpace.getOccupied().length;
+                        final double boxHeight = height / cargoSpace.getOccupied()[0].length;
+                        final double boxDepth = length / cargoSpace.getOccupied()[0][0].length;
 
                         box = new Box(boxWidth, boxHeight, boxDepth);
 
-                        box.translateXProperty().set((i - solution.length / 2) * boxWidth);
-                        box.translateYProperty().set((j - solution[0].length / 2) * boxHeight);
-                        box.translateZProperty().set((k - solution[0][0].length / 2) * boxDepth);
+                        box.translateXProperty().set((i - cargoSpace.getOccupied().length / 2) * boxWidth);
+                        box.translateYProperty().set((j - cargoSpace.getOccupied()[0].length / 2) * boxHeight);
+                        box.translateZProperty().set((k - cargoSpace.getOccupied()[0][0].length / 2) * boxDepth);
 
                         final PhongMaterial material = new PhongMaterial();
-                        material.setDiffuseColor(getColorById(solution[i][j][k]));
+                        material.setDiffuseColor(getColorById(cargoSpace.getOccupied()[i][j][k]));
                         box.setMaterial(material);
                         group.getChildren().add(box);
                     }
@@ -87,24 +86,16 @@ public class HelloApplication extends Application {
     }
 
     private Color getColorById(final int id) {
-        switch (id) {
-            case 0:
-                return Color.ORANGE;
-            case 1:
-                return Color.BLUE;
-            case 2:
-                return Color.GREEN;
-            case 3:
-                return Color.RED;
-            case 4:
-                return Color.YELLOW;
-            case 5:
-                return Color.GRAY;
-            case 6:
-                return Color.BLACK;
-        }
-        return Color.SILVER;
+        System.out.println("ID: " + id); // Debug print
+        return switch (id) {
+            case 0 -> Color.ORANGE;
+            case 1, 4 -> Color.BLUE;
+            case 2, 5 -> Color.GREEN;
+            case 3, 6 -> Color.RED;
+            default -> Color.SILVER;
+        };
     }
+
 
     private void initMouseControl(final Group group, final Scene scene) {
         final Rotate xRotate;
@@ -130,10 +121,11 @@ public class HelloApplication extends Application {
         });
     }
 
+    public void setSolution(final int[][][] state) {
+        // this.solution = state;
+    }
+
     public void show() {
         launch();
     }
 }
-
-
-

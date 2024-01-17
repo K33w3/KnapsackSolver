@@ -3,7 +3,7 @@ package com.bcs2024.knapsack.algorithm;
 import com.bcs2024.knapsack.model.CargoSpace;
 import com.bcs2024.knapsack.model.Parcel;
 import com.bcs2024.knapsack.model.ParcelPlacement;
-import com.bcs2024.knapsack.renderer.HelloApplication;
+import com.bcs2024.knapsack.renderer.UI;
 import com.bcs2024.knapsack.util.ShapesAndRotations;
 
 import java.util.Arrays;
@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
 
-    private final CargoSpace cargoSpace = HelloApplication.cargoSpace;
+    private final CargoSpace cargoSpace = UI.cargoSpace;
     private final ShapesAndRotations shapes;
     private final String[] parcelSequence;
     private final double[] weights;
