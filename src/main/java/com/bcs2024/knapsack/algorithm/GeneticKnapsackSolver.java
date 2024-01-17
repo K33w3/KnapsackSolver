@@ -2,7 +2,6 @@ package com.bcs2024.knapsack.algorithm;
 
 import com.bcs2024.knapsack.model.CargoSpace;
 import com.bcs2024.knapsack.model.Parcel;
-import com.bcs2024.knapsack.model.ParcelPlacement;
 import com.bcs2024.knapsack.util.ShapesAndRotations;
 
 import java.util.ArrayList;
@@ -24,8 +23,6 @@ public class GeneticKnapsackSolver {
     private String[] bestSolutionGene;
 
     public static void main(final String[] args) {
-        final CargoSpace cargoSpace = new CargoSpace();
-
         final List<Parcel> parcels = new ArrayList<>();
         parcels.add(new Parcel("A"));
         parcels.add(new Parcel("B"));
@@ -64,10 +61,14 @@ public class GeneticKnapsackSolver {
         final ShapesAndRotations shapes = new ShapesAndRotations();
 
         for (final Chromosome chromo : population) {
-            int totalValue = 0; // Reset totalValue for each chromosome
-            final CargoSpace localCargoSpace = new CargoSpace(); // Create a new instance of CargoSpace
+            //int totalValue = 0; // Reset totalValue for each chromosome
+            //final CargoSpace localCargoSpace = new CargoSpace(); // Create a new instance of CargoSpace
+            int totalValue = 0;
+            int countA = 0;
+            int countB = 0;
+            int countC = 0;
+            final CargoSpace localCargoSpace = new CargoSpace();
 
-            // Assume cargoSpace.getOccupied() initializes the matrix for CargoSpace
             matrix = localCargoSpace.getOccupied();
 
             for (int x = 0; x < matrix.length; x++) {
@@ -80,14 +81,24 @@ public class GeneticKnapsackSolver {
                             final Parcel parcel = new Parcel(gene, shape);
 
                             if (localCargoSpace.canPlace(shape, x, y, z)) {
-                                final ParcelPlacement placement = new ParcelPlacement(parcel, x, y, z);
-
-                                localCargoSpace.placeParcel(placement);
+                                //final ParcelPlacement placement = new ParcelPlacement(parcel, x, y, z);
+                                //localCargoSpace.placeParcel(placement);
+                                localCargoSpace.placeParcel(shape, x, y, z, matrix);
 
                                 switch (gene) {
-                                    case "A" -> totalValue += 3;
-                                    case "B" -> totalValue += 4;
-                                    case "C" -> totalValue += 5;
+                                    case "A" -> {
+                                        totalValue += 3;
+                                        countA++;
+                                    }
+                                    case "B" -> {
+                                        totalValue += 4;
+                                        countB++;
+                                    }
+                                    case "C" -> {
+                                        totalValue += 5;
+                                        countC++;
+                                    }
+
                                 }
                             }
                         }
@@ -101,6 +112,7 @@ public class GeneticKnapsackSolver {
             System.out.println("Chromosome Fitness: " + totalValue);
             System.out.println(Arrays.toString(chromo.getRotations()));
             System.out.println(Arrays.toString(chromo.getGenes()));
+            System.out.println("A: " + countA + " B: " + countB + " C: " + countC);
         }
     }
 
