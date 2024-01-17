@@ -16,7 +16,7 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
     private final String[] parcelSequence;
     private final double[] weights;
     private final double[] actualWeights;
-    private HelloApplication visulization = new HelloApplication();
+    //private HelloApplication visulization = new HelloApplication();
 
     public GreedyKnapsackSolver() { // TODO
         weights = new double[4];
@@ -140,7 +140,7 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
             System.out.println();
         }
 
-        visulization.show();
+        //visulization.show();
     }
 
     @Override

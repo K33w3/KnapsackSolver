@@ -9,8 +9,6 @@ public class Parcel {
     private int[][][] shape;
     private int id;
 
-    private int id;
-
     public Parcel(final String type, final int[][][] shape) {
         this.type = type;
         this.shape = shape;
@@ -89,14 +87,14 @@ public class Parcel {
         }
     }
 
-    private int setId(String type) {
+    private int setId(final String type) {
         return switch (type) {
-            case "A" ->  1;
-            case "B" ->  2;
-            case "C" ->  3;
-            case "L" ->  4;
-            case "P" ->  5;
-            case "T" ->  6;
+            case "A" -> 1;
+            case "B" -> 2;
+            case "C" -> 3;
+            case "L" -> 4;
+            case "P" -> 5;
+            case "T" -> 6;
             default -> -1;
         };
     }
@@ -119,10 +117,6 @@ public class Parcel {
 
     public void setType(final String type) {
         this.type = type;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public double getVolume() {
