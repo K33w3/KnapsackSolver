@@ -16,7 +16,7 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
     private final String[] parcelSequence;
     private final double[] weights;
     private final double[] actualWeights;
-    //private final HelloApplication visualization;
+    private HelloApplication visulization = new HelloApplication();
 
     public GreedyKnapsackSolver() { // TODO
         weights = new double[4];
@@ -74,7 +74,6 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
                                 final double ratioVolume = parcel.getValueDensity();
                                 final double volume = parcel.getVolume();
                                 final int touchedPoints = touched(parcel, cargoSpace.getOccupied(), x, y, z);
-                                // System.out.println(touchedPoints);
                                 final double weight = actualWeights[0] * perimeter + actualWeights[1] * ratioVolume
                                         + actualWeights[2] * volume + actualWeights[3] * touchedPoints;
 
@@ -89,8 +88,6 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
                             }
                         }
                     }
-
-                    // System.out.println("X: " + bestX + " Y : " + bestY + " Z :" + bestZ);
 
                     final int[][][] shape = shapes.getShape(bestParcel, rotationMem);
                     final Parcel parcel = new Parcel(bestParcel, shape);
@@ -143,26 +140,12 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
             System.out.println();
         }
 
-        // System.out.println("A: " + countA + " B: " + countB + " C: " + countC);
-        System.out.println(count);
-
-        // System.out.println(Arrays.toString(actualWeights));
-        // try {
-        // writer.write(Arrays.toString(weights) + "\n");
-        // writer.write("Count: " + count + "\n");
-        // writer.close();
-        // } catch (IOException e) {
-        // System.out.print(e);
-        // }
-        System.out.println("A: " + countA + " B: " + countB + " C: " + countC);
-        System.out.println(count);
-
+        visulization.show();
     }
 
     @Override
     public void solve() {
         this.putShapes();
-        System.out.println(Arrays.deepToString(getCargoSpace().getOccupied()));
     }
 
     public static void main(final String[] args) {
@@ -171,19 +154,6 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
             solver.putShapes();
         }
     }
-
-    /*public double calculatePerimeter(final Parcel parcel) {
-        return parcel.getHeight();
-    }
-
-    public double calculateVolume(final Parcel parcel) {
-        return parcel.getHeight() * parcel.getLength() * parcel.getWidth();
-    }
-
-    public double calculateValueDensity(final Parcel parcel) {
-        final double volume = parcel.getLength() * parcel.getWidth() * parcel.getHeight();
-        return parcel.getValue() / volume;
-    }*/
 
     public int touched(final Parcel parcel, final int[][][] matrix, final int posX, final int posY, final int posZ) {
         final int[][][] shape = parcel.getShape();
@@ -196,39 +166,35 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
                     final int y = posY + j;
                     final int z = posZ + k;
 
-                    // Check if the current point is on the boundary of the matrix
                     if (x == 0 || y == 0 || z == 0 || x == matrix.length - 1 || y == matrix[0].length - 1
                             || z == matrix[0][0].length - 1) {
                         touchedPoints++;
                         continue;
                     }
 
-                    // Check the 26 neighboring points around the current point
                     for (int dx = -1; dx <= 1; dx++) {
                         for (int dy = -1; dy <= 1; dy++) {
                             for (int dz = -1; dz <= 1; dz++) {
                                 if (dx == 0 && dy == 0 && dz == 0)
-                                    continue; // Skip the current point
+                                    continue;
 
                                 final int nx = x + dx;
                                 final int ny = y + dy;
                                 final int nz = z + dz;
 
-                                // Ensure neighboring indices are within bounds
                                 if (nx >= 0 && ny >= 0 && nz >= 0 && nx < matrix.length && ny < matrix[0].length
                                         && nz < matrix[0][0].length) {
-                                    // Check if the neighboring point has a shape
-                                    if (matrix[nx][ny][nz] != 0) { // Assuming 0 represents empty space
+                                    if (matrix[nx][ny][nz] != 0) {
                                         touchedPoints++;
-                                        break; // Exit the innermost loop as we found a neighboring point with a shape
+                                        break;
                                     }
                                 }
                             }
                             if (touchedPoints > 0)
-                                break; // Exit the middle loop if we already found a neighboring point with a shape
+                                break;
                         }
                         if (touchedPoints > 0)
-                            break; // Exit the outer loop if we already found a neighboring point with a shape
+                            break;
                     }
                 }
             }

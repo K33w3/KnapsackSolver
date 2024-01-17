@@ -5,9 +5,9 @@ import java.util.List;
 
 public class CargoSpace {
 
-    private final double length = 16.5;
-    private final double width = 2.5;
-    private final double height = 4;
+    public static final double length = 16.5;
+    public static final double width = 2.5;
+    public static final double height = 4;
     private final List<ParcelPlacement> placements = new ArrayList<>();
     private int[][][] occupied;
     private int filledSlotsCount = 0;
@@ -64,6 +64,21 @@ public class CargoSpace {
         }
 
         placements.add(placement);
+    }
+
+    public void placeParcel(int[][][] shape, int startX, int startY, int startZ, int[][][] destination) {
+        for (int i = 0; i < shape.length; i++) {
+            for (int j = 0; j < shape[0].length; j++) {
+                for (int k = 0; k < shape[0][0].length; k++) {
+                    if (shape[i][j][k] != 0) {
+                        int x = startX + k;
+                        int y = startY + j;
+                        int z = startZ + i;
+                        destination[x][y][z] = shape[i][j][k];
+                    }
+                }
+            }
+        }
     }
 
     public double getLength() {

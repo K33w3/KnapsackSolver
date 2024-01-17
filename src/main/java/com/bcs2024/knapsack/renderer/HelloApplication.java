@@ -1,5 +1,6 @@
 package com.bcs2024.knapsack.renderer;
 
+import com.bcs2024.knapsack.algorithm.DancingLinks;
 import com.bcs2024.knapsack.model.CargoSpace;
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
@@ -32,6 +33,7 @@ public class HelloApplication extends Application {
         height = (int) (cargoSpace.getHeight() * 2) * 30;
         width = (int) (cargoSpace.getWidth() * 2) * 30;
         solution = cargoSpace.getOccupied(); //GreedyKnapsackSolver.getSolution();
+        solution = DancingLinks.field;
     }
 
     @Override
@@ -127,10 +129,6 @@ public class HelloApplication extends Application {
             angleY.set(anchorAngleY + anchorX - e.getSceneX());
         });
     }
-
-    /*public void setSolution(final int[][][] state) {
-        this.solution = state;
-    }*/
 
     public void show() {
         launch();

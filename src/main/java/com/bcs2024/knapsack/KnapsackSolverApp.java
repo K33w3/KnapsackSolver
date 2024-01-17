@@ -8,6 +8,13 @@ import javafx.application.Application;
 
 public class KnapsackSolverApp {
 
+    private static void handleInput() {
+        System.out.println("Selected method");
+        System.out.println("Greedy");
+        System.out.println("Genetically Trained");
+        System.out.println("Dancing Links");
+    }
+
     public static void main(final String[] args) {
         final GreedyKnapsackSolver greedyKnapsackSolver = new GreedyKnapsackSolver();
         greedyKnapsackSolver.solve();

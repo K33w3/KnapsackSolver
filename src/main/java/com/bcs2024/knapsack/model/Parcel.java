@@ -7,6 +7,7 @@ public class Parcel {
     private int value;
     private String type;
     private int[][][] shape;
+    private int id;
 
     public Parcel(final String type, final int[][][] shape) {
         this.type = type;
@@ -18,6 +19,7 @@ public class Parcel {
         this.type = type;
         this.shape = new ShapesAndRotations().getShape(type, 0);
         initializeParcel();
+        this.id = setId(type);
     }
 
     private void initializeParcel() {
@@ -27,6 +29,18 @@ public class Parcel {
             case "C", "T" -> this.value = 5;
             default -> System.out.println("Invalid type");
         }
+    }
+
+    private int setId(String type) {
+        return switch (type) {
+            case "A" ->  1;
+            case "B" ->  2;
+            case "C" ->  3;
+            case "L" ->  4;
+            case "P" ->  5;
+            case "T" ->  6;
+            default -> -1;
+        };
     }
 
     public int[][][] getShape() {
@@ -73,6 +87,10 @@ public class Parcel {
         };
 
         return valueDensity;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public double calculateSurfaceArea() {
