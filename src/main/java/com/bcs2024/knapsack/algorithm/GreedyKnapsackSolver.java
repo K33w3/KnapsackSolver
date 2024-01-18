@@ -9,7 +9,7 @@ import com.bcs2024.knapsack.util.ShapesAndRotations;
 import java.util.Arrays;
 import java.util.Random;
 
-public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
+public class GreedyKnapsackSolver {
 
     private final CargoSpace cargoSpace = UI.cargoSpace;
     private final ShapesAndRotations shapes;
@@ -142,8 +142,7 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
 
         //visulization.show();
     }
-
-    @Override
+    
     public void solve() {
         this.putShapes();
     }

@@ -45,6 +45,24 @@ public class CargoSpace {
         return true;
     }
 
+    public boolean canPlace(final ParcelPlacement placement) {
+        for (int i = 0; i < placement.getShape().length; i++) {
+            for (int j = 0; j < placement.getShape()[0].length; j++) {
+                for (int k = 0; k < placement.getShape()[0][0].length; k++) {
+                    if (placement.getShape()[i][j][k] != 0) {
+                        final int x = placement.getX() + k;
+                        final int y = placement.getY() + j;
+                        final int z = placement.getZ() + i;
+                        if (x >= (int) (width) || y >= (int) (height) || z >= (int) (length) || occupied[x][y][z] != -1) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     public void placeParcel(final ParcelPlacement placement) {
         final int[][][] shape = placement.getShape();
 
@@ -80,7 +98,7 @@ public class CargoSpace {
             }
         }
     }
-    
+
     public double getLength() {
         return length;
     }

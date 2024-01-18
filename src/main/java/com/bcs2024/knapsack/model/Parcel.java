@@ -100,7 +100,7 @@ public class Parcel {
     }
 
     public int[][][] getShape() {
-        return shape;
+        return this.shape;
     }
 
     public int getValue() {

@@ -86,7 +86,6 @@ public class UI extends Application {
     }
 
     private Color getColorById(final int id) {
-        System.out.println("ID: " + id); // Debug print
         return switch (id) {
             case 0 -> Color.ORANGE;
             case 1, 4 -> Color.BLUE;
