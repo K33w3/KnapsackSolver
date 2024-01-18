@@ -5,6 +5,10 @@ import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.SplitPane;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -30,28 +34,46 @@ public class UI extends Application {
         length = (int) (cargoSpace.getLength()) * 30;
         height = (int) (cargoSpace.getHeight()) * 30;
         width = (int) (cargoSpace.getWidth()) * 30;
-//        solution = GreedyKnapsackSolver.matrix;
-        //solution = cargoSpace.getOccupied();
-//        solution = Experiment.field;
+        // solution = GreedyKnapsackSolver.matrix;
+        // solution = cargoSpace.getOccupied();
+        // solution = Experiment.field;
     }
 
     @Override
     public void start(final Stage stage) {
         camera = new PerspectiveCamera();
 
-        final Scene scene = new Scene(group, 1400, 1000, true, SceneAntialiasing.BALANCED);
-        scene.setFill(Color.SILVER);
-        scene.setCamera(camera);
-
-        initMouseControl(group, scene);
-
         drawContainer();
 
         group.translateXProperty().set(700);
         group.translateYProperty().set(500 - height / 2);
 
+        // Create a SubScene for the 3D world
+        SubScene subScene3D = new SubScene(group, 1400, 1000, true, SceneAntialiasing.BALANCED);
+        subScene3D.setFill(Color.SILVER);
+        subScene3D.setCamera(camera);
+
+        // Init mouse control on the group, with the subScene as the event source
+        initMouseControl(group, subScene3D);
+
+        // Create a VBox for the 2D UI settings
+        VBox settings = new VBox();
+        // Add some settings controls to the VBox
+        settings.getChildren().add(new Button("Setting 1"));
+        settings.getChildren().add(new Button("Setting 2"));
+
+        // Create a SplitPane and add the VBox and SubScene to it
+        SplitPane splitPane = new SplitPane();
+        splitPane.getItems().addAll(settings, subScene3D);
+
+        // Set the divider position
+        splitPane.setDividerPositions(0.2);
+
+        // Create a new Scene for the SplitPane
+        Scene mainScene = new Scene(splitPane, 1700, 1000);
+
         stage.setTitle("KnapSack");
-        stage.setScene(scene);
+        stage.setScene(mainScene);
         stage.show();
     }
 
@@ -96,26 +118,24 @@ public class UI extends Application {
         };
     }
 
-
-    private void initMouseControl(final Group group, final Scene scene) {
+    private void initMouseControl(final Group group, final SplitPane splitPane) {
         final Rotate xRotate;
         final Rotate yRotate;
         group.getTransforms().addAll(
                 xRotate = new Rotate(0, Rotate.X_AXIS),
-                yRotate = new Rotate(0, Rotate.Y_AXIS)
-        );
+                yRotate = new Rotate(0, Rotate.Y_AXIS));
 
         xRotate.angleProperty().bind(angleX);
         yRotate.angleProperty().bind(angleY);
 
-        scene.setOnMousePressed(e -> {
+        splitPane.setOnMousePressed(e -> {
             anchorX = e.getSceneX();
             anchorY = e.getSceneY();
             anchorAngleX = angleX.get();
             anchorAngleY = angleY.get();
         });
 
-        scene.setOnMouseDragged(e -> {
+        splitPane.setOnMouseDragged(e -> {
             angleX.set(anchorAngleX - (anchorY - e.getSceneY()));
             angleY.set(anchorAngleY + anchorX - e.getSceneX());
         });
