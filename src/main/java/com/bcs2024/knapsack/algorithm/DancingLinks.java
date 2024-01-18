@@ -1,6 +1,5 @@
 package com.bcs2024.knapsack.algorithm;
 
-import com.bcs2024.knapsack.renderer.HelloApplication;
 import com.bcs2024.knapsack.model.CargoSpace;
 import com.bcs2024.knapsack.model.Cell;
 import com.bcs2024.knapsack.model.Header;
@@ -23,7 +22,7 @@ public class DancingLinks {
     public static int[][][] field;
     private CargoSpace cargoSpace;
 
-    public DancingLinks(int columns) {
+    public DancingLinks(final int columns) {
         cargoSpace = new CargoSpace();
         answer = new Stack<>();
         pentIDS = new Stack<>();
@@ -38,11 +37,11 @@ public class DancingLinks {
         field = new int[width][height][length];
     }
 
-    public void AddRow(int row, int pentId, int[] ones, int[][][] piece) {
-        int last = -1;
+    public void AddRow(final int row, final int pentId, final int[] ones, final int[][][] piece) {
+        final int last = -1;
         Cell first = null;
-        for (int x : ones) {
-            Cell cell = new Cell(headers[x]);
+        for (final int x : ones) {
+            final Cell cell = new Cell(headers[x]);
             headers[x].InsertUp(cell);
             cell.row = row;
             cell.shape = piece;
@@ -66,22 +65,20 @@ public class DancingLinks {
     public int countB = 0;
     public int countC = 0;
 
-    public void algorithmX(int step) {
+    public void algorithmX(final int step) {
         if (stop) return;
-        List<ParcelInfo> parcelInfo = new ArrayList<>();
-        if(answer.size() >= 10){
+        final List<ParcelInfo> parcelInfo = new ArrayList<>();
+        if (answer.size() >= 10) {
             DLSearch.pieceCount = 0;
             DLSearch.totalValue = 0;
-            for(var ans : answer)
-            {
-                ParcelInfo r = DLSearch.parcelInfo.get(ans);
+            for (final var ans : answer) {
+                final ParcelInfo r = DLSearch.parcelInfo.get(ans);
                 parcelInfo.add(r);
             }
 
             clearField();
 
-            for(var info : parcelInfo)
-            {
+            for (final var info : parcelInfo) {
                 cargoSpace.placeParcel(info.shape, info.x0, info.y0, info.z0, field);
                 DLSearch.pieceCount++;
                 DLSearch.totalValue += info.pieceValue;
@@ -96,24 +93,21 @@ public class DancingLinks {
             if (countA != 0 || countB != 0 || countC != 0) {
                 if (DLSearch.totalValue >= 228) {
                     stop = true;
-                    HelloApplication ui = new HelloApplication();
-                    ui.show();
                     return;
                 }
             } else if (root.R == root) {
                 stop = true;
-                HelloApplication ui = new HelloApplication();
-                ui.show();
                 return;
             }
-            countA = 0; countB = 0; countC = 0;
+            countA = 0;
+            countB = 0;
+            countC = 0;
             field = new int[width][height][length];
         }
 
         Header head = (Header) root.R;
         int minSize = head.size;
-        for (Cell xCell = head; xCell != root; xCell = xCell.R)
-        {
+        for (Cell xCell = head; xCell != root; xCell = xCell.R) {
             if (((Header) xCell).size < minSize) {
                 minSize = ((Header) xCell).size;
                 head = (Header) xCell;
@@ -153,7 +147,7 @@ public class DancingLinks {
         }
     }
 
-    private void cover(Header head) {
+    private void cover(final Header head) {
         head.R.L = head.L;
         head.L.R = head.R;
 
@@ -166,7 +160,7 @@ public class DancingLinks {
         }
     }
 
-    private void uncover(Header head) {
+    private void uncover(final Header head) {
         for (Cell iCell = head.U; iCell != head; iCell = iCell.U)
             for (Cell jCell = iCell.L; jCell != iCell; jCell = jCell.L) {
                 jCell.D.U = jCell;
