@@ -3,70 +3,95 @@ package com.bcs2024.knapsack.model;
 import javafx.scene.paint.Color;
 
 public class ParcelPlacement extends Parcel {
-  private Parcel parcel;
-  private int x, y, z; // Position in the cargo space
+    private Parcel parcel;
+    private int x, y, z; // Position in the cargo space
 
-  private Color color;
+    private Color color;
 
-  /**
-   * Constructs a new ParcelPlacement with specified parcel, position, and orientation.
-   *
-   * @param parcel      The parcel to place.
-   * @param x           The x-coordinate in the cargo space.
-   * @param y           The y-coordinate in the cargo space.
-   * @param z           The z-coordinate in the cargo space.
-   */
-  public ParcelPlacement(Parcel parcel, int x, int y, int z) {
-    super(parcel.getType());
+    private int fitScore;
 
-      switch (parcel.getType()) {
-          case "A" -> this.color = Color.rgb(255, 0, 0);
-          case "B" -> this.color = Color.rgb(0, 255, 0);
-          case "C" -> this.color = Color.rgb(0, 0, 255);
-          case "L" -> this.color = Color.rgb(255, 255, 0);
-          case "P" -> this.color = Color.rgb(0, 255, 255);
-          case "T" -> this.color = Color.rgb(255, 0, 255);
-      }
+    /**
+     * Constructs a new ParcelPlacement with specified parcel, position, and orientation.
+     *
+     * @param parcel The parcel to place.
+     * @param x      The x-coordinate in the cargo space.
+     * @param y      The y-coordinate in the cargo space.
+     * @param z      The z-coordinate in the cargo space.
+     */
+    public ParcelPlacement(final Parcel parcel, final int x, final int y, final int z) {
+        super(parcel.getType());
 
-    this.parcel = parcel;
-    this.x = x;
-    this.y = y;
-    this.z = z;
-  }
+        switch (parcel.getType()) {
+            case "A" -> this.color = Color.rgb(255, 0, 0);
+            case "B" -> this.color = Color.rgb(0, 255, 0);
+            case "C" -> this.color = Color.rgb(0, 0, 255);
+            case "L" -> this.color = Color.rgb(255, 255, 0);
+            case "P" -> this.color = Color.rgb(0, 255, 255);
+            case "T" -> this.color = Color.rgb(255, 0, 255);
+        }
 
-  public Parcel getParcel() {
-    return parcel;
-  }
+        this.parcel = parcel;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
 
-  public void setParcel(Parcel parcel) {
-    this.parcel = parcel;
-  }
+    public ParcelPlacement(final Parcel parcel, final int x, final int y, final int z, final int fitScore) {
+        super(parcel.getType());
 
-  public int getX() {
-    return x;
-  }
+        switch (parcel.getType()) {
+            case "A" -> this.color = Color.rgb(255, 0, 0);
+            case "B" -> this.color = Color.rgb(0, 255, 0);
+            case "C" -> this.color = Color.rgb(0, 0, 255);
+            case "L" -> this.color = Color.rgb(255, 255, 0);
+            case "P" -> this.color = Color.rgb(0, 255, 255);
+            case "T" -> this.color = Color.rgb(255, 0, 255);
+        }
 
-  public void setX(int x) {
-    this.x = x;
-  }
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.parcel = parcel;
+        this.fitScore = fitScore;
+    }
 
-  public int getY() {
-    return y;
-  }
+    public Parcel getParcel() {
+        return parcel;
+    }
 
-  public void setY(int y) {
-    this.y = y;
-  }
+    public void setParcel(final Parcel parcel) {
+        this.parcel = parcel;
+    }
 
-  public int getZ() {
-    return z;
-  }
+    public int getX() {
+        return x;
+    }
 
-  public void setZ(int z) {
-    this.z = z;
-  }
+    public void setX(final int x) {
+        this.x = x;
+    }
 
-  public Color getColor() {
-    return color;
-  }
+    public int getY() {
+        return y;
+    }
+
+    public void setY(final int y) {
+        this.y = y;
+    }
+
+    public int getZ() {
+        return z;
+    }
+
+    public void setZ(final int z) {
+        this.z = z;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public int getFitScore() {
+        return fitScore;
+    }
 }
