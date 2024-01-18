@@ -42,36 +42,32 @@ public class UI extends Application {
     @Override
     public void start(final Stage stage) {
         camera = new PerspectiveCamera();
-
         drawContainer();
 
+        // 3d world centering
         group.translateXProperty().set(700);
         group.translateYProperty().set(500 - height / 2);
 
-        // Create a SubScene for the 3D world
         SubScene subScene3D = new SubScene(group, 1400, 1000, true, SceneAntialiasing.BALANCED);
         subScene3D.setFill(Color.SILVER);
         subScene3D.setCamera(camera);
 
-        // Init mouse control on the group, with the subScene as the event source
-        initMouseControl(group, subScene3D);
-
-        // Create a VBox for the 2D UI settings
+        // 2d settings panel
         VBox settings = new VBox();
-        // Add some settings controls to the VBox
         settings.getChildren().add(new Button("Setting 1"));
         settings.getChildren().add(new Button("Setting 2"));
 
-        // Create a SplitPane and add the VBox and SubScene to it
         SplitPane splitPane = new SplitPane();
         splitPane.getItems().addAll(settings, subScene3D);
-
-        // Set the divider position
         splitPane.setDividerPositions(0.2);
 
-        // Create a new Scene for the SplitPane
+        // mouse handling method
+        initMouseControl(group, splitPane);
+
+        // root pane
         Scene mainScene = new Scene(splitPane, 1700, 1000);
 
+        // staging of stage
         stage.setTitle("KnapSack");
         stage.setScene(mainScene);
         stage.show();
