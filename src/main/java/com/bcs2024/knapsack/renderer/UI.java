@@ -4,12 +4,26 @@ import com.bcs2024.knapsack.model.CargoSpace;
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.geometry.Pos;
 import javafx.scene.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.control.SplitPane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UI extends Application {
 
@@ -30,28 +44,116 @@ public class UI extends Application {
         length = (int) (cargoSpace.getLength()) * 30;
         height = (int) (cargoSpace.getHeight()) * 30;
         width = (int) (cargoSpace.getWidth()) * 30;
-//        solution = GreedyKnapsackSolver.matrix;
-        //solution = cargoSpace.getOccupied();
-//        solution = Experiment.field;
+        // solution = GreedyKnapsackSolver.matrix;
+        // solution = cargoSpace.getOccupied();
+        // solution = Experiment.field;
     }
 
     @Override
     public void start(final Stage stage) {
         camera = new PerspectiveCamera();
-
-        final Scene scene = new Scene(group, 1400, 1000, true, SceneAntialiasing.BALANCED);
-        scene.setFill(Color.SILVER);
-        scene.setCamera(camera);
-
-        initMouseControl(group, scene);
-
+        Image icon = new Image("https://minecraft.wiki/images/Red_Concrete.png");
         drawContainer();
 
+        // 3d world centering
         group.translateXProperty().set(700);
         group.translateYProperty().set(500 - height / 2);
 
+        SubScene subScene3D = new SubScene(group, 1400, 1000, true, SceneAntialiasing.BALANCED);
+        subScene3D.setFill(Color.SILVER);
+        subScene3D.setCamera(camera);
+
+        // 2d settings panel
+        VBox settings = new VBox();
+        settings.setAlignment(Pos.TOP_CENTER);
+        settings.setSpacing(5);
+
+        // title
+        Label titleLabel = new Label("Settings");
+        titleLabel.setFont(new Font("Arial", 30));
+        settings.getChildren().add(titleLabel);
+
+        // group 39
+        Label group39 = new Label("Group 39");
+        group39.setFont(new Font("Arial", 15));
+        settings.getChildren().add(group39);
+
+        // spacer 1
+        Region spacer1 = new Region();
+        spacer1.setPrefHeight(40);
+        settings.getChildren().add(spacer1);
+
+        // zoom slider
+        Label zoomLabel = new Label("Zoom Level");
+        zoomLabel.setFont(new Font("Arial", 15));
+        settings.getChildren().add(zoomLabel);
+
+        Slider zoomSlider = new Slider();
+        zoomSlider.setMin(-1500);
+        zoomSlider.setMax(1500);
+        zoomSlider.setValue(0);
+        zoomSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            camera.translateZProperty().set(newValue.doubleValue());
+        });
+        settings.getChildren().add(zoomSlider);
+
+        // spacer 2
+        Region spacer2 = new Region();
+        spacer2.setPrefHeight(40);
+        settings.getChildren().add(spacer2);
+
+        // color selector logic
+        Map<String, Boolean> colorState = new HashMap<>(); // why hashmap you may ask? Because it is the easiest way to
+                                                           // do it lol (and cheap as well) :)
+        colorState.put("Red", false); // false indicates the color is not hidden initially
+        colorState.put("Green", false);
+        colorState.put("Blue", false);
+
+        ComboBox<String> optionsComboBox = new ComboBox<>();
+        optionsComboBox.getItems().addAll("Red", "Green", "Blue");
+        Button actionButton = new Button("Perform Action");
+
+        Label colorLabel = new Label("Hide Color");
+        colorLabel.setFont(new Font("Arial", 15));
+        settings.getChildren().add(colorLabel);
+
+        Label colorLabel2 = new Label("Show Color");
+        colorLabel2.setFont(new Font("Arial", 15));
+        settings.getChildren().add(colorLabel2);
+
+        actionButton.setOnAction(event -> {
+            String selectedOption = optionsComboBox.getValue();
+            if (selectedOption != null) {
+                // Toggle between hiding and showing the color
+                if (colorState.get(selectedOption)) {
+                    showColor(selectedOption);
+                    colorState.put(selectedOption, false);
+                } else {
+                    hideColor(selectedOption);
+                    colorState.put(selectedOption, true);
+                }
+            } else {
+                System.out.println("No option selected");
+            }
+        });
+
+        settings.getChildren().addAll(optionsComboBox, actionButton);
+
+        SplitPane splitPane = new SplitPane();
+        splitPane.getItems().addAll(settings, subScene3D);
+        splitPane.setDividerPositions(0.2);
+
+        // mouse handling method
+        initMouseControl(group, splitPane);
+
+        // root pane
+        Scene mainScene = new Scene(splitPane, 1700, 1000);
+
+        // staging of stage
         stage.setTitle("KnapSack");
-        stage.setScene(scene);
+        stage.getIcons().add(icon);
+        stage.setResizable(false);
+        stage.setScene(mainScene);
         stage.show();
     }
 
@@ -96,26 +198,24 @@ public class UI extends Application {
         };
     }
 
-
-    private void initMouseControl(final Group group, final Scene scene) {
+    private void initMouseControl(final Group group, final SplitPane splitPane) {
         final Rotate xRotate;
         final Rotate yRotate;
         group.getTransforms().addAll(
                 xRotate = new Rotate(0, Rotate.X_AXIS),
-                yRotate = new Rotate(0, Rotate.Y_AXIS)
-        );
+                yRotate = new Rotate(0, Rotate.Y_AXIS));
 
         xRotate.angleProperty().bind(angleX);
         yRotate.angleProperty().bind(angleY);
 
-        scene.setOnMousePressed(e -> {
+        splitPane.setOnMousePressed(e -> {
             anchorX = e.getSceneX();
             anchorY = e.getSceneY();
             anchorAngleX = angleX.get();
             anchorAngleY = angleY.get();
         });
 
-        scene.setOnMouseDragged(e -> {
+        splitPane.setOnMouseDragged(e -> {
             angleX.set(anchorAngleX - (anchorY - e.getSceneY()));
             angleY.set(anchorAngleY + anchorX - e.getSceneX());
         });
@@ -127,5 +227,13 @@ public class UI extends Application {
 
     public void show() {
         launch();
+    }
+
+    private void hideColor(String color) {
+        System.out.println("Hiding " + color);
+    }
+
+    private void showColor(String color) {
+        System.out.println("Showing " + color);
     }
 }
