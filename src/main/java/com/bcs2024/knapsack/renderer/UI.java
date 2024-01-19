@@ -22,6 +22,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +43,8 @@ public class UI extends Application {
     private int length;
     private int height;
     private int width;
+    private Font font;
+    private Font fontTitle;
 
     public UI() {
         length = (int) (cargoSpace.getLength()) * 30;
@@ -51,6 +57,16 @@ public class UI extends Application {
 
     @Override
     public void start(final Stage stage) {
+        // font import
+        try {
+            font = Font.loadFont(new FileInputStream(new File("src/main/resources/outline_pixel-7_solid.ttf")), 20);
+            fontTitle = Font.loadFont(new FileInputStream(new File("src/main/resources/outline_pixel-7_solid.ttf")), 45);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            font = new Font("Arial", 30);
+            fontTitle = new Font("Arial", 45);
+        }
+
         camera = new PerspectiveCamera();
         Image icon = new Image("https://minecraft.wiki/images/Red_Concrete.png");
         drawContainer();
@@ -70,12 +86,12 @@ public class UI extends Application {
 
         // title
         Label titleLabel = new Label("Settings");
-        titleLabel.setFont(new Font("Arial", 30));
+        titleLabel.setFont(fontTitle);
         settings.getChildren().add(titleLabel);
 
         // group 39
         Label group39 = new Label("Group 39");
-        group39.setFont(new Font("Arial", 15));
+        group39.setFont(font);
         settings.getChildren().add(group39);
 
         // spacer 1
@@ -85,7 +101,7 @@ public class UI extends Application {
 
         // zoom slider
         Label zoomLabel = new Label("Zoom Level");
-        zoomLabel.setFont(new Font("Arial", 15));
+        zoomLabel.setFont(font);
         settings.getChildren().add(zoomLabel);
 
         Slider zoomSlider = new Slider();
@@ -114,7 +130,7 @@ public class UI extends Application {
         Button actionButton = new Button("Perform Action");
 
         Label colorLabel = new Label("Hide/Show Color");
-        colorLabel.setFont(new Font("Arial", 15));
+        colorLabel.setFont(font);
         settings.getChildren().add(colorLabel);
 
         actionButton.setOnAction(event -> {
@@ -238,7 +254,7 @@ public class UI extends Application {
         }
         System.out.println("Hiding " + colorStr);
     }
-    
+
     private void showColor(String colorStr) {
         Color colorToShow = stringToColor(colorStr);
         for (Node node : group.getChildren()) {
@@ -252,7 +268,7 @@ public class UI extends Application {
         }
         System.out.println("Showing " + colorStr);
     }
-    
+
     private Color stringToColor(String colorStr) {
         return switch (colorStr) {
             case "Red" -> Color.RED;
@@ -261,5 +277,5 @@ public class UI extends Application {
             default -> null;
         };
     }
-    
+
 }
