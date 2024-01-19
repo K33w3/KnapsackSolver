@@ -69,7 +69,7 @@ public class GreedyKnapsackSolver {
                         for (int rotation = 0; rotation < shapes.rotationNum(parcelType); rotation++) {
                             final int[][][] shape = shapes.getShape(parcelType, rotation);
 
-                            if (cargoSpace.canPlace(shape, x, y, z)) {
+                            if (cargoSpace.canPlace(shape, x, y, z, cargoSpace.getOccupied())) {
                                 final double perimeter = parcel.calculateSurfaceArea();
                                 final double ratioVolume = parcel.getValueDensity();
                                 final double volume = parcel.getVolume();
@@ -142,7 +142,7 @@ public class GreedyKnapsackSolver {
 
         //visulization.show();
     }
-    
+
     public void solve() {
         this.putShapes();
     }

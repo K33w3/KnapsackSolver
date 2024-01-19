@@ -5,10 +5,10 @@ import com.bcs2024.knapsack.util.ShapesAndRotations;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Chromosome {
+public class Chromosome { // TODO check the volume of the parcels
 
     private String[] genes;
-    private int fitness;
+    private double fitness;
     private int[] rotations;
 
     public Chromosome(final Chromosome otherChromosome) {
@@ -19,6 +19,15 @@ public class Chromosome {
     }
 
     // New constructor for creating a new random chromosome
+    public Chromosome() {
+        final Random random = new Random();
+        final int length = random.nextInt(10, 65);
+
+        this.genes = new String[length];
+        this.rotations = new int[length];
+        initializeRandomly();
+    }
+
     public Chromosome(final int length) {
         this.genes = new String[length];
         this.rotations = new int[length];
@@ -29,6 +38,7 @@ public class Chromosome {
     public void initializeRandomly() {
         final Random random = new Random();
         final ShapesAndRotations shapesAndRotations = new ShapesAndRotations();
+
         for (int i = 0; i < this.genes.length; i++) {
             final String[] types = {"A", "B", "C"};
             final String type = types[random.nextInt(types.length)];
@@ -39,24 +49,6 @@ public class Chromosome {
         }
     }
 
-    /*public Chromosome(final Chromosome otherChromosome) {
-        this.fitness = otherChromosome.fitness;
-        this.genes = Arrays.copyOf(otherChromosome.genes, otherChromosome.genes.length);
-        this.rotations = Arrays.copyOf(otherChromosome.rotations, otherChromosome.rotations.length);
-
-        final Random random = new Random();
-        final ShapesAndRotations shapesAndRotations = new ShapesAndRotations(); // You'll need to create this class or method
-        for (int i = 0; i < length; i++) {
-            final String[] types = {"A", "B", "C"};
-            final String type = types[random.nextInt(types.length)];
-            final int rotations = random.nextInt((shapesAndRotations.rotationNum(type)));
-
-            // Assuming rotationNum returns the number of rotations for a type
-            this.genes[i] = type; // Combine type and rotation into a single string
-            this.rotations[i] = rotations;
-        }
-    }*/
-
     public int getRotationFromGene(final int index) {
         return this.rotations[index];
     }
@@ -65,7 +57,7 @@ public class Chromosome {
         return this.rotations;
     }
 
-    public void setFitness(final int fitness) {
+    public void setFitness(final double fitness) {
         this.fitness = fitness;
     }
 
@@ -85,7 +77,7 @@ public class Chromosome {
         this.genes = genes;
     }
 
-    public int getFitness() {
+    public double getFitness() {
         return fitness;
     }
 

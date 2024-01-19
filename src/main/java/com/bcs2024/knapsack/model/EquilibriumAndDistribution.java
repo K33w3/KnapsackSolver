@@ -31,7 +31,7 @@ public class EquilibriumAndDistribution {
                         final int[][][] shape = shapes.getShape(genes[i], rotation);
                         final Parcel parcel = new Parcel(genes[i], shape);
 
-                        if (cargoSpace.canPlace(shape, x, y, z)) {
+                        if (cargoSpace.canPlace(shape, x, y, z, cargoSpace.getOccupied())) {
                             final ParcelPlacement placement = new ParcelPlacement(
                                     parcel,
                                     x,

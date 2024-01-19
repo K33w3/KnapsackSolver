@@ -142,4 +142,21 @@ public class ShapesAndRotations {
             default -> throw new IllegalArgumentException("Invalid parcel type");
         };
     }
+
+    public int getParcelVolume(String type, int rotation) {
+        int[][][] shape = this.getShape(type, rotation);
+        int volume = 0;
+        
+        for (int i = 0; i < shape.length; i++) {
+            for (int j = 0; j < shape[i].length; j++) {
+                for (int k = 0; k < shape[i][j].length; k++) {
+                    if (shape[i][j][k] != 0) {
+                        volume++;
+                    }
+                }
+            }
+        }
+        return volume;
+    }
+
 }

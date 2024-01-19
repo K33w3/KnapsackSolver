@@ -27,7 +27,7 @@ public class CargoSpace {
         }
     }
 
-    public boolean canPlace(final int[][][] shape, final int startX, final int startY, final int startZ) {
+    public boolean canPlace(final int[][][] shape, final int startX, final int startY, final int startZ, final int[][][] occupied) {
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[0].length; j++) {
                 for (int k = 0; k < shape[0][0].length; k++) {
