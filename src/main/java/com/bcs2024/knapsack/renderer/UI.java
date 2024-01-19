@@ -113,13 +113,9 @@ public class UI extends Application {
         optionsComboBox.getItems().addAll("Red", "Green", "Blue");
         Button actionButton = new Button("Perform Action");
 
-        Label colorLabel = new Label("Hide Color");
+        Label colorLabel = new Label("Hide/Show Color");
         colorLabel.setFont(new Font("Arial", 15));
         settings.getChildren().add(colorLabel);
-
-        Label colorLabel2 = new Label("Show Color");
-        colorLabel2.setFont(new Font("Arial", 15));
-        settings.getChildren().add(colorLabel2);
 
         actionButton.setOnAction(event -> {
             String selectedOption = optionsComboBox.getValue();
@@ -229,11 +225,41 @@ public class UI extends Application {
         launch();
     }
 
-    private void hideColor(String color) {
-        System.out.println("Hiding " + color);
+    private void hideColor(String colorStr) {
+        Color colorToHide = stringToColor(colorStr);
+        for (Node node : group.getChildren()) {
+            if (node instanceof Box) {
+                Box box = (Box) node;
+                PhongMaterial material = (PhongMaterial) box.getMaterial();
+                if (material.getDiffuseColor().equals(colorToHide)) {
+                    box.setVisible(false);
+                }
+            }
+        }
+        System.out.println("Hiding " + colorStr);
     }
-
-    private void showColor(String color) {
-        System.out.println("Showing " + color);
+    
+    private void showColor(String colorStr) {
+        Color colorToShow = stringToColor(colorStr);
+        for (Node node : group.getChildren()) {
+            if (node instanceof Box) {
+                Box box = (Box) node;
+                PhongMaterial material = (PhongMaterial) box.getMaterial();
+                if (material.getDiffuseColor().equals(colorToShow)) {
+                    box.setVisible(true);
+                }
+            }
+        }
+        System.out.println("Showing " + colorStr);
     }
+    
+    private Color stringToColor(String colorStr) {
+        return switch (colorStr) {
+            case "Red" -> Color.RED;
+            case "Green" -> Color.GREEN;
+            case "Blue" -> Color.BLUE;
+            default -> null;
+        };
+    }
+    
 }
