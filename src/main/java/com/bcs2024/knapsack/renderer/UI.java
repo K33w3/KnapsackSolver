@@ -46,12 +46,26 @@ public class UI extends Application {
     private Font fontTitle;
     private Font fontButton;
 
+    /**
+     * Constructs a new UI object to display cargo space dimensions.
+     * The UI is initialized with the dimensions of the provided cargo space
+     * scaled by a factor of 30 for graphical representation.
+     */
     public UI() {
         length = (int) (cargoSpace.getLength()) * 30;
         height = (int) (cargoSpace.getHeight()) * 30;
         width = (int) (cargoSpace.getWidth()) * 30;
     }
 
+    /**
+     * Initializes and configures the graphical user interface (UI) for the
+     * application.
+     * This method sets up various elements such as fonts, camera, 3D scene,
+     * settings panel,
+     * zoom slider, color selector, and the main application window.
+     *
+     * @param stage The primary stage for the application.
+     */
     @Override
     public void start(final Stage stage) {
         // font import
@@ -170,13 +184,21 @@ public class UI extends Application {
         initMouseControl(group, subScene3D);
 
         // staging of stage
-        stage.setTitle("KnapSack");
+        stage.setTitle("KnapSack Visualizer");
         stage.getIcons().add(icon);
         stage.setResizable(false);
         stage.setScene(mainScene);
         stage.show();
     }
 
+    /**
+     * Draws 3D boxes representing occupied spaces within the cargo space and
+     * creates an outer container box to enclose the cargo space.
+     * The method iterates through the cargo space data, creating boxes for each
+     * occupied space, and positions them based on the cargo space dimensions.
+     * It also adds an outer container box to enclose the cargo space for
+     * visualization.
+     */
     private void drawContainer() {
         for (int i = 0; i < cargoSpace.getOccupied().length; i++) {
             for (int j = 0; j < cargoSpace.getOccupied()[0].length; j++) {
@@ -207,8 +229,14 @@ public class UI extends Application {
         group.getChildren().add(containerBox);
     }
 
+    /**
+     * Retrieves and returns a Color based on the given ID.
+     *
+     * @param id The ID used to determine the Color.
+     * @return A Color associated with the provided ID.
+     */
     private Color getColorById(final int id) {
-        //System.out.println("ID: " + id); // Debug print
+        // System.out.println("ID: " + id); // Debug print
         return switch (id) {
             case 0 -> Color.ORANGE;
             case 1, 4 -> Color.BLUE;
@@ -218,6 +246,16 @@ public class UI extends Application {
         };
     }
 
+    /**
+     * Initializes mouse control for adjusting the view orientation in the 3D scene.
+     * This method allows the user to interactively rotate the 3D view by dragging
+     * the mouse.
+     *
+     * @param group      The 3D scene's group to which rotation transforms are
+     *                   applied.
+     * @param subScene3D The SubScene representing the 3D scene for mouse
+     *                   interaction.
+     */
     private void initMouseControl(final Group group, final SubScene subScene3D) {
         final Rotate xRotate = new Rotate(0, Rotate.X_AXIS);
         final Rotate yRotate = new Rotate(0, Rotate.Y_AXIS);
@@ -239,14 +277,34 @@ public class UI extends Application {
         });
     }
 
+    /**
+     * Sets the solution state for a problem represented by a three-dimensional
+     * integer array.
+     *
+     * @param state A three-dimensional integer array representing the solution
+     *              state.
+     */
     public void setSolution(final int[][][] state) {
         // this.solution = state;
     }
 
+    /**
+     * Launches and displays the graphical user interface (GUI) for the application.
+     * This method initiates the application's main window and user interface
+     * components.
+     */
     public void show() {
         launch();
     }
 
+    /**
+     * Hides 3D boxes of a specific color within the 3D scene.
+     * This method iterates through the 3D scene's children, identifies boxes
+     * with the specified color, and sets them to be invisible.
+     *
+     * @param colorStr A string representation of the color to hide (e.g., "Red",
+     *                 "Green").
+     */
     private void hideColor(String colorStr) {
         Color colorToHide = stringToColor(colorStr);
         for (Node node : group.getChildren()) {
@@ -261,6 +319,14 @@ public class UI extends Application {
         System.out.println("Hiding " + colorStr);
     }
 
+    /**
+     * Shows 3D boxes of a specific color within the 3D scene.
+     * This method iterates through the 3D scene's children, identifies boxes
+     * with the specified color, and sets them to be visible.
+     *
+     * @param colorStr A string representation of the color to show (e.g., "Red",
+     *                 "Green").
+     */
     private void showColor(String colorStr) {
         Color colorToShow = stringToColor(colorStr);
         for (Node node : group.getChildren()) {
@@ -275,6 +341,14 @@ public class UI extends Application {
         System.out.println("Showing " + colorStr);
     }
 
+    /**
+     * Converts a string representation of a color to a corresponding JavaFX Color
+     * object.
+     *
+     * @param colorStr A string representing a color (e.g., "Red", "Green", "Blue").
+     * @return The JavaFX Color object corresponding to the input color string, or
+     *         null if not found.
+     */
     private Color stringToColor(String colorStr) {
         return switch (colorStr) {
             case "Red" -> Color.RED;
