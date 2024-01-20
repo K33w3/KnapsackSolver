@@ -45,6 +45,7 @@ public class UI extends Application {
     private int width;
     private Font font;
     private Font fontTitle;
+    private Font fontButton;
 
     public UI() {
         length = (int) (cargoSpace.getLength()) * 30;
@@ -60,21 +61,24 @@ public class UI extends Application {
         // font import
         try {
             font = Font.loadFont(new FileInputStream(new File("src/main/resources/outline_pixel-7_solid.ttf")), 20);
-            fontTitle = Font.loadFont(new FileInputStream(new File("src/main/resources/outline_pixel-7_solid.ttf")), 45);
+            fontTitle = Font.loadFont(new FileInputStream(new File("src/main/resources/outline_pixel-7_solid.ttf")),
+                    45);
+            fontButton = Font.loadFont(new FileInputStream(new File("src/main/resources/outline_pixel-7_solid.ttf")),
+                    15);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             font = new Font("Arial", 30);
             fontTitle = new Font("Arial", 45);
+            fontButton = new Font("Arial", 15);
         }
 
         camera = new PerspectiveCamera();
+
         Image icon = new Image("https://minecraft.wiki/images/Red_Concrete.png");
         drawContainer();
 
-        // 3d world centering
         group.translateXProperty().set(700);
         group.translateYProperty().set(500 - height / 2);
-
         SubScene subScene3D = new SubScene(group, 1400, 1000, true, SceneAntialiasing.BALANCED);
         subScene3D.setFill(Color.SILVER);
         subScene3D.setCamera(camera);
@@ -83,6 +87,10 @@ public class UI extends Application {
         VBox settings = new VBox();
         settings.setAlignment(Pos.TOP_CENTER);
         settings.setSpacing(5);
+
+        SplitPane splitPane = new SplitPane();
+        splitPane.getItems().addAll(settings, subScene3D);
+        splitPane.setDividerPositions(0.2);
 
         // title
         Label titleLabel = new Label("Settings");
@@ -99,11 +107,7 @@ public class UI extends Application {
         spacer1.setPrefHeight(40);
         settings.getChildren().add(spacer1);
 
-        // zoom slider
-        Label zoomLabel = new Label("Zoom Level");
-        zoomLabel.setFont(font);
-        settings.getChildren().add(zoomLabel);
-
+        // Create the Zoom Slider
         Slider zoomSlider = new Slider();
         zoomSlider.setMin(-1500);
         zoomSlider.setMax(1500);
@@ -111,7 +115,6 @@ public class UI extends Application {
         zoomSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             camera.translateZProperty().set(newValue.doubleValue());
         });
-        settings.getChildren().add(zoomSlider);
 
         // spacer 2
         Region spacer2 = new Region();
@@ -127,7 +130,9 @@ public class UI extends Application {
 
         ComboBox<String> optionsComboBox = new ComboBox<>();
         optionsComboBox.getItems().addAll("Red", "Green", "Blue");
+        optionsComboBox.setPromptText("Select Color");
         Button actionButton = new Button("Perform Action");
+        actionButton.setFont(fontButton);
 
         Label colorLabel = new Label("Hide/Show Color");
         colorLabel.setFont(font);
@@ -151,15 +156,22 @@ public class UI extends Application {
 
         settings.getChildren().addAll(optionsComboBox, actionButton);
 
-        SplitPane splitPane = new SplitPane();
-        splitPane.getItems().addAll(settings, subScene3D);
-        splitPane.setDividerPositions(0.2);
+        AnchorPane root = new AnchorPane();
+        root.getChildren().add(splitPane);
+        AnchorPane.setTopAnchor(splitPane, 0.0);
+        AnchorPane.setBottomAnchor(splitPane, 0.0);
+        AnchorPane.setLeftAnchor(splitPane, 0.0);
+        AnchorPane.setRightAnchor(splitPane, 0.0);
 
-        // mouse handling method
-        initMouseControl(group, splitPane);
+        root.getChildren().add(zoomSlider);
+        AnchorPane.setBottomAnchor(zoomSlider, 10.0);
+        AnchorPane.setLeftAnchor(zoomSlider, (1700 - 300) / 2.0); // Assuming slider width is 300
+        zoomSlider.toFront();
 
-        // root pane
-        Scene mainScene = new Scene(splitPane, 1700, 1000);
+        // Create the Scene with the root AnchorPane
+        Scene mainScene = new Scene(root, 1700, 1000);
+
+        initMouseControl(group, subScene3D);
 
         // staging of stage
         stage.setTitle("KnapSack");
@@ -210,26 +222,24 @@ public class UI extends Application {
         };
     }
 
-    private void initMouseControl(final Group group, final SplitPane splitPane) {
-        final Rotate xRotate;
-        final Rotate yRotate;
-        group.getTransforms().addAll(
-                xRotate = new Rotate(0, Rotate.X_AXIS),
-                yRotate = new Rotate(0, Rotate.Y_AXIS));
+    private void initMouseControl(final Group group, final SubScene subScene3D) {
+        final Rotate xRotate = new Rotate(0, Rotate.X_AXIS);
+        final Rotate yRotate = new Rotate(0, Rotate.Y_AXIS);
+        group.getTransforms().addAll(xRotate, yRotate);
 
         xRotate.angleProperty().bind(angleX);
         yRotate.angleProperty().bind(angleY);
 
-        splitPane.setOnMousePressed(e -> {
-            anchorX = e.getSceneX();
-            anchorY = e.getSceneY();
+        subScene3D.setOnMousePressed(event -> {
+            anchorX = event.getSceneX();
+            anchorY = event.getSceneY();
             anchorAngleX = angleX.get();
             anchorAngleY = angleY.get();
         });
 
-        splitPane.setOnMouseDragged(e -> {
-            angleX.set(anchorAngleX - (anchorY - e.getSceneY()));
-            angleY.set(anchorAngleY + anchorX - e.getSceneX());
+        subScene3D.setOnMouseDragged(event -> {
+            angleX.set(anchorAngleX - (anchorY - event.getSceneY()));
+            angleY.set(anchorAngleY + anchorX - event.getSceneX());
         });
     }
 
@@ -276,6 +286,20 @@ public class UI extends Application {
             case "Blue" -> Color.BLUE;
             default -> null;
         };
+    }
+
+    private Slider createZoomSlider() {
+        Slider zoomSlider = new Slider();
+        zoomSlider.setMin(-1500);
+        zoomSlider.setMax(1500);
+        zoomSlider.setValue(0);
+        zoomSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            camera.translateZProperty().set(newValue.doubleValue());
+        });
+        zoomSlider.setPrefWidth(300); // Set a preferred width for the slider
+        zoomSlider.setMaxWidth(Region.USE_PREF_SIZE);
+        zoomSlider.setMinWidth(Region.USE_PREF_SIZE);
+        return zoomSlider;
     }
 
 }
