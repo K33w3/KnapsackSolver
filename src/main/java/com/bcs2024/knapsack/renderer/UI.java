@@ -19,7 +19,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
@@ -45,36 +44,51 @@ public class UI extends Application {
     private int width;
     private Font font;
     private Font fontTitle;
+    private Font fontButton;
 
+    /**
+     * Constructs a new UI object to display cargo space dimensions.
+     * The UI is initialized with the dimensions of the provided cargo space
+     * scaled by a factor of 30 for graphical representation.
+     */
     public UI() {
         length = (int) (cargoSpace.getLength()) * 30;
         height = (int) (cargoSpace.getHeight()) * 30;
         width = (int) (cargoSpace.getWidth()) * 30;
-        // solution = GreedyKnapsackSolver.matrix;
-        // solution = cargoSpace.getOccupied();
-        // solution = Experiment.field;
     }
 
+    /**
+     * Initializes and configures the graphical user interface (UI) for the
+     * application.
+     * This method sets up various elements such as fonts, camera, 3D scene,
+     * settings panel,
+     * zoom slider, color selector, and the main application window.
+     *
+     * @param stage The primary stage for the application.
+     */
     @Override
     public void start(final Stage stage) {
         // font import
         try {
             font = Font.loadFont(new FileInputStream(new File("src/main/resources/outline_pixel-7_solid.ttf")), 20);
-            fontTitle = Font.loadFont(new FileInputStream(new File("src/main/resources/outline_pixel-7_solid.ttf")), 45);
+            fontTitle = Font.loadFont(new FileInputStream(new File("src/main/resources/outline_pixel-7_solid.ttf")),
+                    45);
+            fontButton = Font.loadFont(new FileInputStream(new File("src/main/resources/outline_pixel-7_solid.ttf")),
+                    15);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             font = new Font("Arial", 30);
             fontTitle = new Font("Arial", 45);
+            fontButton = new Font("Arial", 15);
         }
 
         camera = new PerspectiveCamera();
+
         Image icon = new Image("https://minecraft.wiki/images/Red_Concrete.png");
         drawContainer();
 
-        // 3d world centering
         group.translateXProperty().set(700);
         group.translateYProperty().set(500 - height / 2);
-
         SubScene subScene3D = new SubScene(group, 1400, 1000, true, SceneAntialiasing.BALANCED);
         subScene3D.setFill(Color.SILVER);
         subScene3D.setCamera(camera);
@@ -83,6 +97,10 @@ public class UI extends Application {
         VBox settings = new VBox();
         settings.setAlignment(Pos.TOP_CENTER);
         settings.setSpacing(5);
+
+        SplitPane splitPane = new SplitPane();
+        splitPane.getItems().addAll(settings, subScene3D);
+        splitPane.setDividerPositions(0.2);
 
         // title
         Label titleLabel = new Label("Settings");
@@ -99,11 +117,7 @@ public class UI extends Application {
         spacer1.setPrefHeight(40);
         settings.getChildren().add(spacer1);
 
-        // zoom slider
-        Label zoomLabel = new Label("Zoom Level");
-        zoomLabel.setFont(font);
-        settings.getChildren().add(zoomLabel);
-
+        // Create the Zoom Slider
         Slider zoomSlider = new Slider();
         zoomSlider.setMin(-1500);
         zoomSlider.setMax(1500);
@@ -111,7 +125,6 @@ public class UI extends Application {
         zoomSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             camera.translateZProperty().set(newValue.doubleValue());
         });
-        settings.getChildren().add(zoomSlider);
 
         // spacer 2
         Region spacer2 = new Region();
@@ -119,15 +132,16 @@ public class UI extends Application {
         settings.getChildren().add(spacer2);
 
         // color selector logic
-        Map<String, Boolean> colorState = new HashMap<>(); // why hashmap you may ask? Because it is the easiest way to
-                                                           // do it lol (and cheap as well) :)
+        Map<String, Boolean> colorState = new HashMap<>(); // hasmap is super easy and cheap to use
         colorState.put("Red", false); // false indicates the color is not hidden initially
         colorState.put("Green", false);
         colorState.put("Blue", false);
 
         ComboBox<String> optionsComboBox = new ComboBox<>();
         optionsComboBox.getItems().addAll("Red", "Green", "Blue");
+        optionsComboBox.setPromptText("Select Color");
         Button actionButton = new Button("Perform Action");
+        actionButton.setFont(fontButton);
 
         Label colorLabel = new Label("Hide/Show Color");
         colorLabel.setFont(font);
@@ -136,7 +150,7 @@ public class UI extends Application {
         actionButton.setOnAction(event -> {
             String selectedOption = optionsComboBox.getValue();
             if (selectedOption != null) {
-                // Toggle between hiding and showing the color
+                // toggle between hiding and showing the color
                 if (colorState.get(selectedOption)) {
                     showColor(selectedOption);
                     colorState.put(selectedOption, false);
@@ -151,24 +165,40 @@ public class UI extends Application {
 
         settings.getChildren().addAll(optionsComboBox, actionButton);
 
-        SplitPane splitPane = new SplitPane();
-        splitPane.getItems().addAll(settings, subScene3D);
-        splitPane.setDividerPositions(0.2);
+        AnchorPane root = new AnchorPane();
+        root.getChildren().add(splitPane);
+        AnchorPane.setTopAnchor(splitPane, 0.0);
+        AnchorPane.setBottomAnchor(splitPane, 0.0);
+        AnchorPane.setLeftAnchor(splitPane, 0.0);
+        AnchorPane.setRightAnchor(splitPane, 0.0);
 
-        // mouse handling method
-        initMouseControl(group, splitPane);
+        root.getChildren().add(zoomSlider);
+        AnchorPane.setBottomAnchor(zoomSlider, 10.0);
+        zoomSlider.setPrefWidth(750);
+        AnchorPane.setLeftAnchor(zoomSlider, (1200) / 2.0);
+        zoomSlider.toFront();
 
-        // root pane
-        Scene mainScene = new Scene(splitPane, 1700, 1000);
+        // create the Scene with the root AnchorPane
+        Scene mainScene = new Scene(root, 1650, 1000);
+
+        initMouseControl(group, subScene3D);
 
         // staging of stage
-        stage.setTitle("KnapSack");
+        stage.setTitle("KnapSack Visualizer");
         stage.getIcons().add(icon);
         stage.setResizable(false);
         stage.setScene(mainScene);
         stage.show();
     }
 
+    /**
+     * Draws 3D boxes representing occupied spaces within the cargo space and
+     * creates an outer container box to enclose the cargo space.
+     * The method iterates through the cargo space data, creating boxes for each
+     * occupied space, and positions them based on the cargo space dimensions.
+     * It also adds an outer container box to enclose the cargo space for
+     * visualization.
+     */
     private void drawContainer() {
         for (int i = 0; i < cargoSpace.getOccupied().length; i++) {
             for (int j = 0; j < cargoSpace.getOccupied()[0].length; j++) {
@@ -199,8 +229,14 @@ public class UI extends Application {
         group.getChildren().add(containerBox);
     }
 
+    /**
+     * Retrieves and returns a Color based on the given ID.
+     *
+     * @param id The ID used to determine the Color.
+     * @return A Color associated with the provided ID.
+     */
     private Color getColorById(final int id) {
-        System.out.println("ID: " + id); // Debug print
+        // System.out.println("ID: " + id); // Debug print
         return switch (id) {
             case 0 -> Color.ORANGE;
             case 1, 4 -> Color.BLUE;
@@ -210,37 +246,65 @@ public class UI extends Application {
         };
     }
 
-    private void initMouseControl(final Group group, final SplitPane splitPane) {
-        final Rotate xRotate;
-        final Rotate yRotate;
-        group.getTransforms().addAll(
-                xRotate = new Rotate(0, Rotate.X_AXIS),
-                yRotate = new Rotate(0, Rotate.Y_AXIS));
+    /**
+     * Initializes mouse control for adjusting the view orientation in the 3D scene.
+     * This method allows the user to interactively rotate the 3D view by dragging
+     * the mouse.
+     *
+     * @param group      The 3D scene's group to which rotation transforms are
+     *                   applied.
+     * @param subScene3D The SubScene representing the 3D scene for mouse
+     *                   interaction.
+     */
+    private void initMouseControl(final Group group, final SubScene subScene3D) {
+        final Rotate xRotate = new Rotate(0, Rotate.X_AXIS);
+        final Rotate yRotate = new Rotate(0, Rotate.Y_AXIS);
+        group.getTransforms().addAll(xRotate, yRotate);
 
         xRotate.angleProperty().bind(angleX);
         yRotate.angleProperty().bind(angleY);
 
-        splitPane.setOnMousePressed(e -> {
-            anchorX = e.getSceneX();
-            anchorY = e.getSceneY();
+        subScene3D.setOnMousePressed(event -> {
+            anchorX = event.getSceneX();
+            anchorY = event.getSceneY();
             anchorAngleX = angleX.get();
             anchorAngleY = angleY.get();
         });
 
-        splitPane.setOnMouseDragged(e -> {
-            angleX.set(anchorAngleX - (anchorY - e.getSceneY()));
-            angleY.set(anchorAngleY + anchorX - e.getSceneX());
+        subScene3D.setOnMouseDragged(event -> {
+            angleX.set(anchorAngleX - (anchorY - event.getSceneY()));
+            angleY.set(anchorAngleY + anchorX - event.getSceneX());
         });
     }
 
+    /**
+     * Sets the solution state for a problem represented by a three-dimensional
+     * integer array.
+     *
+     * @param state A three-dimensional integer array representing the solution
+     *              state.
+     */
     public void setSolution(final int[][][] state) {
         // this.solution = state;
     }
 
+    /**
+     * Launches and displays the graphical user interface (GUI) for the application.
+     * This method initiates the application's main window and user interface
+     * components.
+     */
     public void show() {
         launch();
     }
 
+    /**
+     * Hides 3D boxes of a specific color within the 3D scene.
+     * This method iterates through the 3D scene's children, identifies boxes
+     * with the specified color, and sets them to be invisible.
+     *
+     * @param colorStr A string representation of the color to hide (e.g., "Red",
+     *                 "Green").
+     */
     private void hideColor(String colorStr) {
         Color colorToHide = stringToColor(colorStr);
         for (Node node : group.getChildren()) {
@@ -255,6 +319,14 @@ public class UI extends Application {
         System.out.println("Hiding " + colorStr);
     }
 
+    /**
+     * Shows 3D boxes of a specific color within the 3D scene.
+     * This method iterates through the 3D scene's children, identifies boxes
+     * with the specified color, and sets them to be visible.
+     *
+     * @param colorStr A string representation of the color to show (e.g., "Red",
+     *                 "Green").
+     */
     private void showColor(String colorStr) {
         Color colorToShow = stringToColor(colorStr);
         for (Node node : group.getChildren()) {
@@ -269,6 +341,14 @@ public class UI extends Application {
         System.out.println("Showing " + colorStr);
     }
 
+    /**
+     * Converts a string representation of a color to a corresponding JavaFX Color
+     * object.
+     *
+     * @param colorStr A string representing a color (e.g., "Red", "Green", "Blue").
+     * @return The JavaFX Color object corresponding to the input color string, or
+     *         null if not found.
+     */
     private Color stringToColor(String colorStr) {
         return switch (colorStr) {
             case "Red" -> Color.RED;
