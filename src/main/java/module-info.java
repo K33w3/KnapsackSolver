@@ -2,6 +2,7 @@ module com.bcs2024.knapsack {
 
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.desktop;
 
     opens com.bcs2024.knapsack to javafx.fxml;
     exports com.bcs2024.knapsack;

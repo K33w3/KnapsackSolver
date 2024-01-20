@@ -4,57 +4,55 @@ import com.bcs2024.knapsack.algorithm.GeneticKnapsackSolver;
 import com.bcs2024.knapsack.algorithm.GreedyKnapsackSolver;
 import com.bcs2024.knapsack.algorithm.dancinglinks.DLSearch;
 import com.bcs2024.knapsack.renderer.UI;
-
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 public class KnapsackSolverApp {
 
-    private static void handleInput() {
-        System.out.println("Selected method");
-        System.out.println("Greedy");
-        System.out.println("Genetically Trained");
-        System.out.println("Dancing Links");
-    }
-
+    /**
+     * The main entry point of the application. It displays a graphical dialog to
+     * allow the user to choose a knapsack solving algorithm and initializes the
+     * selected algorithm, ultimately showing the user interface.
+     *
+     * @param args The command-line arguments (not used in this application).
+     */
     public static void main(final String[] args) {
-        final Scanner scanner = new Scanner(System.in);
-        final int algorithmChoice;
+        // options array
+        String[] options = { "Greedy", "Genetic", "Dancing Links" };
 
-        System.out.println("Select the algorithm: " +
-                "1: Greedy " +
-                "2: DLX " +
-                "3: Genetic");
+        // pop up
+        int selectedOption = JOptionPane.showOptionDialog(null,
+                "Choose an Algorithm",
+                "Algorithm Selector",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]);
 
-        try {
-            algorithmChoice = scanner.nextInt();
-        } catch (final InputMismatchException e) {
-            System.out.println("Invalid input. Please enter a numeric value.");
-            scanner.nextLine();
-            return;
-        }
-
-        switch (algorithmChoice) {
-            case 1:
+        // handle selection
+        final UI ui = new UI();
+        switch (selectedOption) {
+            case 0:
+                System.out.println("Greedy selected");
                 final GreedyKnapsackSolver greedyKnapsackSolver = new GreedyKnapsackSolver();
                 greedyKnapsackSolver.solve();
+                ui.show();
                 break;
-            case 2:
-                final DLSearch dlx = new DLSearch();
-                dlx.createPositions();
-                break;
-            case 3:
+            case 1:
+                System.out.println("Genetic selected");
                 final GeneticKnapsackSolver geneticKnapsackSolver = new GeneticKnapsackSolver();
                 geneticKnapsackSolver.solve();
+                ui.show();
+                break;
+            case 2:
+                System.out.println("Dancing Links selected");
+                final DLSearch dlx = new DLSearch();
+                dlx.createPositions();
+                ui.show();
                 break;
             default:
-                System.out.println("Invalid algorithm choice. Please select 1 (Greedy), 2 (DLX), or 3 (Genetic).");
+                System.out.println("No option selected");
+                break;
         }
-
-        final UI ui = new UI();
-        ui.show();
-
-        // final HelloApplication visualization = new HelloApplication();
-        // visualization.show();
     }
 }

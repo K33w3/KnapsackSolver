@@ -11,6 +11,7 @@ public class EquilibriumAndDistribution {
     private String[] genes;
     private int[][][] matrix;
 
+    
     public EquilibriumAndDistribution(final CargoSpace cargoSpace, final int[] rotations, final String[] genes) {
         this.genes = genes;
         this.rotations = rotations;

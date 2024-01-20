@@ -14,12 +14,12 @@ public class GeneticKnapsackSolver {
 
     private final double MUTATION_RATE = 0.3;
     private final double CROSSOVER_RATE = 0.8;
-    private final int MAX_GENERATIONS = 2;
+    private final int MAX_GENERATIONS = 30;
     private final int GENE_LENGTH = 54;
     private final Random random = new Random();
     private final int POPULATION_SIZE = 100;
     private List<Chromosome> population;
-    //private int[][][] matrix;
+    // private int[][][] matrix;
     private int[] bestSolutionRotation;
     private String[] bestSolutionGene;
 
@@ -28,15 +28,25 @@ public class GeneticKnapsackSolver {
     private CargoSpace cargoSpace = UI.cargoSpace;
 
     public static void main(final String[] args) {
-        /*final List<Parcel> parcels = new ArrayList<>();
-        parcels.add(new Parcel("A"));
-        parcels.add(new Parcel("B"));
-        parcels.add(new Parcel("C"));*/
+        /*
+         * final List<Parcel> parcels = new ArrayList<>();
+         * parcels.add(new Parcel("A"));
+         * parcels.add(new Parcel("B"));
+         * parcels.add(new Parcel("C"));
+         */
 
         final GeneticKnapsackSolver solver = new GeneticKnapsackSolver();
         solver.solve();
     }
 
+    /**
+     * Solves the knapsack problem using a genetic algorithm.
+     * The algorithm involves initializing a population of chromosomes, evaluating
+     * the fitness of each chromosome,
+     * applying crossover and mutation to create a new population, and repeating
+     * until a maximum number of generations
+     * is reached.
+     */
     public void solve() {
         bestSolutionGene = new String[GENE_LENGTH];
         bestSolutionRotation = new int[GENE_LENGTH];
@@ -46,7 +56,8 @@ public class GeneticKnapsackSolver {
             evaluateFitness(population);
             crossover();
             mutation();
-            System.out.println("Generation: " + i + " done. -------------------------------------------------------------------------------" + "\n");
+            System.out.println("Generation: " + i
+                    + " done. -------------------------------------------------------------------------------" + "\n");
         }
 
         System.out.println("Rotation: " + Arrays.toString(bestSolutionRotation));
@@ -54,6 +65,9 @@ public class GeneticKnapsackSolver {
         applyBestSolution();
     }
 
+    /**
+     * Initializes the population of chromosomes with random genes and rotations.
+     */
     private void initializePopulation() {
         population = new ArrayList<>(POPULATION_SIZE);
 
@@ -63,19 +77,27 @@ public class GeneticKnapsackSolver {
         }
     }
 
+    /**
+     * Evaluates the fitness of each chromosome in the population by calculating
+     * the total value of the cargo space.
+     * The fitness is set to the total value of the cargo space.
+     *
+     * @param population The population of chromosomes to be evaluated.
+     */
     private void evaluateFitness(final List<Chromosome> population) {
         final ShapesAndRotations shapes = new ShapesAndRotations();
 
         for (final Chromosome chromo : population) {
-            //int totalValue = 0; // Reset totalValue for each chromosome
-            //final CargoSpace localCargoSpace = new CargoSpace(); // Create a new instance of CargoSpace
+            // int totalValue = 0; // Reset totalValue for each chromosome
+            // final CargoSpace localCargoSpace = new CargoSpace(); // Create a new instance
+            // of CargoSpace
             int totalValue = 0;
             int countA = 0;
             int countB = 0;
             int countC = 0;
             final CargoSpace localCargoSpace = new CargoSpace();
 
-            //matrix = localCargoSpace.getOccupied();
+            // matrix = localCargoSpace.getOccupied();
             final int[][][] occupied = localCargoSpace.getOccupied();
 
             for (int x = 0; x < occupied.length; x++) {
@@ -88,8 +110,8 @@ public class GeneticKnapsackSolver {
                             final Parcel parcel = new Parcel(gene, shape);
 
                             if (localCargoSpace.canPlace(shape, x, y, z)) {
-                                //final ParcelPlacement placement = new ParcelPlacement(parcel, x, y, z);
-                                //localCargoSpace.placeParcel(placement);
+                                // final ParcelPlacement placement = new ParcelPlacement(parcel, x, y, z);
+                                // localCargoSpace.placeParcel(placement);
                                 localCargoSpace.placeParcel(shape, x, y, z, occupied);
 
                                 switch (gene) {
@@ -124,6 +146,13 @@ public class GeneticKnapsackSolver {
         }
     }
 
+    /**
+     * Applies crossover to create a new population of chromosomes using tournament
+     * selection and a crossover rate.
+     * Crossover involves pairing parents, selecting random crossover points, and
+     * exchanging genetic information
+     * to produce offspring. Offspring may undergo repair if they are not valid.
+     */
     private Chromosome tournamentSelection(final int tournamentSize) {
         final List<Chromosome> tournamentParticipants = new ArrayList<>();
 
@@ -145,18 +174,13 @@ public class GeneticKnapsackSolver {
         return winner;
     }
 
-    // private Chromosome repair(Chromosome chromosome) {
-    //   int currentPopulationSize = population.size();
-    //   int tournamentSize = Math.min(2, currentPopulationSize); // Adjust based on your requirement
-
-    //   while (true) {
-    //     Chromosome newChromo = tournamentSelection(tournamentSize);
-    //     if (isValid(newChromo)) {
-    //       return newChromo;
-    //     }
-    //   }
-    // }
-
+    /**
+     * Applies crossover to create a new population of chromosomes using tournament
+     * selection and a crossover rate.
+     * Crossover involves pairing parents, selecting random crossover points, and
+     * exchanging genetic information
+     * to produce offspring. Offspring may undergo repair if they are not valid.
+     */
     private void crossover() {
         final List<Chromosome> newPopulation = new ArrayList<>();
 
@@ -220,11 +244,17 @@ public class GeneticKnapsackSolver {
         population = newPopulation;
     }
 
+    /**
+     * Applies mutation to the chromosomes in the population with a probability
+     * defined by MUTATION_RATE.
+     * Mutation involves randomly changing the type and rotation of genes in a
+     * chromosome.
+     */
     private void mutation() {
         for (final Chromosome chromo : population) {
             if (random.nextDouble() < MUTATION_RATE) {
                 final int index = random.nextInt(GENE_LENGTH);
-                final String[] types = {"A", "B", "C"};
+                final String[] types = { "A", "B", "C" };
                 final String newType = types[random.nextInt(types.length)];
 
                 chromo.getGenes()[index] = newType;
@@ -236,6 +266,13 @@ public class GeneticKnapsackSolver {
         }
     }
 
+    /**
+     * Checks the validity of a chromosome by verifying if it can be placed in the
+     * cargo space and has a positive total value.
+     *
+     * @param chromo The chromosome to be validated.
+     * @return true if the chromosome is valid; otherwise, false.
+     */
     private boolean isValid(final Chromosome chromo) {
         final ShapesAndRotations shapes = new ShapesAndRotations();
         int totalValue = 0;
@@ -280,7 +317,7 @@ public class GeneticKnapsackSolver {
             final String gene = bestChromosome.getGenes()[i];
             final int rotation = bestChromosome.getRotationFromGene(i);
             final int[][][] shape = shapes.getShape(gene, rotation);
-            //final Parcel parcel = new Parcel(gene, shape);
+            // final Parcel parcel = new Parcel(gene, shape);
 
             // Find the position to place the parcel and place it
             for (int x = 0; x < occupied.length; x++) {

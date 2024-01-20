@@ -16,6 +16,11 @@ public class Cell {
     public int z0;
     public int[][][] shape;
 
+    /**
+     * Constructs a new instance of the Cell class.
+     *
+     * @param header The header of the cell.
+     */
     public Cell(Header header) {
         row = -1;
         L = this;
@@ -32,6 +37,12 @@ public class Cell {
         shape = new int[0][0][0];
     }
 
+    /**
+     * Constructs a new instance of the Cell class.
+     *
+     * @param header The header of the cell.
+     * @param row    The row of the cell.
+     */
     public void InsertLeft(Cell cell) {
         cell.L = L;
         L.R = cell;
@@ -39,6 +50,12 @@ public class Cell {
         cell.R = this;
     }
 
+    /**
+     * Constructs a new instance of the Cell class.
+     *
+     * @param header The header of the cell.
+     * @param row    The row of the cell.
+     */
     public void InsertUp(Cell cell) {
         cell.U = U;
         U.D = cell;
