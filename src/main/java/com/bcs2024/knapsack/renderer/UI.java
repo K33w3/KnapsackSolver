@@ -165,11 +165,12 @@ public class UI extends Application {
 
         root.getChildren().add(zoomSlider);
         AnchorPane.setBottomAnchor(zoomSlider, 10.0);
-        AnchorPane.setLeftAnchor(zoomSlider, (1700 - 300) / 2.0); // Assuming slider width is 300
+        zoomSlider.setPrefWidth(750);
+        AnchorPane.setLeftAnchor(zoomSlider, (1200) / 2.0);
         zoomSlider.toFront();
 
         // Create the Scene with the root AnchorPane
-        Scene mainScene = new Scene(root, 1700, 1000);
+        Scene mainScene = new Scene(root, 1650, 1000);
 
         initMouseControl(group, subScene3D);
 
