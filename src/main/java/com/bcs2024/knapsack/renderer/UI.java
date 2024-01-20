@@ -19,7 +19,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
@@ -51,9 +50,6 @@ public class UI extends Application {
         length = (int) (cargoSpace.getLength()) * 30;
         height = (int) (cargoSpace.getHeight()) * 30;
         width = (int) (cargoSpace.getWidth()) * 30;
-        // solution = GreedyKnapsackSolver.matrix;
-        // solution = cargoSpace.getOccupied();
-        // solution = Experiment.field;
     }
 
     @Override
@@ -122,8 +118,7 @@ public class UI extends Application {
         settings.getChildren().add(spacer2);
 
         // color selector logic
-        Map<String, Boolean> colorState = new HashMap<>(); // why hashmap you may ask? Because it is the easiest way to
-                                                           // do it lol (and cheap as well) :)
+        Map<String, Boolean> colorState = new HashMap<>(); // hasmap is super easy and cheap to use
         colorState.put("Red", false); // false indicates the color is not hidden initially
         colorState.put("Green", false);
         colorState.put("Blue", false);
@@ -141,7 +136,7 @@ public class UI extends Application {
         actionButton.setOnAction(event -> {
             String selectedOption = optionsComboBox.getValue();
             if (selectedOption != null) {
-                // Toggle between hiding and showing the color
+                // toggle between hiding and showing the color
                 if (colorState.get(selectedOption)) {
                     showColor(selectedOption);
                     colorState.put(selectedOption, false);
@@ -169,7 +164,7 @@ public class UI extends Application {
         AnchorPane.setLeftAnchor(zoomSlider, (1200) / 2.0);
         zoomSlider.toFront();
 
-        // Create the Scene with the root AnchorPane
+        // create the Scene with the root AnchorPane
         Scene mainScene = new Scene(root, 1650, 1000);
 
         initMouseControl(group, subScene3D);
@@ -213,7 +208,7 @@ public class UI extends Application {
     }
 
     private Color getColorById(final int id) {
-        System.out.println("ID: " + id); // Debug print
+        //System.out.println("ID: " + id); // Debug print
         return switch (id) {
             case 0 -> Color.ORANGE;
             case 1, 4 -> Color.BLUE;
@@ -287,20 +282,6 @@ public class UI extends Application {
             case "Blue" -> Color.BLUE;
             default -> null;
         };
-    }
-
-    private Slider createZoomSlider() {
-        Slider zoomSlider = new Slider();
-        zoomSlider.setMin(-1500);
-        zoomSlider.setMax(1500);
-        zoomSlider.setValue(0);
-        zoomSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            camera.translateZProperty().set(newValue.doubleValue());
-        });
-        zoomSlider.setPrefWidth(300); // Set a preferred width for the slider
-        zoomSlider.setMaxWidth(Region.USE_PREF_SIZE);
-        zoomSlider.setMinWidth(Region.USE_PREF_SIZE);
-        return zoomSlider;
     }
 
 }
