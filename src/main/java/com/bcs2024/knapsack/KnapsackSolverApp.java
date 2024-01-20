@@ -8,6 +8,13 @@ import javax.swing.JOptionPane;
 
 public class KnapsackSolverApp {
 
+    /**
+     * The main entry point of the application. It displays a graphical dialog to
+     * allow the user to choose a knapsack solving algorithm and initializes the
+     * selected algorithm, ultimately showing the user interface.
+     *
+     * @param args The command-line arguments (not used in this application).
+     */
     public static void main(final String[] args) {
         // options array
         String[] options = { "Greedy", "Genetic", "Dancing Links" };
@@ -47,7 +54,5 @@ public class KnapsackSolverApp {
                 System.out.println("No option selected");
                 break;
         }
-        }
     }
-
-
+}

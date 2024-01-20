@@ -11,6 +11,12 @@ public class Chromosome {
   private int fitness;
   private int[] rotations;
 
+  /**
+   * Constructs a new Chromosome with the specified length, randomly initializing
+   * its genes and rotations.
+   *
+   * @param length The length of the Chromosome, representing the number of genes.
+   */
   public Chromosome(int length) {
     this.genes = new String[length];
     this.rotations = new int[length];
@@ -28,38 +34,85 @@ public class Chromosome {
     }
   }
 
+  /**
+   * Retrieves the rotation associated with the gene at the specified index.
+   *
+   * @param index The index of the gene for which to retrieve the rotation.
+   * @return The rotation value associated with the gene at the specified index.
+   */
   public int getRotationFromGene(int index) {
     return this.rotations[index];
   }
 
+  /**
+   * Retrieves the gene at the specified index.
+   *
+   * @param index The index of the gene to retrieve.
+   * @return The gene at the specified index.
+   */
   public int[] getRotations() {
     return this.rotations;
   }
 
+  /**
+   * Sets the fitness value for this chromosome.
+   *
+   * @param fitness The fitness value to be assigned to this chromosome.
+   */
   public void setFitness(int fitness) {
     this.fitness = fitness;
   }
 
+  /**
+   * Retrieves the length of the rotations array in this chromosome.
+   *
+   * @return The length of the rotations array.
+   */
   public int getRotationLength() {
     return this.rotations.length;
   }
 
+  /**
+   * Retrieves the array of genes representing the chromosome.
+   *
+   * @return An array of genes.
+   */
   public String[] getGenes() {
     return genes;
   }
 
+  /**
+   * Sets the array of genes representing the chromosome.
+   *
+   * @param genes An array of genes.
+   */
   public void setRotations(int[] rotations) {
     this.rotations = rotations;
   }
 
+  /**
+   * Sets the array of genes for the chromosome.
+   *
+   * @param genes An array of genes to set.
+   */
   public void setGenes(String[] genes) {
     this.genes = genes;
   }
 
+  /**
+   * Gets the fitness value of the chromosome.
+   *
+   * @return The fitness value of the chromosome.
+   */
   public int getFitness() {
     return fitness;
   }
 
+  /**
+   * Returns a string representation of the chromosome.
+   *
+   * @return A string representation of the chromosome, including its genes.
+   */
   @Override
   public String toString() {
     return "Chromosome{" + "genes=" + Arrays.toString(genes) + '}';

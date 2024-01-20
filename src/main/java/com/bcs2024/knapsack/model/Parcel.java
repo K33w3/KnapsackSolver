@@ -9,24 +9,54 @@ public class Parcel {
     private int[][][] shape;
     private int id;
 
+    /**
+     * Constructs a new Parcel object with the specified type and shape.
+     * This constructor initializes the Parcel's type and shape properties and
+     * performs initialization based on the parcel type.
+     *
+     * @param type  The type of the parcel (e.g., "Box", "Cylinder", etc.).
+     * @param shape A three-dimensional array representing the shape of the parcel.
+     */
     public Parcel(final String type, final int[][][] shape) {
         this.type = type;
         this.shape = shape;
         initializeParcelByType();
     }
 
+    /**
+     * Constructs a new Parcel object with the specified ID and shape.
+     * This constructor initializes the Parcel's ID and shape properties and
+     * performs initialization based on the parcel ID.
+     *
+     * @param id    The ID of the parcel.
+     * @param shape A three-dimensional array representing the shape of the parcel.
+     */
     public Parcel(final int id, final int[][][] shape) {
         this.id = id;
         this.shape = shape;
         initializeParcelById();
     }
 
+    /**
+     * Constructs a new Parcel object with the specified type.
+     * This constructor initializes the Parcel's type property and
+     * performs initialization based on the parcel type.
+     *
+     * @param type The type of the parcel (e.g., "Box", "Cylinder", etc.).
+     */
     public Parcel(final String type) {
         this.type = type;
         this.shape = new ShapesAndRotations().getShape(type, 0);
         initializeParcelByType();
     }
 
+    /**
+     * Constructs a new Parcel object with the specified ID.
+     * This constructor initializes the Parcel's ID property and
+     * performs initialization based on the parcel ID.
+     *
+     * @param id The ID of the parcel.
+     */
     private void initializeParcelByType() {
         switch (type) {
             case "A" -> {
@@ -57,6 +87,14 @@ public class Parcel {
         }
     }
 
+    /**
+     * Initializes the Parcel's properties (value and type) based on its unique
+     * identifier (id).
+     * This method assigns the appropriate value and type to the parcel based on its
+     * id.
+     * If the id is invalid, it displays a message indicating that the type is
+     * invalid.
+     */
     private void initializeParcelById() {
         switch (id) {
             case 1 -> {
@@ -87,6 +125,13 @@ public class Parcel {
         }
     }
 
+    /**
+     * Returns the ID of the parcel based on its type.
+     * This method returns the ID of the parcel based on its type.
+     *
+     * @param type The type of the parcel.
+     * @return The ID of the parcel.
+     */
     private int setId(final String type) {
         return switch (type) {
             case "A" -> 1;
@@ -99,26 +144,62 @@ public class Parcel {
         };
     }
 
+    /**
+     * Returns the shape of the parcel.
+     * This method returns the shape of the parcel.
+     *
+     * @return The shape of the parcel.
+     */
     public int[][][] getShape() {
         return shape;
     }
 
+    /**
+     * Returns the value of the parcel.
+     * This method returns the value of the parcel.
+     *
+     * @return The value of the parcel.
+     */
     public int getValue() {
         return value;
     }
 
+    /**
+     * Returns the type of the parcel.
+     * This method returns the type of the parcel.
+     *
+     * @return The type of the parcel.
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * Sets the value of the parcel.
+     * This method sets the value of the parcel.
+     *
+     * @param value The value of the parcel.
+     */
     public void setShape(final int[][][] shape) {
         this.shape = shape;
     }
 
+    /**
+     * Sets the value of the parcel.
+     * This method sets the value of the parcel.
+     *
+     * @param value The value of the parcel.
+     */
     public void setType(final String type) {
         this.type = type;
     }
 
+    /**
+     * Sets the value of the parcel.
+     * This method sets the value of the parcel.
+     *
+     * @param value The value of the parcel.
+     */
     public double getVolume() {
         final double volume = switch (type) {
             case "A" -> 1.0 * 1.0 * 2.0;
@@ -126,13 +207,19 @@ public class Parcel {
             case "C" -> 1.5 * 1.5 * 1.5;
             case "L", "P", "T" ->
                 // Dimensions for pentomino shapes (L, P, T): 5 cubes of 0.5 x 0.5 x 0.5
-                    5 * (0.5 * 0.5 * 0.5);
+                5 * (0.5 * 0.5 * 0.5);
             default -> throw new IllegalArgumentException("Unknown parcel type: " + type);
         };
 
         return volume;
     }
 
+    /**
+     * Sets the value of the parcel.
+     * This method sets the value of the parcel.
+     *
+     * @param value The value of the parcel.
+     */
     public double getValueDensity() {
         final double valueDensity = switch (type) {
             case "A" -> 1.0 / 2.0;
@@ -145,10 +232,22 @@ public class Parcel {
         return valueDensity;
     }
 
+    /**
+     * Returns the ID of the parcel.
+     * This method returns the ID of the parcel.
+     *
+     * @return The ID of the parcel.
+     */
     public int getId() {
         return this.id;
     }
 
+    /**
+     * Returns the surface area of the parcel.
+     * This method returns the surface area of the parcel.
+     *
+     * @return The surface area of the parcel.
+     */
     public double calculateSurfaceArea() {
         // Assuming shape array dimensions represent length, width, and height
         // and the parcel is a rectangular prism

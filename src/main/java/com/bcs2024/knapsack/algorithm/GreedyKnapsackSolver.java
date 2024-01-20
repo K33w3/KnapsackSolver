@@ -16,22 +16,29 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
     private final String[] parcelSequence;
     private final double[] weights;
     private final double[] actualWeights;
-    //private HelloApplication visulization = new HelloApplication();
 
+    /**
+     * Constructs a new GreedyKnapsackSolver object for solving the knapsack problem
+     * using a greedy algorithm.
+     * This constructor initializes various properties, including weights, parcel
+     * sequence,
+     * and random initial values for weights. It also sets actualWeights with
+     * predefined values.
+     */
     public GreedyKnapsackSolver() { // TODO
         weights = new double[4];
 
         // FileUtil.writeInFile("resultsGtraining.txt", ""); TODO uncomment this line to
 
         shapes = new ShapesAndRotations();
-        parcelSequence = new String[]{"A", "B", "C"};
+        parcelSequence = new String[] { "A", "B", "C" };
 
         final Random random = new Random();
         for (int i = 0; i < 4; i++) {
             weights[i] = random.nextDouble();
         }
 
-        actualWeights = new double[]{
+        actualWeights = new double[] {
                 0.7934029214856616,
                 0.9831091831983482,
                 0.4224751952092841,
@@ -39,6 +46,18 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
         };
     }
 
+    /**
+     * Places parcels within the cargo space based on their properties and available
+     * positions.
+     * This method iterates through the cargo space, considering each position and
+     * parcel type
+     * in the specified sequence. It calculates the suitability of each placement
+     * based on
+     * various factors and selects the best placement for each parcel.
+     * 
+     * @implNote This method applies a greedy algorithm to place parcels optimally
+     *           within the cargo space.
+     */
     private void putShapes() {
         int count = 0;
 
@@ -140,14 +159,30 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
             System.out.println();
         }
 
-        //visulization.show();
+        // visulization.show();
     }
 
+    /**
+     * Solves the knapsack problem using a greedy algorithm by placing parcels
+     * within the cargo space.
+     * This method invokes the 'putShapes' method to place parcels optimally within
+     * the cargo space.
+     */
     @Override
     public void solve() {
         this.putShapes();
     }
 
+    /**
+     * The main method for testing the GreedyKnapsackSolver by running it multiple
+     * times.
+     * This method creates instances of the GreedyKnapsackSolver and invokes the
+     * 'putShapes' method
+     * multiple times to solve the knapsack problem with a greedy algorithm for
+     * testing purposes.
+     *
+     * @param args Command-line arguments (not used).
+     */
     public static void main(final String[] args) {
         for (int i = 0; i < 10; i++) {
             final GreedyKnapsackSolver solver = new GreedyKnapsackSolver();
@@ -155,6 +190,17 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
         }
     }
 
+    /**
+     * Returns the number of points touched by the parcel.
+     * This method returns the number of points touched by the parcel.
+     *
+     * @param parcel The parcel.
+     * @param matrix The matrix representing the cargo space.
+     * @param posX   The x-coordinate of the parcel's position.
+     * @param posY   The y-coordinate of the parcel's position.
+     * @param posZ   The z-coordinate of the parcel's position.
+     * @return The number of points touched by the parcel.
+     */
     public int touched(final Parcel parcel, final int[][][] matrix, final int posX, final int posY, final int posZ) {
         final int[][][] shape = parcel.getShape();
         int touchedPoints = 0;
@@ -202,6 +248,12 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
         return touchedPoints;
     }
 
+    /**
+     * Returns the cargo space.
+     * This method returns the cargo space.
+     *
+     * @return The cargo space.
+     */
     public CargoSpace getCargoSpace() {
         return cargoSpace;
     }

@@ -23,6 +23,12 @@ public class DancingLinks {
     public static int[][][] field;
     private CargoSpace cargoSpace;
 
+    /**
+     * Constructs a Dancing Links object with the specified number of columns.
+     *
+     * @param columns The number of columns to initialize for the Dancing Links
+     *                structure.
+     */
     public DancingLinks(int columns) {
         cargoSpace = new CargoSpace();
         answer = new Stack<>();
@@ -38,6 +44,13 @@ public class DancingLinks {
         field = new int[width][height][length];
     }
 
+    /**
+     * Adds a row to the Dancing Links structure.
+     *
+     * @param row   The row number of the row to add.
+     * @param ones  The column indexes of the ones in the row.
+     * @param piece The piece to add to the row.
+     */
     public void AddRow(int row, int pentId, int[] ones, int[][][] piece) {
         int last = -1;
         Cell first = null;
@@ -66,22 +79,26 @@ public class DancingLinks {
     public int countB = 0;
     public int countC = 0;
 
+    /**
+     * Solves the exact cover problem using Algorithm X.
+     *
+     * @param step The current step of the algorithm.
+     */
     public void algorithmX(int step) {
-        if (stop) return;
+        if (stop)
+            return;
         List<ParcelInfo> parcelInfo = new ArrayList<>();
-        if(answer.size() >= 10){
+        if (answer.size() >= 10) {
             DLSearch.pieceCount = 0;
             DLSearch.totalValue = 0;
-            for(var ans : answer)
-            {
+            for (var ans : answer) {
                 ParcelInfo r = DLSearch.parcelInfo.get(ans);
                 parcelInfo.add(r);
             }
 
             clearField();
 
-            for(var info : parcelInfo)
-            {
+            for (var info : parcelInfo) {
                 cargoSpace.placeParcel(info.shape, info.x0, info.y0, info.z0, field);
                 DLSearch.pieceCount++;
                 DLSearch.totalValue += info.pieceValue;
@@ -106,14 +123,15 @@ public class DancingLinks {
                 ui.show();
                 return;
             }
-            countA = 0; countB = 0; countC = 0;
+            countA = 0;
+            countB = 0;
+            countC = 0;
             field = new int[width][height][length];
         }
 
         Header head = (Header) root.R;
         int minSize = head.size;
-        for (Cell xCell = head; xCell != root; xCell = xCell.R)
-        {
+        for (Cell xCell = head; xCell != root; xCell = xCell.R) {
             if (((Header) xCell).size < minSize) {
                 minSize = ((Header) xCell).size;
                 head = (Header) xCell;
@@ -143,6 +161,9 @@ public class DancingLinks {
         uncover(head);
     }
 
+    /**
+     * Clears the entire field, setting all elements to -1.
+     */
     private void clearField() {
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[0].length; j++) {
@@ -153,6 +174,12 @@ public class DancingLinks {
         }
     }
 
+    /**
+     * Covers the specified header node and removes related rows and columns from
+     * the dancing links matrix.
+     *
+     * @param head The header node to be covered.
+     */
     private void cover(Header head) {
         head.R.L = head.L;
         head.L.R = head.R;
@@ -166,6 +193,12 @@ public class DancingLinks {
         }
     }
 
+    /**
+     * Uncovers the specified header node and restores related rows and columns to
+     * the dancing links matrix.
+     *
+     * @param head The header node to be uncovered.
+     */
     private void uncover(Header head) {
         for (Cell iCell = head.U; iCell != head; iCell = iCell.U)
             for (Cell jCell = iCell.L; jCell != iCell; jCell = jCell.L) {
@@ -178,4 +211,3 @@ public class DancingLinks {
     }
 
 }
-

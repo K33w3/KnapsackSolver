@@ -12,6 +12,14 @@ public class CargoSpace {
     private int[][][] occupied;
     private int filledSlotsCount = 0;
 
+    /**
+     * Constructs a new CargoSpace object representing a three-dimensional cargo
+     * space.
+     * This constructor initializes the dimensions (x, y, z) based on the width,
+     * height, and length,
+     * and creates an occupied array to represent the cargo space, initializing all
+     * elements to -1.
+     */
     public CargoSpace() {
         final int x = (int) (width);
         final int y = (int) (height);
@@ -27,6 +35,16 @@ public class CargoSpace {
         }
     }
 
+    /**
+     * Constructs a new CargoSpace object representing a three-dimensional cargo
+     * space.
+     * This constructor initializes the dimensions (x, y, z) based on the width,
+     * height, and length,
+     * and creates an occupied array to represent the cargo space, initializing all
+     * elements to -1.
+     *
+     * @param occupied The occupied array representing the cargo space.
+     */
     public boolean canPlace(final int[][][] shape, final int startX, final int startY, final int startZ) {
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[0].length; j++) {
@@ -35,7 +53,8 @@ public class CargoSpace {
                         final int x = startX + k;
                         final int y = startY + j;
                         final int z = startZ + i;
-                        if (x >= (int) (width) || y >= (int) (height) || z >= (int) (length) || occupied[x][y][z] != -1) {
+                        if (x >= (int) (width) || y >= (int) (height) || z >= (int) (length)
+                                || occupied[x][y][z] != -1) {
                             return false;
                         }
                     }
@@ -45,6 +64,13 @@ public class CargoSpace {
         return true;
     }
 
+    /**
+     * Places a parcel in the cargo space.
+     * This method places a parcel in the cargo space by setting the occupied array
+     * elements to the parcel's ID.
+     *
+     * @param placement The parcel placement object.
+     */
     public void placeParcel(final ParcelPlacement placement) {
         final int[][][] shape = placement.getShape();
 
@@ -66,7 +92,18 @@ public class CargoSpace {
         placements.add(placement);
     }
 
-    public void placeParcel(final int[][][] shape, final int startX, final int startY, final int startZ, final int[][][] destination) { // TODO
+    /**
+     * Places a parcel in the cargo space.
+     * This method places a parcel in the cargo space by setting the occupied array
+     * elements to the parcel's ID.
+     *
+     * @param shape  The parcel's shape.
+     * @param startX The parcel's x-coordinate.
+     * @param startY The parcel's y-coordinate.
+     * @param startZ The parcel's z-coordinate.
+     */
+    public void placeParcel(final int[][][] shape, final int startX, final int startY, final int startZ,
+            final int[][][] destination) { // TODO
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[0].length; j++) {
                 for (int k = 0; k < shape[0][0].length; k++) {
@@ -80,31 +117,73 @@ public class CargoSpace {
             }
         }
     }
-    
+
+    /**
+     * Returns the length of the cargo space.
+     * This method returns the length of the cargo space.
+     *
+     * @return The length of the cargo space.
+     */
     public double getLength() {
         return length;
     }
 
+    /**
+     * Returns the width of the cargo space.
+     * This method returns the width of the cargo space.
+     *
+     * @return The width of the cargo space.
+     */
     public double getWidth() {
         return width;
     }
 
+    /**
+     * Returns the height of the cargo space.
+     * This method returns the height of the cargo space.
+     *
+     * @return The height of the cargo space.
+     */
     public double getHeight() {
         return height;
     }
 
+    /**
+     * Returns the occupied array representing the cargo space.
+     * This method returns the occupied array representing the cargo space.
+     *
+     * @return The occupied array representing the cargo space.
+     */
     public int[][][] getOccupied() {
         return this.occupied;
     }
 
+    /**
+     * Sets the occupied array representing the cargo space.
+     * This method sets the occupied array representing the cargo space.
+     *
+     * @param occupied The occupied array representing the cargo space.
+     */
     public void setOccupied(final int[][][] occupied) {
         this.occupied = occupied;
     }
 
+    /**
+     * Returns the number of filled slots in the cargo space.
+     * This method returns the number of filled slots in the cargo space.
+     *
+     * @return The number of filled slots in the cargo space.
+     */
     public int getFilledSlotsCount() {
         return this.filledSlotsCount;
     }
 
+    /**
+     * Returns the list of parcel placements in the cargo space.
+     * This method returns the list of parcel placements in the cargo space.
+     *
+     * @return The list of parcel placements in the cargo space.
+     */
     public List<ParcelPlacement> getPlacements() {
         return placements;
     }

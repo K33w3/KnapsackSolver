@@ -28,14 +28,29 @@ public class HelloApplication extends Application {
     private int height;
     private int width;
 
+    /**
+     * Constructs a new instance of the HelloApplication class.
+     * Initializes the dimensions (length, height, width) based on the cargo space's
+     * dimensions,
+     * and sets the solution array by obtaining the occupied status from the cargo
+     * space
+     * or by assigning the DancingLinks field.
+     */
     public HelloApplication() {
         length = (int) (cargoSpace.getLength()) * 30;
         height = (int) (cargoSpace.getHeight()) * 30;
         width = (int) (cargoSpace.getWidth()) * 30;
-        solution = cargoSpace.getOccupied(); //GreedyKnapsackSolver.getSolution();
+        solution = cargoSpace.getOccupied(); // GreedyKnapsackSolver.getSolution();
         solution = DancingLinks.field;
     }
 
+    /**
+     * Initializes and sets up the JavaFX application's main scene.
+     * This method configures the 3D scene with a camera, handles mouse control,
+     * draws the container, and displays the 3D container in the main stage.
+     *
+     * @param stage The JavaFX stage in which the 3D container is displayed.
+     */
     @Override
     public void start(final Stage stage) {
         camera = new PerspectiveCamera();
@@ -56,6 +71,12 @@ public class HelloApplication extends Application {
         stage.show();
     }
 
+    /**
+     * Draws the container based on the solution array.
+     * This method iterates through the solution array and draws a box for each
+     * occupied space.
+     * The box is then translated to its correct position in the container.
+     */
     private void drawContainer() {
         for (int i = 0; i < solution.length; i++) {
             for (int j = 0; j < solution[0].length; j++) {
@@ -86,6 +107,14 @@ public class HelloApplication extends Application {
         group.getChildren().add(containerBox);
     }
 
+    /**
+     * Returns a color based on the ID of the box.
+     * This method returns a color based on the ID of the box.
+     * The ID is obtained from the solution array.
+     *
+     * @param id The ID of the box.
+     * @return The color of the box.
+     */
     private Color getColorById(final int id) {
         switch (id) {
             case 0:
@@ -106,13 +135,20 @@ public class HelloApplication extends Application {
         return Color.SILVER;
     }
 
+    /**
+     * Initializes mouse control for the 3D container.
+     * This method initializes mouse control for the 3D container.
+     * It allows the user to rotate the container by dragging the mouse.
+     *
+     * @param group The group containing the 3D container.
+     * @param scene The scene containing the group.
+     */
     private void initMouseControl(final Group group, final Scene scene) {
         final Rotate xRotate;
         final Rotate yRotate;
         group.getTransforms().addAll(
                 xRotate = new Rotate(0, Rotate.X_AXIS),
-                yRotate = new Rotate(0, Rotate.Y_AXIS)
-        );
+                yRotate = new Rotate(0, Rotate.Y_AXIS));
 
         xRotate.angleProperty().bind(angleX);
         yRotate.angleProperty().bind(angleY);
@@ -130,10 +166,11 @@ public class HelloApplication extends Application {
         });
     }
 
+    /**
+     * Displays the 3D container.
+     * This method launches the JavaFX application.
+     */
     public void show() {
         launch();
     }
 }
-
-
-
