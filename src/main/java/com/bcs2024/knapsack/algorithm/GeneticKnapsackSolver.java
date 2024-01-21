@@ -1,7 +1,6 @@
 package com.bcs2024.knapsack.algorithm;
 
 import com.bcs2024.knapsack.model.CargoSpace;
-import com.bcs2024.knapsack.model.Parcel;
 import com.bcs2024.knapsack.renderer.UI;
 import com.bcs2024.knapsack.util.ShapesAndRotations;
 
@@ -88,16 +87,12 @@ public class GeneticKnapsackSolver {
         final ShapesAndRotations shapes = new ShapesAndRotations();
 
         for (final Chromosome chromo : population) {
-            // int totalValue = 0; // Reset totalValue for each chromosome
-            // final CargoSpace localCargoSpace = new CargoSpace(); // Create a new instance
-            // of CargoSpace
             int totalValue = 0;
             int countA = 0;
             int countB = 0;
             int countC = 0;
             final CargoSpace localCargoSpace = new CargoSpace();
-
-            // matrix = localCargoSpace.getOccupied();
+            
             final int[][][] occupied = localCargoSpace.getOccupied();
 
             for (int x = 0; x < occupied.length; x++) {
@@ -107,11 +102,8 @@ public class GeneticKnapsackSolver {
                             final String gene = chromo.getGenes()[i];
                             final int rotation = chromo.getRotationFromGene(i);
                             final int[][][] shape = shapes.getShape(gene, rotation);
-                            final Parcel parcel = new Parcel(gene, shape);
 
                             if (localCargoSpace.canPlace(shape, x, y, z)) {
-                                // final ParcelPlacement placement = new ParcelPlacement(parcel, x, y, z);
-                                // localCargoSpace.placeParcel(placement);
                                 localCargoSpace.placeParcel(shape, x, y, z, occupied);
 
                                 switch (gene) {
@@ -254,7 +246,7 @@ public class GeneticKnapsackSolver {
         for (final Chromosome chromo : population) {
             if (random.nextDouble() < MUTATION_RATE) {
                 final int index = random.nextInt(GENE_LENGTH);
-                final String[] types = { "A", "B", "C" };
+                final String[] types = {"A", "B", "C"};
                 final String newType = types[random.nextInt(types.length)];
 
                 chromo.getGenes()[index] = newType;
