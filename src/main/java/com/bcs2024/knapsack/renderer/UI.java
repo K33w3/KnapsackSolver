@@ -173,7 +173,7 @@ public class UI extends Application {
         AnchorPane.setRightAnchor(splitPane, 0.0);
 
         root.getChildren().add(zoomSlider);
-        AnchorPane.setBottomAnchor(zoomSlider, 10.0);
+        AnchorPane.setBottomAnchor(zoomSlider, 35.0);
         zoomSlider.setPrefWidth(750);
         AnchorPane.setLeftAnchor(zoomSlider, (1200) / 2.0);
         zoomSlider.toFront();
