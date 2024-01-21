@@ -40,9 +40,9 @@ public class DLSearch {
                             final List<Integer> ys = getOccupiedCellsY(shape, y);
                             final List<Integer> zs = getOccupiedCellsZ(shape, z);
 
-                            int[] positions = null;
+                            final int[] positions;
 
-                            if (type == "L" || type == "P" || type == "T") {
+                            if (type.equals("L") || type.equals("P") || type.equals("T")) {
                                 positions = new int[5];
                             } else {
                                 positions = new int[shapeLength * shapeHeight * shapeWidth];

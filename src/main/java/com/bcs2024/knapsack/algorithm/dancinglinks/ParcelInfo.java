@@ -9,7 +9,6 @@ public class ParcelInfo {
     public int z0;
     public int pieceValue;
 
-
     public ParcelInfo(final int id, final int x, final int y, final int z0, final int parcelID, final int[][][] shape, final int pieceValue) {
         this.id = id;
         this.x0 = x;
