@@ -11,7 +11,7 @@ public class EquilibriumAndDistribution {
     private String[] genes;
     private int[][][] matrix;
 
-    
+
     public EquilibriumAndDistribution(final CargoSpace cargoSpace, final int[] rotations, final String[] genes) {
         this.genes = genes;
         this.rotations = rotations;
@@ -46,7 +46,6 @@ public class EquilibriumAndDistribution {
             }
         }
     }
-
 
     public double[] calculateCenterOfMass() {
         double totalVolume = 0.0;

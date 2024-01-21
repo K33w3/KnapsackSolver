@@ -9,7 +9,7 @@ import com.bcs2024.knapsack.util.ShapesAndRotations;
 import java.util.Arrays;
 import java.util.Random;
 
-public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
+public class GreedyKnapsackSolver {
 
     private final CargoSpace cargoSpace = UI.cargoSpace;
     private final ShapesAndRotations shapes;
@@ -25,20 +25,20 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
      * and random initial values for weights. It also sets actualWeights with
      * predefined values.
      */
-    public GreedyKnapsackSolver() { // TODO
+    public GreedyKnapsackSolver() {
         weights = new double[4];
 
-        // FileUtil.writeInFile("resultsGtraining.txt", ""); TODO uncomment this line to
+        // FileUtil.writeInFile("resultsGtraining.txt", "");
 
         shapes = new ShapesAndRotations();
-        parcelSequence = new String[] { "A", "B", "C" };
+        parcelSequence = new String[]{"A", "B", "C"};
 
         final Random random = new Random();
         for (int i = 0; i < 4; i++) {
             weights[i] = random.nextDouble();
         }
 
-        actualWeights = new double[] {
+        actualWeights = new double[]{
                 0.7934029214856616,
                 0.9831091831983482,
                 0.4224751952092841,
@@ -54,9 +54,9 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
      * in the specified sequence. It calculates the suitability of each placement
      * based on
      * various factors and selects the best placement for each parcel.
-     * 
+     *
      * @implNote This method applies a greedy algorithm to place parcels optimally
-     *           within the cargo space.
+     * within the cargo space.
      */
     private void putShapes() {
         int count = 0;
@@ -158,8 +158,6 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
 
             System.out.println();
         }
-
-        // visulization.show();
     }
 
     /**
@@ -168,7 +166,6 @@ public class GreedyKnapsackSolver implements KnapsackSolverStrategy {
      * This method invokes the 'putShapes' method to place parcels optimally within
      * the cargo space.
      */
-    @Override
     public void solve() {
         this.putShapes();
     }

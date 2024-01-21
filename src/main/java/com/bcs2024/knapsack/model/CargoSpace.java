@@ -42,8 +42,6 @@ public class CargoSpace {
      * height, and length,
      * and creates an occupied array to represent the cargo space, initializing all
      * elements to -1.
-     *
-     * @param occupied The occupied array representing the cargo space.
      */
     public boolean canPlace(final int[][][] shape, final int startX, final int startY, final int startZ) {
         for (int i = 0; i < shape.length; i++) {
@@ -103,7 +101,7 @@ public class CargoSpace {
      * @param startZ The parcel's z-coordinate.
      */
     public void placeParcel(final int[][][] shape, final int startX, final int startY, final int startZ,
-            final int[][][] destination) { // TODO
+                            final int[][][] destination) { // TODO
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[0].length; j++) {
                 for (int k = 0; k < shape[0][0].length; k++) {

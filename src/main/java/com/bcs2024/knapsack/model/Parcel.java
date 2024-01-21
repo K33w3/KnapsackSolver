@@ -54,8 +54,6 @@ public class Parcel {
      * Constructs a new Parcel object with the specified ID.
      * This constructor initializes the Parcel's ID property and
      * performs initialization based on the parcel ID.
-     *
-     * @param id The ID of the parcel.
      */
     private void initializeParcelByType() {
         switch (type) {
@@ -177,8 +175,6 @@ public class Parcel {
     /**
      * Sets the value of the parcel.
      * This method sets the value of the parcel.
-     *
-     * @param value The value of the parcel.
      */
     public void setShape(final int[][][] shape) {
         this.shape = shape;
@@ -187,8 +183,6 @@ public class Parcel {
     /**
      * Sets the value of the parcel.
      * This method sets the value of the parcel.
-     *
-     * @param value The value of the parcel.
      */
     public void setType(final String type) {
         this.type = type;
@@ -197,8 +191,6 @@ public class Parcel {
     /**
      * Sets the value of the parcel.
      * This method sets the value of the parcel.
-     *
-     * @param value The value of the parcel.
      */
     public double getVolume() {
         final double volume = switch (type) {
@@ -207,7 +199,7 @@ public class Parcel {
             case "C" -> 1.5 * 1.5 * 1.5;
             case "L", "P", "T" ->
                 // Dimensions for pentomino shapes (L, P, T): 5 cubes of 0.5 x 0.5 x 0.5
-                5 * (0.5 * 0.5 * 0.5);
+                    5 * (0.5 * 0.5 * 0.5);
             default -> throw new IllegalArgumentException("Unknown parcel type: " + type);
         };
 
@@ -217,8 +209,6 @@ public class Parcel {
     /**
      * Sets the value of the parcel.
      * This method sets the value of the parcel.
-     *
-     * @param value The value of the parcel.
      */
     public double getValueDensity() {
         final double valueDensity = switch (type) {
@@ -256,7 +246,6 @@ public class Parcel {
         final int height = shape[0][0].length;
 
         // Calculate the surface area of the parcel
-        final double surfaceArea = 2.0 * (length * width + width * height + height * length);
-        return surfaceArea;
+        return 2.0 * (length * width + width * height + height * length);
     }
 }
