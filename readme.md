@@ -1,3 +1,14 @@
-# Group 39
+# KnapsackSolverApp
 
-Phase 1,2 zip file can be found in past_phases branch
+## Overview
+KnapsackSolverApp by Group 39
+
+## Prerequisites
+Before running the KnapsackSolverApp.java, ensure you have the following installed:
+- Java JDK 1.17
+- Maven 3.6.0 
+
+## Installation
+
+1. Clone the repository
+2. Run KnapsackSolverApp.java
