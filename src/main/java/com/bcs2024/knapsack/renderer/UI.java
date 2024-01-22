@@ -189,28 +189,28 @@ public class UI extends Application {
         // action button 3 handling
         actionButton3.setOnAction(event -> {
             String selectedOption = optionsComboBoxAlgorithm.getValue();
+            cargoSpace = new CargoSpace();
             switch (selectedOption) {
                 case "Greedy":
-                    cleanContainer();
-                    drawContainer();
                     System.out.println("Greedy selected");
                     final GreedyKnapsackSolver greedyKnapsackSolver = new GreedyKnapsackSolver();
                     greedyKnapsackSolver.solve();
-                    break;
-                case "Genetic":
                     cleanContainer();
                     drawContainer();
+                    break;
+                case "Genetic":
                     System.out.println("Genetic selected");
                     final GeneticKnapsackSolver geneticKnapsackSolver = new GeneticKnapsackSolver();
                     geneticKnapsackSolver.solve();
-
-                    break;
-                case "Dancing Links":
                     cleanContainer();
                     drawContainer();
+                    break;
+                case "Dancing Links":
                     System.out.println("Dancing Links selected");
                     final DLSearch dlx = new DLSearch();
                     dlx.createPositions();
+                    cleanContainer();
+                    drawContainer();
                     break;
                 default:
                     System.out.println("No option selected");
