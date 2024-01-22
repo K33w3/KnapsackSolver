@@ -10,10 +10,9 @@ import java.util.List;
 import java.util.Random;
 
 public class GeneticKnapsackSolver {
-
     private final double MUTATION_RATE = 0.3;
     private final double CROSSOVER_RATE = 0.8;
-    private final int MAX_GENERATIONS = 30;
+    private final int MAX_GENERATIONS = 5;
     private final int GENE_LENGTH = 54;
     private final Random random = new Random();
     private final int POPULATION_SIZE = 100;
