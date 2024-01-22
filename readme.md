@@ -5,7 +5,7 @@ KnapsackSolverApp by Group 39
 
 ## Prerequisites
 Before running the KnapsackSolverApp.java, ensure you have the following installed:
-- Java JDK 1.17
+- Java JDK 17
 - Maven 3.6.0 
 
 ## Installation
