@@ -1,0 +1,7 @@
+module:com.bcs2024.knapsack
+com.bcs2024.knapsack
+com.bcs2024.knapsack.algorithm
+com.bcs2024.knapsack.algorithm.dancinglinks
+com.bcs2024.knapsack.model
+com.bcs2024.knapsack.renderer
+com.bcs2024.knapsack.util
