@@ -13,7 +13,6 @@ public class DancingLinks {
     public static int height = (int) (CargoSpace.height);
     public static int width = (int) (CargoSpace.width);
     public static boolean stop = false;
-    //public static int[][][] field = new int[width][height][length];
     public Header root;
     public Header[] headers;
     public Stack<Integer> answer;
@@ -23,7 +22,7 @@ public class DancingLinks {
     public int countB = 0;
     public int countC = 0;
 
-    private CargoSpace cargoSpace = UI.cargoSpace;
+    private final CargoSpace cargoSpace = UI.cargoSpace;
 
     public DancingLinks(final int columns) {
         answer = new Stack<>();
@@ -78,13 +77,13 @@ public class DancingLinks {
             for (int i = 0; i < cargoSpace.getOccupied().length; i++) {
                 for (int j = 0; j < cargoSpace.getOccupied()[0].length; j++) {
                     for (int k = 0; k < cargoSpace.getOccupied()[0][0].length; k++) {
-                        cargoSpace.getOccupied()[i][j][k] = -1;
+                        cargoSpace.setOccupiedCell(i, j, k, -1);
                     }
                 }
             }
 
             for (final var info : parcelInfo) {
-                cargoSpace.placeParcel(info.shape, info.x0, info.y0, info.z0, cargoSpace.getOccupied());
+                cargoSpace.placeParcel(info.shape, info.x0, info.y0, info.z0);
                 DLSearch.pieceCount++;
                 DLSearch.totalValue += info.pieceValue;
                 switch (info.parcelID) {
@@ -164,5 +163,4 @@ public class DancingLinks {
         head.R.L = head;
         head.L.R = head;
     }
-
 }

@@ -100,8 +100,7 @@ public class CargoSpace {
      * @param startY The parcel's y-coordinate.
      * @param startZ The parcel's z-coordinate.
      */
-    public void placeParcel(final int[][][] shape, final int startX, final int startY, final int startZ,
-                            final int[][][] destination) { // TODO
+    public void placeParcel(final int[][][] shape, final int startX, final int startY, final int startZ) { // TODO
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[0].length; j++) {
                 for (int k = 0; k < shape[0][0].length; k++) {
@@ -109,7 +108,7 @@ public class CargoSpace {
                         final int x = startX + k;
                         final int y = startY + j;
                         final int z = startZ + i;
-                        destination[x][y][z] = shape[i][j][k];
+                        occupied[x][y][z] = shape[i][j][k];
                     }
                 }
             }
@@ -164,6 +163,19 @@ public class CargoSpace {
      */
     public void setOccupied(final int[][][] occupied) {
         this.occupied = occupied;
+    }
+
+    /**
+     * Returns the value of the occupied array at the specified indices.
+     * This method returns the value of the occupied array at the specified indices.
+     *
+     * @param i The x-coordinate.
+     * @param j The y-coordinate.
+     * @param k The z-coordinate.
+     * @return The value of the occupied array at the specified indices.
+     */
+    public void setOccupiedCell(final int i, final int j, final int k, final int value) {
+        this.occupied[i][j][k] = value;
     }
 
     /**

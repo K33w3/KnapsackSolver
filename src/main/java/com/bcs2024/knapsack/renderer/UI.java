@@ -158,11 +158,14 @@ public class UI extends Application {
                     drawContainer();
                     break;
                 case "Dancing Links":
+                    cargoSpace = new CargoSpace();
                     System.out.println("Dancing Links selected");
-                    final DLSearch dlx = new DLSearch();
-                    dlx.createPositions();
-                    cleanContainer();
-                    drawContainer();
+                    javafx.application.Platform.runLater(() -> {
+                        final DLSearch dlx = new DLSearch();
+                        dlx.createPositions();
+                        cleanContainer();
+                        drawContainer();
+                    });
                     break;
                 default:
                     System.out.println("No option selected");
@@ -237,8 +240,15 @@ public class UI extends Application {
         stage.setResizable(true);
 
         // Adjust the size of the subScene3D relative to the splitPane size
-        subScene3D.widthProperty().bind(splitPane.widthProperty().multiply(0.75)); // Adjust this value as needed
-        subScene3D.heightProperty().bind(splitPane.heightProperty().multiply(0.75)); // Adjust this value as needed
+        subScene3D.widthProperty().bind(splitPane.widthProperty().multiply(0.82)); // Adjust this value as needed
+        subScene3D.heightProperty().bind(splitPane.heightProperty().multiply(0.82)); // Adjust this value as needed
+
+        // Define a binding for the camera's Z position that includes the zoom slider's value
+        final DoubleBinding cameraZBinding = subScene3D.widthProperty().add(subScene3D.heightProperty()).divide(-4.0).add(zoomSlider.valueProperty()).add(-500); // Adjust this as needed
+        camera.translateZProperty().bind(cameraZBinding);
+
+        camera.setNearClip(0.1);
+        camera.setFarClip(2000.0);
 
         // Bind the group's translate properties to center it within subScene3D
         final DoubleBinding centerXBinding = subScene3D.widthProperty().divide(2).subtract(width / 2.0);
@@ -247,14 +257,8 @@ public class UI extends Application {
         group.translateXProperty().bind(centerXBinding);
         group.translateYProperty().bind(centerYBinding);
 
-        // Adjust camera position to properly view the center of the scene
-        camera.setTranslateZ(-500); // You might need to adjust this value based on your scene's size
-        camera.setTranslateX(subScene3D.getWidth() / 2.0);
-        camera.setTranslateY(subScene3D.getHeight() / 2.0);
-
         // Adjust group translateZ if the object is off-center in depth
         group.translateZProperty().set(length / 2.0); // Adjust this based on your object's size and preferred position
-
 
         stage.setScene(mainScene);
         stage.show();

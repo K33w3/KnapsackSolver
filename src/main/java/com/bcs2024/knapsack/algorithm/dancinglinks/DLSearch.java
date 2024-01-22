@@ -127,7 +127,6 @@ public class DLSearch {
         return zs;
     }
 
-
     public static void main(final String[] args) {
         final DLSearch dlx = new DLSearch();
         dlx.createPositions();
