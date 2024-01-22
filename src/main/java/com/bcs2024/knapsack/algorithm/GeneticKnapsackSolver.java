@@ -17,12 +17,9 @@ public class GeneticKnapsackSolver {
     private final Random random = new Random();
     private final int POPULATION_SIZE = 100;
     private List<Chromosome> population;
-    // private int[][][] matrix;
     private int[] bestSolutionRotation;
     private String[] bestSolutionGene;
-
     private Chromosome bestChromosome;
-
     private CargoSpace cargoSpace = UI.cargoSpace;
 
     public static void main(final String[] args) {
@@ -91,7 +88,7 @@ public class GeneticKnapsackSolver {
             int countB = 0;
             int countC = 0;
             final CargoSpace localCargoSpace = new CargoSpace();
-            
+
             final int[][][] occupied = localCargoSpace.getOccupied();
 
             for (int x = 0; x < occupied.length; x++) {

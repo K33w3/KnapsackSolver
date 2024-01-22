@@ -65,11 +65,7 @@ public class DancingLinks {
 
     public void algorithmX(final int step) {
         if (stop) return;
-//        if (root.R == root) {
-//            System.out.println("Filled the container");
-//            stop = true;
-//            return;
-//        }
+
         final List<ParcelInfo> parcelInfo = new ArrayList<>();
         if (answer.size() >= 10) {
             DLSearch.pieceCount = 0;
@@ -97,18 +93,16 @@ public class DancingLinks {
                     case 3 -> countC++;
                 }
             }
-//            System.out.println("Solution found!");
+
             System.out.println("Total value: " + DLSearch.totalValue);
-//            System.out.println("Piece count: " + DLSearch.pieceCount);
             System.out.println(countA + " " + countB + " " + countC);
+
             countA = 0;
             countB = 0;
             countC = 0;
-//            if (DLSearch.totalValue >= 1190){
+
             if (root.R == root) {
                 stop = true;
-                //final UI ui = new UI(); TODO
-                //ui.show(); TODO
                 return;
             }
 
