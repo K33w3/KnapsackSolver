@@ -140,37 +140,31 @@ public class UI extends Application {
         // action button 3 handling
         actionButton3.setOnAction(event -> {
             final String selectedOption = optionsComboBoxAlgorithm.getValue();
+            cargoSpace = new CargoSpace();
+
             switch (selectedOption) {
                 case "Greedy":
-                    cargoSpace = new CargoSpace();
                     System.out.println("Greedy selected");
                     final GreedyKnapsackSolver greedyKnapsackSolver = new GreedyKnapsackSolver();
                     greedyKnapsackSolver.solve();
-                    cleanContainer();
-                    drawContainer();
                     break;
                 case "Genetic":
-                    cargoSpace = new CargoSpace();
                     System.out.println("Genetic selected");
                     final GeneticKnapsackSolver geneticKnapsackSolver = new GeneticKnapsackSolver();
                     geneticKnapsackSolver.solve();
-                    cleanContainer();
-                    drawContainer();
                     break;
                 case "Dancing Links":
-                    cargoSpace = new CargoSpace();
                     System.out.println("Dancing Links selected");
-                    javafx.application.Platform.runLater(() -> {
-                        final DLSearch dlx = new DLSearch();
-                        dlx.createPositions();
-                        cleanContainer();
-                        drawContainer();
-                    });
+                    final DLSearch dlx = new DLSearch();
+                    dlx.createPositions();
                     break;
                 default:
                     System.out.println("No option selected");
                     break;
             }
+
+            cleanContainer();
+            drawContainer();
         });
 
         // spacer 2

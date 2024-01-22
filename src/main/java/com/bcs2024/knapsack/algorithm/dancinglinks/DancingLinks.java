@@ -12,7 +12,9 @@ public class DancingLinks {
     public static int length = (int) (CargoSpace.length);
     public static int height = (int) (CargoSpace.height);
     public static int width = (int) (CargoSpace.width);
-    public static boolean stop = false;
+    public boolean stop = false;
+    public int pieceCount = 0;
+    public int totalValue = 0;
     public Header root;
     public Header[] headers;
     public Stack<Integer> answer;
@@ -21,8 +23,9 @@ public class DancingLinks {
     public int countA = 0;
     public int countB = 0;
     public int countC = 0;
-
     private final CargoSpace cargoSpace = UI.cargoSpace;
+
+    private final List<ParcelInfo> parcelInfoList = new ArrayList<>();
 
     public DancingLinks(final int columns) {
         answer = new Stack<>();
@@ -66,11 +69,13 @@ public class DancingLinks {
         if (stop) return;
 
         final List<ParcelInfo> parcelInfo = new ArrayList<>();
+
         if (answer.size() >= 10) {
-            DLSearch.pieceCount = 0;
-            DLSearch.totalValue = 0;
+            pieceCount = 0;
+            totalValue = 0;
+
             for (final var ans : answer) {
-                final ParcelInfo r = DLSearch.parcelInfo.get(ans);
+                final ParcelInfo r = parcelInfoList.get(ans);
                 parcelInfo.add(r);
             }
 
@@ -84,8 +89,8 @@ public class DancingLinks {
 
             for (final var info : parcelInfo) {
                 cargoSpace.placeParcel(info.shape, info.x0, info.y0, info.z0);
-                DLSearch.pieceCount++;
-                DLSearch.totalValue += info.pieceValue;
+                pieceCount++;
+                totalValue += info.pieceValue;
                 switch (info.parcelID) {
                     case 1 -> countA++;
                     case 2 -> countB++;
@@ -93,7 +98,7 @@ public class DancingLinks {
                 }
             }
 
-            System.out.println("Total value: " + DLSearch.totalValue);
+            System.out.println("Total value: " + totalValue);
             System.out.println(countA + " " + countB + " " + countC);
 
             countA = 0;
@@ -138,6 +143,10 @@ public class DancingLinks {
 
         }
         uncover(head);
+    }
+
+    public void addParcelInfoToList(final ParcelInfo parcelInfo) {
+        this.parcelInfoList.add(parcelInfo);
     }
 
     private void cover(final Header head) {
