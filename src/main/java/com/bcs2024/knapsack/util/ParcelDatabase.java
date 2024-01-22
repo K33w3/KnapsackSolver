@@ -13,27 +13,26 @@ public class ParcelDatabase {
      *
      * @param fileName The name of the CSV file to be used.
      * @return A 5D array representing the list of parcel pieces.
-     *         Dimensions: 1-Piece ID; 2-Mutation; 3-Depth; 4-Row; 5-Column.
+     * Dimensions: 1-Piece ID; 2-Mutation; 3-Depth; 4-Row; 5-Column.
      * @throws RuntimeException if the file is not found.
      */
-    private static int[][][][][] loadData(String fileName) {
-        ArrayList<ArrayList<int[][][]>> dynamicList = new ArrayList<>();
+    private static int[][][][][] loadData(final String fileName) {
+        final ArrayList<ArrayList<int[][][]>> dynamicList = new ArrayList<>();
 
-        // Use ClassLoader to get the resource as a stream
-        InputStream is = ParcelDatabase.class.getClassLoader().getResourceAsStream(fileName);
+        final InputStream is = ParcelDatabase.class.getClassLoader().getResourceAsStream(fileName);
         if (is == null) {
             throw new RuntimeException("Resource not found: " + fileName);
         }
 
         try (Scanner scanner = new Scanner(is)) {
             while (scanner.hasNextLine()) {
-                String[] values = scanner.nextLine().split(",");
-                int id = Integer.parseInt(values[0]);
-                int permutation = Integer.parseInt(values[1]);
-                int depth = Integer.parseInt(values[2]);
-                int rows = Integer.parseInt(values[3]);
-                int cols = Integer.parseInt(values[4]);
-                int[][][] piece = new int[depth][rows][cols];
+                final String[] values = scanner.nextLine().split(",");
+                final int id = Integer.parseInt(values[0]);
+                final int permutation = Integer.parseInt(values[1]);
+                final int depth = Integer.parseInt(values[2]);
+                final int rows = Integer.parseInt(values[3]);
+                final int cols = Integer.parseInt(values[4]);
+                final int[][][] piece = new int[depth][rows][cols];
 
                 for (int d = 0; d < depth; d++) {
                     for (int r = 0; r < rows; r++) {
@@ -43,7 +42,6 @@ public class ParcelDatabase {
                     }
                 }
 
-                // Ensure the list is big enough to hold the new ID and permutation
                 while (id >= dynamicList.size()) {
                     dynamicList.add(new ArrayList<>());
                 }
@@ -51,13 +49,11 @@ public class ParcelDatabase {
                     dynamicList.get(id).add(null);
                 }
 
-                // Add piece to the correct permutation list
                 dynamicList.get(id).set(permutation, piece);
             }
         }
 
-        // Convert dynamic list to static array
-        int[][][][][] staticList = new int[dynamicList.size()][][][][];
+        final int[][][][][] staticList = new int[dynamicList.size()][][][][];
         for (int i = 0; i < dynamicList.size(); i++) {
             staticList[i] = new int[dynamicList.get(i).size()][][][];
             for (int j = 0; j < dynamicList.get(i).size(); j++) {
@@ -69,25 +65,24 @@ public class ParcelDatabase {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         data = loadData("parcel.csv");
 
-        for (int i = 0; i < data.length; i++) { // parcel ID
-            for (int j = 0; j < data[i].length; j++) { // Permutation index
-                for (int k = 0; k < data[i][j].length; k++) { // Depth (Z)
-                    for (int l = 0; l < data[i][j][k].length; l++) { // Rows (Y)
-                        for (int m = 0; m < data[i][j][k][l].length; m++) { // Columns (X)
-                            // Print ID, Permutation, Depth, Rows, Columns, followed by the 3D shape
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[i].length; j++) {
+                for (int k = 0; k < data[i][j].length; k++) {
+                    for (int l = 0; l < data[i][j][k].length; l++) {
+                        for (int m = 0; m < data[i][j][k][l].length; m++) {
                             System.out.print(i + "," + j + "," + k + "," + data[i][j][k].length + "," + data[i][j][k][l].length + "," + data[i][j][k][l][m]);
-                            System.out.print(" "); // Add space for readability
+                            System.out.print(" ");
                         }
-                        System.out.println(); // New line for each row
+                        System.out.println();
                     }
-                    System.out.println(); // Separate each layer with a new line
+                    System.out.println();
                 }
-                System.out.println(); // Separate each permutation with a new line
+                System.out.println();
             }
-            System.out.println(); // Separate each parcel ID with a new line
+            System.out.println();
         }
     }
 

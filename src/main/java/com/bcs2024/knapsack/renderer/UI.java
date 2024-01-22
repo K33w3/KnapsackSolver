@@ -27,6 +27,11 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * UI provides a graphical user interface to visualize the knapsack problem solutions.
+ * It displays a 3D representation of the cargo space and allows users to interact
+ * with the visualization through various controls.
+ */
 public class UI extends Application {
 
     public static CargoSpace cargoSpace = new CargoSpace();
@@ -100,22 +105,18 @@ public class UI extends Application {
         splitPane.getItems().addAll(settings, subScene3D);
         splitPane.setDividerPositions(0.2);
 
-        // title
         final Label titleLabel = new Label("Settings");
         titleLabel.setFont(fontTitle);
         settings.getChildren().add(titleLabel);
 
-        // group 39
         final Label group39 = new Label("Group 39");
         group39.setFont(font);
         settings.getChildren().add(group39);
 
-        // spacer 1
         final Region spacer1 = new Region();
         spacer1.setPrefHeight(40);
         settings.getChildren().add(spacer1);
 
-        // Create the Zoom Slider
         final Slider zoomSlider = new Slider();
         zoomSlider.setMin(-1500);
         zoomSlider.setMax(1500);
@@ -124,11 +125,9 @@ public class UI extends Application {
             camera.translateZProperty().set(newValue.doubleValue());
         });
 
-        // combo-box label
         final Label algorithmLabel = new Label("Re-Run Algorithm");
         algorithmLabel.setFont(font);
 
-        // combo-box 3 options
         final ComboBox<String> optionsComboBoxAlgorithm = new ComboBox<>();
         optionsComboBoxAlgorithm.getItems().addAll("Greedy", "Genetic", "Dancing Links");
         optionsComboBoxAlgorithm.setPromptText("Select Algorithm");
@@ -137,7 +136,6 @@ public class UI extends Application {
 
         settings.getChildren().addAll(algorithmLabel, optionsComboBoxAlgorithm, actionButton3);
 
-        // action button 3 handling
         actionButton3.setOnAction(event -> {
             final String selectedOption = optionsComboBoxAlgorithm.getValue();
             cargoSpace = new CargoSpace();
@@ -167,13 +165,11 @@ public class UI extends Application {
             drawContainer();
         });
 
-        // spacer 2
         final Region spacer2 = new Region();
         spacer2.setPrefHeight(40);
         settings.getChildren().add(spacer2);
 
-        // color selector logic
-        final Map<String, Boolean> colorState = new HashMap<>(); // hasmap is super easy and cheap to use
+        final Map<String, Boolean> colorState = new HashMap<>(); // hashmap is super easy and cheap to use
         colorState.put("Red", false); // false indicates the color is not hidden initially
         colorState.put("Green", false);
         colorState.put("Blue", false);
@@ -223,36 +219,31 @@ public class UI extends Application {
         AnchorPane.setLeftAnchor(zoomSlider, (1200) / 2.0);
         zoomSlider.toFront();
 
-        // create the Scene with the root AnchorPane
         final Scene mainScene = new Scene(root, 1650, 1000);
 
         initMouseControl(group, subScene3D);
 
-        // staging of stage
         stage.setTitle("KnapSack Visualizer");
         stage.getIcons().add(icon);
         stage.setResizable(true);
 
-        // Adjust the size of the subScene3D relative to the splitPane size
-        subScene3D.widthProperty().bind(splitPane.widthProperty().multiply(0.82)); // Adjust this value as needed
-        subScene3D.heightProperty().bind(splitPane.heightProperty().multiply(0.82)); // Adjust this value as needed
+        subScene3D.widthProperty().bind(splitPane.widthProperty().multiply(0.82));
+        subScene3D.heightProperty().bind(splitPane.heightProperty().multiply(0.82));
 
-        // Define a binding for the camera's Z position that includes the zoom slider's value
+        // Defines a binding for the camera's Z position that includes the zoom slider's value
         final DoubleBinding cameraZBinding = subScene3D.widthProperty().add(subScene3D.heightProperty()).divide(-4.0).add(zoomSlider.valueProperty()).add(-500); // Adjust this as needed
         camera.translateZProperty().bind(cameraZBinding);
 
         camera.setNearClip(0.1);
         camera.setFarClip(2000.0);
 
-        // Bind the group's translate properties to center it within subScene3D
+        // Binds the group's translate properties to center it within subScene3D
         final DoubleBinding centerXBinding = subScene3D.widthProperty().divide(2).subtract(width / 2.0);
         final DoubleBinding centerYBinding = subScene3D.heightProperty().divide(2).subtract(height / 2.0);
 
         group.translateXProperty().bind(centerXBinding);
         group.translateYProperty().bind(centerYBinding);
-
-        // Adjust group translateZ if the object is off-center in depth
-        group.translateZProperty().set(length / 2.0); // Adjust this based on your object's size and preferred position
+        group.translateZProperty().set(length / 2.0);
 
         stage.setScene(mainScene);
         stage.show();
@@ -303,7 +294,6 @@ public class UI extends Application {
      * @return A Color associated with the provided ID.
      */
     private Color getColorById(final int id) {
-        // System.out.println("ID: " + id); // Debug print
         return switch (id) {
             case 0 -> Color.ORANGE;
             case 1, 4 -> Color.BLUE;
@@ -342,17 +332,6 @@ public class UI extends Application {
             angleX.set(anchorAngleX - (anchorY - event.getSceneY()));
             angleY.set(anchorAngleY + anchorX - event.getSceneX());
         });
-    }
-
-    /**
-     * Sets the solution state for a problem represented by a three-dimensional
-     * integer array.
-     *
-     * @param state A three-dimensional integer array representing the solution
-     *              state.
-     */
-    public void setSolution(final int[][][] state) {
-        // this.solution = state;
     }
 
     /**
@@ -425,8 +404,10 @@ public class UI extends Application {
         };
     }
 
+    /**
+     * Clears the 3D scene's group of all children.
+     */
     private void cleanContainer() {
         group.getChildren().clear();
     }
-
 }

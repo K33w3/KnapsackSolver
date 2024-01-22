@@ -2,6 +2,10 @@ package com.bcs2024.knapsack.model;
 
 import com.bcs2024.knapsack.util.ShapesAndRotations;
 
+/**
+ * Represents a parcel with specific characteristics such as value, type, shape, and ID.
+ * The Parcel class is used to manage the properties and behaviors of parcels within the knapsack problem.
+ */
 public class Parcel {
 
     private int value;
@@ -51,9 +55,9 @@ public class Parcel {
     }
 
     /**
-     * Constructs a new Parcel object with the specified ID.
-     * This constructor initializes the Parcel's ID property and
-     * performs initialization based on the parcel ID.
+     * Initializes the Parcel's properties (value and type) based on its type.
+     * This method assigns the appropriate value and type to the parcel based on its type.
+     * If the type is invalid, it displays a message indicating that the type is invalid.
      */
     private void initializeParcelByType() {
         switch (type) {
@@ -86,12 +90,9 @@ public class Parcel {
     }
 
     /**
-     * Initializes the Parcel's properties (value and type) based on its unique
-     * identifier (id).
-     * This method assigns the appropriate value and type to the parcel based on its
-     * id.
-     * If the id is invalid, it displays a message indicating that the type is
-     * invalid.
+     * Initializes the Parcel's properties (value and type) based on its unique identifier (ID).
+     * This method assigns the appropriate value and type to the parcel based on its ID.
+     * If the ID is invalid, it displays a message indicating that the type is invalid.
      */
     private void initializeParcelById() {
         switch (id) {
@@ -124,13 +125,12 @@ public class Parcel {
     }
 
     /**
-     * Returns the ID of the parcel based on its type.
-     * This method returns the ID of the parcel based on its type.
+     * Returns the ID of the parcel.
+     * This method returns the ID of the parcel.
      *
-     * @param type The type of the parcel.
      * @return The ID of the parcel.
      */
-    private int setId(final String type) {
+    private int getId(final String type) {
         return switch (type) {
             case "A" -> 1;
             case "B" -> 2;
@@ -173,8 +173,9 @@ public class Parcel {
     }
 
     /**
-     * Sets the value of the parcel.
-     * This method sets the value of the parcel.
+     * Sets the shape of the parcel.
+     *
+     * @param shape A 3D array representing the new shape of the parcel.
      */
     public void setShape(final int[][][] shape) {
         this.shape = shape;
@@ -189,8 +190,9 @@ public class Parcel {
     }
 
     /**
-     * Sets the value of the parcel.
-     * This method sets the value of the parcel.
+     * Calculates the volume of the parcel.
+     *
+     * @return The volume of the parcel.
      */
     public double getVolume() {
         final double volume = switch (type) {
@@ -207,8 +209,9 @@ public class Parcel {
     }
 
     /**
-     * Sets the value of the parcel.
-     * This method sets the value of the parcel.
+     * Calculates the value density of the parcel (value per unit volume).
+     *
+     * @return The value density of the parcel.
      */
     public double getValueDensity() {
         final double valueDensity = switch (type) {
@@ -239,13 +242,10 @@ public class Parcel {
      * @return The surface area of the parcel.
      */
     public double calculateSurfaceArea() {
-        // Assuming shape array dimensions represent length, width, and height
-        // and the parcel is a rectangular prism
         final int length = shape.length;
         final int width = shape[0].length;
         final int height = shape[0][0].length;
 
-        // Calculate the surface area of the parcel
         return 2.0 * (length * width + width * height + height * length);
     }
 }
