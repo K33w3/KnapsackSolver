@@ -9,6 +9,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * GeneticKnapsackSolver implements a genetic algorithm to solve the knapsack problem.
+ * It initializes a population of chromosomes (solutions), evaluates their fitness,
+ * applies crossover and mutation to produce new generations, and selects the best solution.
+ */
 public class GeneticKnapsackSolver {
     private final double MUTATION_RATE = 0.3;
     private final double CROSSOVER_RATE = 0.8;
@@ -22,14 +27,12 @@ public class GeneticKnapsackSolver {
     private Chromosome bestChromosome;
     private CargoSpace cargoSpace = UI.cargoSpace;
 
+    /**
+     * Main method to start the knapsack problem solver.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(final String[] args) {
-        /*
-         * final List<Parcel> parcels = new ArrayList<>();
-         * parcels.add(new Parcel("A"));
-         * parcels.add(new Parcel("B"));
-         * parcels.add(new Parcel("C"));
-         */
-
         final GeneticKnapsackSolver solver = new GeneticKnapsackSolver();
         solver.solve();
     }
@@ -51,8 +54,7 @@ public class GeneticKnapsackSolver {
             evaluateFitness(population);
             crossover();
             mutation();
-            System.out.println("Generation: " + i
-                    + " done. -------------------------------------------------------------------------------" + "\n");
+            System.out.println("Generation: " + i + " done. -------------------------------------------------------------------------------" + "\n");
         }
 
         System.out.println("Rotation: " + Arrays.toString(bestSolutionRotation));
@@ -135,11 +137,13 @@ public class GeneticKnapsackSolver {
     }
 
     /**
-     * Applies crossover to create a new population of chromosomes using tournament
-     * selection and a crossover rate.
-     * Crossover involves pairing parents, selecting random crossover points, and
-     * exchanging genetic information
-     * to produce offspring. Offspring may undergo repair if they are not valid.
+     * Selects a chromosome from the population using tournament selection.
+     * Tournament selection involves selecting a random subset of chromosomes from
+     * the population and selecting the
+     * chromosome with the highest fitness.
+     *
+     * @param tournamentSize The size of the tournament to be held.
+     * @return The chromosome with the highest fitness from the tournament.
      */
     private Chromosome tournamentSelection(final int tournamentSize) {
         final List<Chromosome> tournamentParticipants = new ArrayList<>();
@@ -163,11 +167,12 @@ public class GeneticKnapsackSolver {
     }
 
     /**
-     * Applies crossover to create a new population of chromosomes using tournament
-     * selection and a crossover rate.
-     * Crossover involves pairing parents, selecting random crossover points, and
-     * exchanging genetic information
-     * to produce offspring. Offspring may undergo repair if they are not valid.
+     * Applies crossover to the chromosomes in the population with a probability
+     * defined by CROSSOVER_RATE.
+     * Crossover involves selecting two parents from the population using tournament
+     * selection, selecting a random
+     * crossover point, and swapping the genes of the parents to produce two
+     * offspring.
      */
     private void crossover() {
         final List<Chromosome> newPopulation = new ArrayList<>();
@@ -234,9 +239,8 @@ public class GeneticKnapsackSolver {
 
     /**
      * Applies mutation to the chromosomes in the population with a probability
-     * defined by MUTATION_RATE.
-     * Mutation involves randomly changing the type and rotation of genes in a
-     * chromosome.
+     * defined by the mutation rate. Mutation involves randomly changing the type
+     * and rotation of genes in a chromosome.
      */
     private void mutation() {
         for (final Chromosome chromo : population) {
@@ -291,6 +295,9 @@ public class GeneticKnapsackSolver {
         return totalValue > 0;
     }
 
+    /**
+     * Applies the best solution (chromosome) found by the genetic algorithm to the cargo space.
+     */
     private void applyBestSolution() {
         if (bestChromosome == null) {
             System.out.println("No optimal solution found.");
@@ -300,14 +307,11 @@ public class GeneticKnapsackSolver {
         final ShapesAndRotations shapes = new ShapesAndRotations();
         final int[][][] occupied = bestCargoSpace.getOccupied();
 
-        // Use the best chromosome to set the cargo space fields
         for (int i = 0; i < bestChromosome.getGenes().length; i++) {
             final String gene = bestChromosome.getGenes()[i];
             final int rotation = bestChromosome.getRotationFromGene(i);
             final int[][][] shape = shapes.getShape(gene, rotation);
-            // final Parcel parcel = new Parcel(gene, shape);
-
-            // Find the position to place the parcel and place it
+            
             for (int x = 0; x < occupied.length; x++) {
                 for (int y = 0; y < occupied[0].length; y++) {
                     for (int z = 0; z < occupied[0][0].length; z++) {

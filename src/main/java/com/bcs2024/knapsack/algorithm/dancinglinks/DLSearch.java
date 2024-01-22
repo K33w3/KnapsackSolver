@@ -7,21 +7,31 @@ import com.bcs2024.knapsack.util.ShapesAndRotations;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DLSearch orchestrates the search process using the Dancing Links algorithm
+ * for the knapsack problem. It manages the creation of all possible parcel positions
+ * within the cargo space and initiates the algorithm to find the optimal arrangement.
+ */
 public class DLSearch {
-    private ShapesAndRotations shapesAndRotations = new ShapesAndRotations();
+    private final ShapesAndRotations shapesAndRotations = new ShapesAndRotations();
     public static int length = (int) (CargoSpace.length);
     public static int height = (int) (CargoSpace.height);
     public static int width = (int) (CargoSpace.width);
     //    private String[] sequence = {"C", "B", "A"};
-    private String[] sequence = {"T", "P", "L"};
+    private final String[] sequence = {"T", "P", "L"};
     DancingLinks dance = new DancingLinks(width * height * length);
-    private int currentPieceValue;
 
+    /**
+     * Iterates through all parcels and their rotations, attempting to place them
+     * in all possible positions within the cargo space. It then creates a sparse matrix
+     * representation of these positions and uses the DancingLinks instance to solve the exact cover problem.
+     */
     public void createPositions() {
         int nr = 0;
         for (final String type : sequence) {
             final Parcel parcel = new Parcel(type);
-            currentPieceValue = parcel.getValue();
+            final int currentPieceValue = parcel.getValue();
+
             for (int rotation = 0; rotation < shapesAndRotations.rotationNum(type); rotation++) {
                 final int[][][] shape = shapesAndRotations.getShape(type, rotation);
                 final int shapeWidth = shape[0][0].length;
@@ -63,6 +73,16 @@ public class DLSearch {
         dance.algorithmX(0);
     }
 
+    /**
+     * Checks if a piece can be placed at a specified location within the cargo space.
+     * It considers the dimensions of the piece and the boundaries of the cargo space.
+     *
+     * @param startX The starting X-coordinate in the cargo space.
+     * @param startY The starting Y-coordinate in the cargo space.
+     * @param startZ The starting Z-coordinate in the cargo space.
+     * @param shape  The 3D array representing the shape of the piece.
+     * @return true if the piece can be placed; false otherwise.
+     */
     public boolean canPlace(final int startX, final int startY, final int startZ, final int[][][] shape) {
 
         final int shapeWidth = shape[0][0].length;
@@ -80,6 +100,13 @@ public class DLSearch {
         return startZ + shapeDepth <= length;
     }
 
+    /**
+     * Calculates the X-coordinates of the cargo space occupied by a given piece when placed at a starting point.
+     *
+     * @param pieceToPlace The 3D array representing the shape of the piece to place.
+     * @param x0           The starting X-coordinate in the cargo space.
+     * @return A list of integers representing the occupied X-coordinates.
+     */
     public List<Integer> getOccupiedCellsX(final int[][][] pieceToPlace, final int x0) {
         final List<Integer> xs = new ArrayList<>();
 
@@ -96,6 +123,13 @@ public class DLSearch {
 
     }
 
+    /**
+     * Calculates the Y-coordinates of the cargo space occupied by a given piece when placed at a starting point.
+     *
+     * @param pieceToPlace The 3D array representing the shape of the piece to place.
+     * @param y0           The starting Y-coordinate in the cargo space.
+     * @return A list of integers representing the occupied Y-coordinates.
+     */
     public List<Integer> getOccupiedCellsY(final int[][][] pieceToPlace, final int y0) {
         final List<Integer> ys = new ArrayList<>();
 
@@ -111,6 +145,13 @@ public class DLSearch {
         return ys;
     }
 
+    /**
+     * Calculates the Z-coordinates of the cargo space occupied by a given piece when placed at a starting point.
+     *
+     * @param pieceToPlace The 3D array representing the shape of the piece to place.
+     * @param z0           The starting Z-coordinate in the cargo space.
+     * @return A list of integers representing the occupied Z-coordinates.
+     */
     public List<Integer> getOccupiedCellsZ(final int[][][] pieceToPlace, final int z0) {
         final List<Integer> zs = new ArrayList<>();
 
@@ -126,10 +167,11 @@ public class DLSearch {
         return zs;
     }
 
-    public DancingLinks getDance() {
-        return dance;
-    }
-
+    /**
+     * The main method to run the DLSearch algorithm. It initializes the search process.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(final String[] args) {
         final DLSearch dlx = new DLSearch();
         dlx.createPositions();

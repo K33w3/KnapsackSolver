@@ -3,6 +3,11 @@ package com.bcs2024.knapsack.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a three-dimensional cargo space in the context of a knapsack problem.
+ * The CargoSpace class manages parcel placements, dimensions of the cargo space,
+ * and tracks the state of occupied slots within the cargo space.
+ */
 public class CargoSpace {
 
     public static final double length = 16.5 * 2;
@@ -36,12 +41,14 @@ public class CargoSpace {
     }
 
     /**
-     * Constructs a new CargoSpace object representing a three-dimensional cargo
-     * space.
-     * This constructor initializes the dimensions (x, y, z) based on the width,
-     * height, and length,
-     * and creates an occupied array to represent the cargo space, initializing all
-     * elements to -1.
+     * Checks if a parcel can be placed in the cargo space at the specified position,
+     * considering its shape.
+     *
+     * @param shape  The 3D array representing the shape of the parcel.
+     * @param startX The x-coordinate of the position where the parcel is to be placed.
+     * @param startY The y-coordinate of the position where the parcel is to be placed.
+     * @param startZ The z-coordinate of the position where the parcel is to be placed.
+     * @return true if the parcel can be placed; false otherwise.
      */
     public boolean canPlace(final int[][][] shape, final int startX, final int startY, final int startZ) {
         for (int i = 0; i < shape.length; i++) {
@@ -166,13 +173,12 @@ public class CargoSpace {
     }
 
     /**
-     * Returns the value of the occupied array at the specified indices.
-     * This method returns the value of the occupied array at the specified indices.
+     * Sets the value of the occupied array at the specified indices.
      *
-     * @param i The x-coordinate.
-     * @param j The y-coordinate.
-     * @param k The z-coordinate.
-     * @return The value of the occupied array at the specified indices.
+     * @param i     The x-coordinate.
+     * @param j     The y-coordinate.
+     * @param k     The z-coordinate.
+     * @param value The value to set at the specified indices.
      */
     public void setOccupiedCell(final int i, final int j, final int k, final int value) {
         this.occupied[i][j][k] = value;

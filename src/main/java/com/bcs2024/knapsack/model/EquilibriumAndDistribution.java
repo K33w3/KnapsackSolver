@@ -5,23 +5,36 @@ import com.bcs2024.knapsack.util.ShapesAndRotations;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * EquilibriumAndDistribution handles the placement of parcels in a CargoSpace
+ * and calculates metrics like the center of mass and distribution of parcels
+ * within the cargo space.
+ */
 public class EquilibriumAndDistribution {
-    private CargoSpace cargoSpace;
-    private int[] rotations;
-    private String[] genes;
-    private int[][][] matrix;
+    private final CargoSpace cargoSpace;
 
-
+    /**
+     * Constructs a new EquilibriumAndDistribution object.
+     *
+     * @param cargoSpace The CargoSpace object representing the cargo space.
+     * @param rotations  Array of rotations corresponding to each gene.
+     * @param genes      Array of genes representing parcel types.
+     */
     public EquilibriumAndDistribution(final CargoSpace cargoSpace, final int[] rotations, final String[] genes) {
-        this.genes = genes;
-        this.rotations = rotations;
         this.cargoSpace = cargoSpace;
     }
 
+    /**
+     * Fills the container represented by the CargoSpace object with parcels.
+     *
+     * @param cargoSpace The CargoSpace object representing the cargo space.
+     * @param genes      Array of genes representing parcel types.
+     * @param rotations  Array of rotations corresponding to each gene.
+     */
     public void fillContainer(final CargoSpace cargoSpace, final String[] genes, final int[] rotations) {
         final ShapesAndRotations shapes = new ShapesAndRotations();
 
-        matrix = cargoSpace.getOccupied();
+        final int[][][] matrix = cargoSpace.getOccupied();
 
         for (int x = 0; x < matrix.length; x++) {
             for (int y = 0; y < matrix[0].length; y++) {
@@ -47,6 +60,11 @@ public class EquilibriumAndDistribution {
         }
     }
 
+    /**
+     * Calculates the center of mass based on the placements of parcels within the cargo space.
+     *
+     * @return A double array representing the x, y, and z coordinates of the center of mass.
+     */
     public double[] calculateCenterOfMass() {
         double totalVolume = 0.0;
         double weightedSumX = 0.0;
@@ -76,14 +94,22 @@ public class EquilibriumAndDistribution {
         return new double[]{0.0, 0.0, 0.0};
     }
 
+    /**
+     * Calculates the average of the x, y, and z coordinates of the center of mass.
+     *
+     * @return The average value of the center of mass coordinates.
+     */
     public double calculateAverageCenterOfMass() {
         final double[] centerOfMass = calculateCenterOfMass();
         final double sum = centerOfMass[0] + centerOfMass[1] + centerOfMass[2];
         return sum / 3.0;
     }
 
-
-    // Method to calculate the distribution of parcels
+    /**
+     * Calculates the distribution of parcels within the cargo space.
+     *
+     * @return The distribution ratio of filled slots to total slots in the cargo space.
+     */
     public double calculateDistribution() {
         final int totalSlots = cargoSpace.getOccupied().length *
                 cargoSpace.getOccupied()[0].length *
@@ -97,7 +123,12 @@ public class EquilibriumAndDistribution {
         return (double) filledSlots / totalSlots;
     }
 
-
+    /**
+     * Main method for testing the EquilibriumAndDistribution class by running it multiple
+     * times and calculating metrics like center of mass and distribution.
+     *
+     * @param args Command-line arguments (not used).
+     */
     public static void main(final String[] args) {
 
         final String[] genes = {"C", "C", "B", "B", "A", "A", "C", "A", "C", "B", "C", "C", "A", "C", "A", "A", "A", "C", "C", "B", "B", "A", "A", "B", "B", "C", "C", "A", "A", "C", "B", "B", "B", "A", "B", "B", "C", "C", "C", "B", "A", "C", "B", "B", "C", "C", "C", "A", "C", "C", "A", "A", "A", "B"};

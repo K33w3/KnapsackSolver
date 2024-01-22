@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+/**
+ * Implements the Dancing Links algorithm for solving exact cover problems,
+ * specifically applied to the context of a knapsack problem.
+ * The class primarily focuses on arranging parcels in a cargo space
+ * to maximize the total value while considering the cargo dimensions.
+ */
 public class DancingLinks {
 
     public static int length = (int) (CargoSpace.length);
@@ -24,9 +30,13 @@ public class DancingLinks {
     public int countB = 0;
     public int countC = 0;
     private final CargoSpace cargoSpace = UI.cargoSpace;
-
     private final List<ParcelInfo> parcelInfoList = new ArrayList<>();
 
+    /**
+     * Constructs a DancingLinks object and initializes the header nodes for columns.
+     *
+     * @param columns The number of columns in the matrix representation of the problem.
+     */
     public DancingLinks(final int columns) {
         answer = new Stack<>();
         pentIDS = new Stack<>();
@@ -41,6 +51,15 @@ public class DancingLinks {
         }
     }
 
+    /**
+     * Adds a row to the sparse matrix representation of the exact cover problem.
+     * Each row represents a way to cover part of the matrix.
+     *
+     * @param row    The row number in the matrix.
+     * @param pentId The unique identifier for the pentomino.
+     * @param ones   Array of column indices in this row where the matrix has 1s.
+     * @param piece  The 3D shape of the piece being placed in the cargo space.
+     */
     public void AddRow(final int row, final int pentId, final int[] ones, final int[][][] piece) {
         final int last = -1;
         Cell first = null;
@@ -65,6 +84,13 @@ public class DancingLinks {
         }
     }
 
+    /**
+     * Implements Algorithm X, a recursive backtracking algorithm to solve the exact cover problem.
+     * It progressively covers columns of the matrix by choosing rows that have non-empty cells in those columns.
+     * This process effectively explores potential solutions, backtracking when a partial solution cannot be extended to a complete one.
+     *
+     * @param step The current step or depth of the recursion, used to track the progress of the algorithm.
+     */
     public void algorithmX(final int step) {
         if (stop) return;
 
@@ -145,10 +171,22 @@ public class DancingLinks {
         uncover(head);
     }
 
+    /**
+     * Adds parcel information to the list of parcelInfoList.
+     * This information is used to track the details of the parcels placed in the cargo space.
+     *
+     * @param parcelInfo The ParcelInfo object containing details about the parcel.
+     */
     public void addParcelInfoToList(final ParcelInfo parcelInfo) {
         this.parcelInfoList.add(parcelInfo);
     }
 
+    /**
+     * "Covers" a column header in the matrix, effectively removing the column and all rows linked to it
+     * from the matrix. This is part of the process to recursively solve the exact cover problem.
+     *
+     * @param head The header of the column to be covered.
+     */
     private void cover(final Header head) {
         head.R.L = head.L;
         head.L.R = head.R;
@@ -162,6 +200,12 @@ public class DancingLinks {
         }
     }
 
+    /**
+     * "Uncovers" a previously covered column header in the matrix, effectively reinserting the column
+     * and all linked rows back into the matrix.
+     *
+     * @param head The header of the column to be uncovered.
+     */
     private void uncover(final Header head) {
         for (Cell iCell = head.U; iCell != head; iCell = iCell.U)
             for (Cell jCell = iCell.L; jCell != iCell; jCell = jCell.L) {

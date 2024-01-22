@@ -5,6 +5,10 @@ import com.bcs2024.knapsack.util.ShapesAndRotations;
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * Chromosome represents a potential solution to the knapsack problem in the context of a genetic algorithm.
+ * It consists of an array of genes (parcel types and their rotations) and a fitness value evaluating the solution's quality.
+ */
 public class Chromosome {
 
     private String[] genes;

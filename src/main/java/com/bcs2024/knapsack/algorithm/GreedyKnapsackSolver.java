@@ -9,6 +9,11 @@ import com.bcs2024.knapsack.util.ShapesAndRotations;
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * GreedyKnapsackSolver implements a greedy algorithm to solve the knapsack problem.
+ * It attempts to place parcels within the cargo space based on a set of heuristics
+ * to maximize the total value of parcels placed.
+ */
 public class GreedyKnapsackSolver {
 
     private final CargoSpace cargoSpace = UI.cargoSpace;
@@ -243,15 +248,5 @@ public class GreedyKnapsackSolver {
             }
         }
         return touchedPoints;
-    }
-
-    /**
-     * Returns the cargo space.
-     * This method returns the cargo space.
-     *
-     * @return The cargo space.
-     */
-    public CargoSpace getCargoSpace() {
-        return cargoSpace;
     }
 }

@@ -1,5 +1,10 @@
 package com.bcs2024.knapsack.util;
 
+/**
+ * ShapesAndRotations manages the predefined shapes and rotations of parcels
+ * used in the knapsack problem. It provides methods to access these shapes
+ * and their rotations, based on parcel type.
+ */
 public class ShapesAndRotations {
     public int[][][][] shapeA =
             {
@@ -112,24 +117,31 @@ public class ShapesAndRotations {
         return shapeC[rotation];
     }
 
+    /**
+     * Retrieves the number of rotations available for a given parcel type.
+     *
+     * @param type The type of the parcel (e.g., "A", "B", "C", "L", "P", "T").
+     * @return The number of available rotations for the specified parcel type.
+     */
     public int rotationNum(final String type) {
-        switch (type) {
-            case "A":
-                return shapeA.length;
-            case "B":
-                return shapeB.length;
-            case "C":
-                return shapeC.length;
-            case "L":
-                return shapeL.length;
-            case "P":
-                return shapeP.length;
-            case "T":
-                return shapeT.length;
-        }
-        return 0;
+        return switch (type) {
+            case "A" -> shapeA.length;
+            case "B" -> shapeB.length;
+            case "C" -> shapeC.length;
+            case "L" -> shapeL.length;
+            case "P" -> shapeP.length;
+            case "T" -> shapeT.length;
+            default -> 0;
+        };
     }
 
+    /**
+     * Retrieves a specific shape and rotation for a given parcel type.
+     *
+     * @param parcelType The type of the parcel (e.g., "A", "B", "C", "L", "P", "T").
+     * @param rotation   The rotation index of the shape.
+     * @return The 3D array representing the shape of the parcel in the specified rotation.
+     */
     public int[][][] getShape(final String parcelType, final int rotation) {
         return switch (parcelType) {
             case "L" -> getL(rotation);
