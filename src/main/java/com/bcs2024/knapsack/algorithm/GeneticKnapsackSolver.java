@@ -100,7 +100,7 @@ public class GeneticKnapsackSolver {
                             final int[][][] shape = shapes.getShape(gene, rotation);
 
                             if (localCargoSpace.canPlace(shape, x, y, z)) {
-                                localCargoSpace.placeParcel(shape, x, y, z, occupied);
+                                localCargoSpace.placeParcel(shape, x, y, z/*, occupied*/);
 
                                 switch (gene) {
                                     case "A" -> {
@@ -312,7 +312,7 @@ public class GeneticKnapsackSolver {
                 for (int y = 0; y < occupied[0].length; y++) {
                     for (int z = 0; z < occupied[0][0].length; z++) {
                         if (bestCargoSpace.canPlace(shape, x, y, z)) {
-                            bestCargoSpace.placeParcel(shape, x, y, z, occupied);
+                            bestCargoSpace.placeParcel(shape, x, y, z);
                             break;
                         }
                     }

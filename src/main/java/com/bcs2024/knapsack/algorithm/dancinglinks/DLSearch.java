@@ -12,12 +12,9 @@ public class DLSearch {
     public static int length = (int) (CargoSpace.length);
     public static int height = (int) (CargoSpace.height);
     public static int width = (int) (CargoSpace.width);
-    public static int totalValue = 0;
     //    private String[] sequence = {"C", "B", "A"};
     private String[] sequence = {"T", "P", "L"};
     DancingLinks dance = new DancingLinks(width * height * length);
-    public static List<ParcelInfo> parcelInfo = new ArrayList<>();
-    public static int pieceCount = 0;
     private int currentPieceValue;
 
     public void createPositions() {
@@ -53,7 +50,9 @@ public class DLSearch {
                                 positions[i] = length * height * xs.get(i) + length * ys.get(i) + zs.get(i);
                             }
 
-                            parcelInfo.add(new ParcelInfo(nr, x, y, z, parcel.getId(), shape, currentPieceValue));
+                            final ParcelInfo parcelInfo = new ParcelInfo(nr, x, y, z, parcel.getId(), shape, currentPieceValue);
+                            dance.addParcelInfoToList(parcelInfo);
+                            //dance.parcelInfo.add(new ParcelInfo(nr, x, y, z, parcel.getId(), shape, currentPieceValue));
                             dance.AddRow(nr, parcel.getId(), positions, shape);
                             nr++;
                         }
@@ -127,6 +126,9 @@ public class DLSearch {
         return zs;
     }
 
+    public DancingLinks getDance() {
+        return dance;
+    }
 
     public static void main(final String[] args) {
         final DLSearch dlx = new DLSearch();

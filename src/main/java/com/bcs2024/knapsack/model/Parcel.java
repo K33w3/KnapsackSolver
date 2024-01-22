@@ -212,9 +212,9 @@ public class Parcel {
      */
     public double getValueDensity() {
         final double valueDensity = switch (type) {
-            case "A" -> 1.0 / 2.0;
-            case "B" -> 1.5 / 2.0;
-            case "C" -> 1.5 / 1.5;
+            case "A" -> 3 / 4.0;
+            case "B" -> 4 / 6.0;
+            case "C" -> 5 / 6.75;
             case "L", "P", "T" -> 5 * (0.5 / 0.5);
             default -> throw new IllegalArgumentException("Unknown parcel type: " + type);
         };
