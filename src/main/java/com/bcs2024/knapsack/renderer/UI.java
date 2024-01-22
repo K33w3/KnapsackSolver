@@ -1,5 +1,8 @@
 package com.bcs2024.knapsack.renderer;
 
+import com.bcs2024.knapsack.algorithm.GeneticKnapsackSolver;
+import com.bcs2024.knapsack.algorithm.GreedyKnapsackSolver;
+import com.bcs2024.knapsack.algorithm.dancinglinks.DLSearch;
 import com.bcs2024.knapsack.model.CargoSpace;
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
@@ -164,6 +167,56 @@ public class UI extends Application {
         });
 
         settings.getChildren().addAll(optionsComboBox, actionButton);
+
+        // spacer 3
+        Region spacer3 = new Region();
+        spacer3.setPrefHeight(40);
+        settings.getChildren().add(spacer3);
+
+        // combo-box label
+        Label algorithmLabel = new Label("Re-Run Algorithm");
+        algorithmLabel.setFont(font);
+
+        // combo-box 3 options
+        ComboBox<String> optionsComboBoxAlgorithm = new ComboBox<>();
+        optionsComboBoxAlgorithm.getItems().addAll("Greedy", "Genetic", "Dancing Links");
+        optionsComboBoxAlgorithm.setPromptText("Select Algorithm");
+        Button actionButton3 = new Button("Run Algorithm");
+        actionButton3.setFont(fontButton);
+
+        settings.getChildren().addAll(algorithmLabel, optionsComboBoxAlgorithm, actionButton3);
+
+        // action button 3 handling
+        actionButton3.setOnAction(event -> {
+            String selectedOption = optionsComboBoxAlgorithm.getValue();
+            switch (selectedOption) {
+                case "Greedy":
+                    cleanContainer();
+                    drawContainer();
+                    System.out.println("Greedy selected");
+                    final GreedyKnapsackSolver greedyKnapsackSolver = new GreedyKnapsackSolver();
+                    greedyKnapsackSolver.solve();
+                    break;
+                case "Genetic":
+                    cleanContainer();
+                    drawContainer();
+                    System.out.println("Genetic selected");
+                    final GeneticKnapsackSolver geneticKnapsackSolver = new GeneticKnapsackSolver();
+                    geneticKnapsackSolver.solve();
+
+                    break;
+                case "Dancing Links":
+                    cleanContainer();
+                    drawContainer();
+                    System.out.println("Dancing Links selected");
+                    final DLSearch dlx = new DLSearch();
+                    dlx.createPositions();
+                    break;
+                default:
+                    System.out.println("No option selected");
+                    break;
+            }
+        });
 
         AnchorPane root = new AnchorPane();
         root.getChildren().add(splitPane);
@@ -356,6 +409,10 @@ public class UI extends Application {
             case "Blue" -> Color.BLUE;
             default -> null;
         };
+    }
+
+    private void cleanContainer() {
+        group.getChildren().clear();
     }
 
 }
