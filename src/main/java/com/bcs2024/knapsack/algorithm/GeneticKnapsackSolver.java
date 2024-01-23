@@ -17,9 +17,9 @@ import java.util.Random;
 public class GeneticKnapsackSolver {
     private final double MUTATION_RATE = 0.3;
     private final double CROSSOVER_RATE = 0.8;
-    private final int MAX_GENERATIONS = 5;
-    private final int GENE_LENGTH = 54;
+    private final int MAX_GENERATIONS = 1;
     private final Random random = new Random();
+    private final int GENE_LENGTH = 60;
     private final int POPULATION_SIZE = 100;
     private List<Chromosome> population;
     private int[] bestSolutionRotation;
@@ -84,19 +84,21 @@ public class GeneticKnapsackSolver {
     private void evaluateFitness(final List<Chromosome> population) {
         final ShapesAndRotations shapes = new ShapesAndRotations();
 
-        for (final Chromosome chromo : population) {
+        for (int ch = 0; ch < population.size(); ch++) {
+            Chromosome chromo = population.get(ch);
             int totalValue = 0;
             int countA = 0;
             int countB = 0;
             int countC = 0;
+            int countGenes = 0;
             final CargoSpace localCargoSpace = new CargoSpace();
 
             final int[][][] occupied = localCargoSpace.getOccupied();
 
-            for (int x = 0; x < occupied.length; x++) {
-                for (int y = 0; y < occupied[0].length; y++) {
-                    for (int z = 0; z < occupied[0][0].length; z++) {
-                        for (int i = 0; i < chromo.getGenes().length; i++) {
+            for (int i = 0; i < chromo.getGenes().length; i++) {
+                for (int x = 0; x < occupied.length; x++) {
+                    for (int y = 0; y < occupied[0].length; y++) {
+                        for (int z = 0; z < occupied[0][0].length; z++) {
                             final String gene = chromo.getGenes()[i];
                             final int rotation = chromo.getRotationFromGene(i);
                             final int[][][] shape = shapes.getShape(gene, rotation);
@@ -117,22 +119,31 @@ public class GeneticKnapsackSolver {
                                         totalValue += 5;
                                         countC++;
                                     }
-
                                 }
+
+                                countGenes++;
+
+                                x = occupied.length;
+                                y = occupied[0].length;
+                                z = occupied[0][0].length;
                             }
                         }
                     }
                 }
             }
-
-            chromo.setFitness(totalValue);
-            bestSolutionRotation = chromo.getRotations();
-            bestSolutionGene = chromo.getGenes();
-            bestChromosome = chromo;
-            System.out.println("Chromosome Fitness: " + totalValue);
-            System.out.println(Arrays.toString(chromo.getRotations()));
-            System.out.println(Arrays.toString(chromo.getGenes()));
-            System.out.println("A: " + countA + " B: " + countB + " C: " + countC);
+            if (countGenes == chromo.getGenes().length) {
+                chromo.setFitness(totalValue);
+                bestSolutionRotation = chromo.getRotations();
+                bestSolutionGene = chromo.getGenes();
+                bestChromosome = chromo;
+                System.out.println("Chromosome Fitness: " + totalValue);
+                System.out.println(Arrays.toString(chromo.getRotations()));
+                System.out.println(Arrays.toString(chromo.getGenes()));
+                System.out.println("A: " + countA + " B: " + countB + " C: " + countC);
+            } else {
+                population.set(ch, new Chromosome(GENE_LENGTH));
+                ch--;
+            }
         }
     }
 

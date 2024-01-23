@@ -127,15 +127,17 @@ public class DancingLinks {
             System.out.println("Total value: " + totalValue);
             System.out.println(countA + " " + countB + " " + countC);
 
-            countA = 0;
-            countB = 0;
-            countC = 0;
-
-            if (root.R == root) {
+            if (countA != 0 || countB != 0 || countC != 0) {
+                if (totalValue >= 236) {
+                    stop = true;
+                    return;
+                }
+            } else if (root.R == root) {
                 stop = true;
                 return;
             }
 
+            countA = 0; countB = 0; countC = 0;
             cargoSpace.setOccupied(new int[width][height][length]);
         }
 
