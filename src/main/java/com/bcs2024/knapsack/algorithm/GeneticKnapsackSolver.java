@@ -19,7 +19,7 @@ public class GeneticKnapsackSolver {
     private final double CROSSOVER_RATE = 0.8;
     private final int MAX_GENERATIONS = 1;
     private final Random random = new Random();
-    private final int GENE_LENGTH = 60;
+    private final int GENE_LENGTH = random.nextInt(40,50);
     private final int POPULATION_SIZE = 100;
     private List<Chromosome> population;
     private int[] bestSolutionRotation;
