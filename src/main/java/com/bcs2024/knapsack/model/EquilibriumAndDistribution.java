@@ -1,155 +1,213 @@
 package com.bcs2024.knapsack.model;
 
-import com.bcs2024.knapsack.util.ShapesAndRotations;
-
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * EquilibriumAndDistribution handles the placement of parcels in a CargoSpace
- * and calculates metrics like the center of mass and distribution of parcels
- * within the cargo space.
- */
-public class EquilibriumAndDistribution {
-    private final CargoSpace cargoSpace;
+import com.bcs2024.knapsack.algorithm.GreedyKnapsackSolver;
+import com.bcs2024.knapsack.algorithm.dancinglinks.DLSearch;
+import com.bcs2024.knapsack.algorithm.dancinglinks.DancingLinks;
 
-    /**
-     * Constructs a new EquilibriumAndDistribution object.
-     *
-     * @param cargoSpace The CargoSpace object representing the cargo space.
-     * @param rotations  Array of rotations corresponding to each gene.
-     * @param genes      Array of genes representing parcel types.
-     */
-    public EquilibriumAndDistribution(final CargoSpace cargoSpace, final int[] rotations, final String[] genes) {
-        this.cargoSpace = cargoSpace;
+public class EquilibriumAndDistribution {
+
+    private CargoSpace cargoSpace;
+    private int[] rotations;
+    private String[] genes;
+    private int[][][] matrix;
+
+    public EquilibriumAndDistribution() {
+
     }
 
-    /**
-     * Fills the container represented by the CargoSpace object with parcels.
-     *
-     * @param cargoSpace The CargoSpace object representing the cargo space.
-     * @param genes      Array of genes representing parcel types.
-     * @param rotations  Array of rotations corresponding to each gene.
-     */
-    public void fillContainer(final CargoSpace cargoSpace, final String[] genes, final int[] rotations) {
-        final ShapesAndRotations shapes = new ShapesAndRotations();
+    public double[] calculateCenterOfMass(List<ParcelPlacement> placements) {
+        // System.out.println(Arrays.toString(placements.toArray()));
+        double totalWeight = 0.0;
+        double weightedSumX = 0.0;
+        double weightedSumY = 0.0;
+        double weightedSumZ = 0.0;
 
-        final int[][][] matrix = cargoSpace.getOccupied();
+        for (final ParcelPlacement placement : placements) {
+            final Parcel parcel = placement.getParcel();
+            final double parcelWeight = getParcelWeight(parcel.getType());
+
+            totalWeight += parcelWeight;
+            weightedSumX += parcelWeight * placement.getX();
+            weightedSumY += parcelWeight * placement.getY();
+            weightedSumZ += parcelWeight * placement.getZ();
+        }
+
+        if (totalWeight != 0) {
+            double maxX = 33.0;
+            double maxY = 5.0;
+            double maxZ = 8.0;
+
+            // Calculate the center of mass
+            double centerOfMassX = weightedSumX / totalWeight;
+            double centerOfMassY = weightedSumY / totalWeight;
+            double centerOfMassZ = weightedSumZ / totalWeight;
+
+            // Ensure the center of mass is within the bounds of the matrix
+            centerOfMassX = Math.min(maxX - 1, Math.max(0, centerOfMassX));
+            centerOfMassY = Math.min(maxY - 1, Math.max(0, centerOfMassY));
+            centerOfMassZ = Math.min(maxZ - 1, Math.max(0, centerOfMassZ));
+
+            return new double[] { centerOfMassX, centerOfMassY, centerOfMassZ };
+        } else {
+            return null;
+        }
+    }
+
+    private double getParcelWeight(String parcelType) {
+        switch (parcelType) {
+            case "A": // Type A
+                return 1.0;
+            case "B": // Type B
+                return 2.0;
+            case "C": // Type C
+                return 3.0;
+            default:
+                return 0.0;
+        }
+    }
+
+    public double calculateAverageCenterOfMass(List<ParcelPlacement> placements) {
+        final double[] centerOfMass = calculateCenterOfMass(placements);
+
+        if (centerOfMass != null) {
+            final double sum = centerOfMass[0] + centerOfMass[1] + centerOfMass[2];
+            return sum / 3.0;
+        } else {
+            return 0.0;
+        }
+    }
+
+    public void analyzeDistribution(int[][][] matrix) {
+        int totalSlots = matrix.length * matrix[0].length * matrix[0][0].length;
+
+        if (totalSlots == 0) {
+            System.out.println("Cargo space is empty.");
+            return;
+        }
+
+        int frontSlots = matrix.length / 2;
+        int backSlots = matrix.length - frontSlots;
+
+        int filledFrontSlots = 0;
+        int filledBackSlots = 0;
+
+        int heavyCountFront = 0;
+        int mediumCountFront = 0;
+        int lightCountFront = 0;
+
+        int heavyCountBack = 0;
+        int mediumCountBack = 0;
+        int lightCountBack = 0;
 
         for (int x = 0; x < matrix.length; x++) {
             for (int y = 0; y < matrix[0].length; y++) {
                 for (int z = 0; z < matrix[0][0].length; z++) {
-                    for (int i = 0; i < genes.length; i++) {
+                    int parcelType = matrix[x][y][z];
 
-                        final int rotation = rotations[i];
-                        final int[][][] shape = shapes.getShape(genes[i], rotation);
-                        final Parcel parcel = new Parcel(genes[i], shape);
-
-                        if (cargoSpace.canPlace(shape, x, y, z)) {
-                            final ParcelPlacement placement = new ParcelPlacement(
-                                    parcel,
-                                    x,
-                                    y,
-                                    z
-                            );
-                            cargoSpace.placeParcel(placement);
+                    // Update counters for parcel distribution
+                    if (x < frontSlots) {
+                        filledFrontSlots++;
+                        switch (parcelType) {
+                            case 1: // Type A
+                                lightCountFront++;
+                                break;
+                            case 2: // Type B
+                                mediumCountFront++;
+                                break;
+                            case 3: // Type C
+                                heavyCountFront++;
+                                break;
+                        }
+                    } else {
+                        filledBackSlots++;
+                        switch (parcelType) {
+                            case 1: // Type A
+                                lightCountBack++;
+                                break;
+                            case 2: // Type B
+                                mediumCountBack++;
+                                break;
+                            case 3: // Type C
+                                heavyCountBack++;
+                                break;
                         }
                     }
                 }
             }
         }
+
+        printDistribution("Front", filledFrontSlots, heavyCountFront, mediumCountFront, lightCountFront);
+        printDistribution("Back", filledBackSlots, heavyCountBack, mediumCountBack, lightCountBack);
     }
 
-    /**
-     * Calculates the center of mass based on the placements of parcels within the cargo space.
-     *
-     * @return A double array representing the x, y, and z coordinates of the center of mass.
-     */
-    public double[] calculateCenterOfMass() {
-        double totalVolume = 0.0;
-        double weightedSumX = 0.0;
-        double weightedSumY = 0.0;
-        double weightedSumZ = 0.0;
-
-        final List<ParcelPlacement> placements = cargoSpace.getPlacements();
-
-        for (final ParcelPlacement placement : placements) {
-            final Parcel parcel = placement.getParcel();
-            final double parcelVolume = parcel.getVolume();
-            totalVolume += parcelVolume;
-            weightedSumX += parcelVolume * placement.getX();
-            weightedSumY += parcelVolume * placement.getY();
-            weightedSumZ += parcelVolume * placement.getZ();
-        }
-
-        if (totalVolume != 0) {
-            final double centerOfMassX = weightedSumX / totalVolume;
-            final double centerOfMassY = weightedSumY / totalVolume;
-            final double centerOfMassZ = weightedSumZ / totalVolume;
-
-            return new double[]{centerOfMassX, centerOfMassY, centerOfMassZ};
-        }
-
-        // Handle the case when there are no parcels placed
-        return new double[]{0.0, 0.0, 0.0};
+    private void printDistribution(String area, int filledSlots, int heavyCount, int mediumCount, int lightCount) {
+        System.out.println(area + " Area:");
+        System.out.println("Filled Slots: " + filledSlots);
+        System.out.println("Heavy Parcel (Type C) Percentage: " + calculatePercentage(heavyCount, filledSlots) + "%");
+        System.out.println("Medium Parcel (Type B) Percentage: " + calculatePercentage(mediumCount, filledSlots) + "%");
+        System.out.println("Light Parcel (Type A) Percentage: " + calculatePercentage(lightCount, filledSlots) + "%");
+        System.out.println();
     }
 
-    /**
-     * Calculates the average of the x, y, and z coordinates of the center of mass.
-     *
-     * @return The average value of the center of mass coordinates.
-     */
-    public double calculateAverageCenterOfMass() {
-        final double[] centerOfMass = calculateCenterOfMass();
-        final double sum = centerOfMass[0] + centerOfMass[1] + centerOfMass[2];
-        return sum / 3.0;
+    private double calculatePercentage(int count, int total) {
+        return (total == 0) ? 0.0 : ((double) count / total) * 100.0;
     }
 
-    /**
-     * Calculates the distribution of parcels within the cargo space.
-     *
-     * @return The distribution ratio of filled slots to total slots in the cargo space.
-     */
-    public double calculateDistribution() {
-        final int totalSlots = cargoSpace.getOccupied().length *
-                cargoSpace.getOccupied()[0].length *
-                cargoSpace.getOccupied()[0][0].length;
-        final int filledSlots = cargoSpace.getFilledSlotsCount();
+    public void printResults(List<ParcelPlacement> placements, CargoSpace cargoSpace) {
+        EquilibriumAndDistribution equilibrium = new EquilibriumAndDistribution();
 
-        if (totalSlots == 0) {
-            return 0.0;
-        }
+        long startTime = System.currentTimeMillis();
 
-        return (double) filledSlots / totalSlots;
+        long endTime = System.currentTimeMillis();
+        long elapsedTime = endTime - startTime;
+
+        System.out.println("Time Completion GreedySolver: " + elapsedTime);
+        System.out.println(Arrays.toString(equilibrium.calculateCenterOfMass(placements)));
+        System.out.println(placements.size());
+        equilibrium.analyzeDistribution(cargoSpace.getOccupied());
+        System.out.println("Average Center of Mass: " + equilibrium.calculateAverageCenterOfMass(placements));
+        System.out.println("----------------------------------------------------------------------------");
     }
 
-    /**
-     * Main method for testing the EquilibriumAndDistribution class by running it multiple
-     * times and calculating metrics like center of mass and distribution.
-     *
-     * @param args Command-line arguments (not used).
-     */
     public static void main(final String[] args) {
+        for (int i = 0; i < 15000; i++) {
+            GreedyKnapsackSolver greedySolver = new GreedyKnapsackSolver();
+            EquilibriumAndDistribution equilibrium = new EquilibriumAndDistribution();
 
-        final String[] genes = {"C", "C", "B", "B", "A", "A", "C", "A", "C", "B", "C", "C", "A", "C", "A", "A", "A", "C", "C", "B", "B", "A", "A", "B", "B", "C", "C", "A", "A", "C", "B", "B", "B", "A", "B", "B", "C", "C", "C", "B", "A", "C", "B", "B", "C", "C", "C", "A", "C", "C", "A", "A", "A", "B"};
-        final int[] rotations = {0, 0, 4, 4, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0, 3, 2, 0, 0, 2, 1, 0, 1, 5, 1, 1, 4, 1, 0, 0, 0, 3, 1, 0, 1, 3, 0, 0, 0, 1, 0, 0, 1, 0, 1, 5};
+            long startTime = System.currentTimeMillis();
+            greedySolver.solve();
+            long endTime = System.currentTimeMillis();
+            long elapsedTime = endTime - startTime;
 
-        final CargoSpace cargoSpace = new CargoSpace();
+            System.out.println("Time Completion GreedySolver: " + elapsedTime);
+            System.out.println(Arrays.toString(equilibrium.calculateCenterOfMass(greedySolver.placements)));
+            System.out.println(greedySolver.placements.size());
+            equilibrium.analyzeDistribution(greedySolver.getCargoSpace().getOccupied());
+            System.out.println("Average Center of Mass: " +
+            equilibrium.calculateAverageCenterOfMass(greedySolver.placements));
+            System.out.println("----------------------------------------------------------------------------");
+            }
 
-        final EquilibriumAndDistribution equilibrium = new EquilibriumAndDistribution(cargoSpace, rotations, genes);
+            // DLSearch dlxSearch = new DLSearch();
+            // EquilibriumAndDistribution equilibrium = new EquilibriumAndDistribution();
 
-        equilibrium.fillContainer(cargoSpace, genes, rotations);
+            // long startTime = System.currentTimeMillis();
+            // dlxSearch.start();
+            // long endTime = System.currentTimeMillis();
+            // long elapsedTime = endTime - startTime;
 
-        // Calculate center of mass
-        final double[] centerOfMass = equilibrium.calculateCenterOfMass();
-        System.out.println("Center of Mass: " + Arrays.toString(centerOfMass));
-        // Calculate center of mass Average
-        final double averageCenterOfMass = equilibrium.calculateAverageCenterOfMass();
-        System.out.println("Average Center of Mass: " + averageCenterOfMass);
-        // Calculate distribution
-        final double distribution = equilibrium.calculateDistribution();
-        System.out.println("Distribution: " + distribution);
+            // DancingLinks dance = dlxSearch.dance;
+
+            // System.out.println("Time Completion GreedySolver: " + elapsedTime);
+            // System.out.println(Arrays.toString(equilibrium.calculateCenterOfMass(dance.placements)));
+            // System.out.println(dance.placements.size());
+            // equilibrium.analyzeDistribution(dance.cargoSpace.getOccupied());
+            // System.out.println("Average Center of Mass: " + equilibrium.calculateAverageCenterOfMass(dance.placements));
+            // System.out.println("----------------------------------------------------------------------------");
+        }
     }
 
-}
 
